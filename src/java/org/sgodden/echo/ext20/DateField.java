@@ -16,6 +16,7 @@
 # ================================================================= */
 package org.sgodden.echo.ext20;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import nextapp.echo.app.ApplicationInstance;
@@ -40,29 +41,31 @@ public class DateField
     public static final String DATE_CHANGED_PROPERTY = "date";
     public static final String FIELD_LABEL_PROPERTY = "fieldLabel";
     public static final String ALLOW_BLANK_PROPERTY = "allowBlank";
+    
+    private Calendar calendar;
 
     public DateField() {
         super();
         setLocale(ApplicationInstance.getActive().getLocale());
     }
 
-    public DateField(Date text) {
+    public DateField(Calendar cal) {
         this();
-        setDate(text);
+        setCalendar(cal);
     }
 
-    public DateField(Date text, String fieldLabel) {
+    public DateField(Calendar cal, String fieldLabel) {
         this();
-        setDate(text);
+        setCalendar(cal);
         setFieldLabel(fieldLabel);
     }
 
-    public void setDate(Date date) {
-        setProperty(DATE_CHANGED_PROPERTY, date);
+    public void setCalendar(Calendar cal) {
+        this.calendar = cal;
     }
 
-    public Date getDate() {
-        return (Date) getProperty(DATE_CHANGED_PROPERTY);
+    public Calendar getCalendar() {
+        return calendar;
     }
 
     public void setFieldLabel(String fieldLabel) {
@@ -99,14 +102,22 @@ public class DateField
      * @param localeString
      * @return
      */
-    public void setExtLocaleString(String localeString) {
-        setProperty(DATE_FORMAT_PROPERTY, localeString);
+    public void setFormat(String format) {
+        setProperty(DATE_FORMAT_PROPERTY, format);
     }
 
     @Override
     public void processInput(String inputName, Object inputValue) {
         if (DATE_CHANGED_PROPERTY.equals(inputName)) {
-            setDate((Date) inputValue);
+            // retrieve the current hour and minute values so that we don't trample over them
+            int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+            int minutes = calendar.get(Calendar.MINUTE);
+            
+            calendar.setTime( (Date) inputValue );
+            
+            // re-set the hour and minutes values that were there before
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar.set(Calendar.MINUTE, minutes);
         }
     }
 }

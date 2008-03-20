@@ -34,6 +34,7 @@ import org.sgodden.echo.ext20.DateField;
 import org.sgodden.echo.ext20.HtmlEditor;
 import org.sgodden.echo.ext20.HtmlPanel;
 import org.sgodden.echo.ext20.Panel;
+import org.sgodden.echo.ext20.RadioButton;
 import org.sgodden.echo.ext20.TabbedPane;
 import org.sgodden.echo.ext20.TextField;
 import org.sgodden.echo.ext20.TimeField;
@@ -260,6 +261,14 @@ public class ApplicationContentPane
         
         final CheckboxField enabledField = new CheckboxField(true, "Enabled");
         userEditPanel.add(enabledField);
+        
+        final RadioButton userRoleButton = new RadioButton(true, "User");
+        userRoleButton.setName("role");
+        userEditPanel.add(userRoleButton);
+        
+        final RadioButton adminRoleButton = new RadioButton(false, "Admin");
+        adminRoleButton.setName("role");
+        userEditPanel.add(adminRoleButton);
 
         Button cancelButton = new Button("Cancel");
         userEditPanel.add(cancelButton);

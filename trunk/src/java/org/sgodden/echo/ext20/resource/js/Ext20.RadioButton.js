@@ -14,21 +14,21 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.CheckboxField = Core.extend(EchoApp.Component, {
+EchoExt20.RadioButton = Core.extend(EchoApp.Component, {
     
     $load: function() {
-        EchoApp.ComponentFactory.registerType("Ext20CheckboxField", this);
-        EchoApp.ComponentFactory.registerType("E2CBF", this);
+        EchoApp.ComponentFactory.registerType("Ext20RadioButton", this);
+        EchoApp.ComponentFactory.registerType("E2RB", this);
     },
     
-    componentType: "Ext20CheckboxField"
+    componentType: "Ext20RadioButton"
     
 });
 
-EchoExt20.CheckboxFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
+EchoExt20.RadioButtonSync = Core.extend(EchoExt20.ExtComponentSync, {
     
     $load: function() {
-        EchoRender.registerPeer("Ext20CheckboxField", this);
+        EchoRender.registerPeer("Ext20RadioButton", this);
     },
     
     _handleBlurEventRef: null,
@@ -46,7 +46,9 @@ EchoExt20.CheckboxFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
             options['disabled'] = true;
         }
         
-        var extComponent = new Ext.form.Checkbox(options);
+        options['name'] = this.component.get("name");
+        
+        var extComponent = new Ext.form.Radio(options);
         extComponent.setValue(selected);
         extComponent.on('blur', this._handleBlurEventRef);
         

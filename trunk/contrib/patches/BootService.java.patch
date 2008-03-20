@@ -1,0 +1,14 @@
+Index: server-java/webcontainer/nextapp/echo/webcontainer/service/BootService.java
+===================================================================
+--- server-java/webcontainer/nextapp/echo/webcontainer/service/BootService.java	(revision 915)
++++ server-java/webcontainer/nextapp/echo/webcontainer/service/BootService.java	(working copy)
+@@ -62,6 +62,9 @@
+         }
+         resourceList.add(JS_RESOURCE_PATH + "Boot.js");
+         
++        resourceList.add("/adapter/ext/ext-base.js"); // FIXME - ugly hack to test it
++        resourceList.add("/ext-all.js"); // FIXME - ugly hack to test it
++        
+         String[] resources = new String[resourceList.size()];
+         resourceList.toArray(resources);
+         SERVICE = JavaScriptService.forResources("Echo.Boot", resources);

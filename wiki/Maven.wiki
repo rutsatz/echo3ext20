@@ -12,3 +12,25 @@ If you wish to use this in a maven project, then you will have to manually insta
 Suggested commands for doing this are as follows:
 
 mvn install:install-file -!DgroupId=org.sgodden -!DartifactId=echo3ext20 -Dversion=1.0-SNAPSHOT -Dpackaging=jar -Dfile=echo3ext20.jar
+
+And then add the following dependencies to your pom:
+{{{
+<dependency>
+  <groupId>com.nextapp</groupId>
+  <artifactId>echo3-app</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <scope>compile</scope>
+</dependency>
+<dependency>
+  <groupId>com.nextapp</groupId>
+  <artifactId>echo3-webcontainer</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <scope>compile</scope>
+</dependency>
+<dependency>
+  <groupId>org.sgodden</groupId>
+  <artifactId>echo3ext20</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <scope>compile</scope>
+</dependency>
+}}}

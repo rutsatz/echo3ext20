@@ -1,0 +1,18 @@
+Index: server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java
+===================================================================
+--- server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java	(revision 1045)
++++ server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java	(working copy)
+@@ -106,6 +106,13 @@
+         styleElement.appendChild(document.createTextNode(" "));
+         headElement.appendChild(styleElement);
+ 
++	Element extStyleElement = document.createElement("link");
++        extStyleElement.setAttribute("href", "resources/css/ext-all.css");
++        extStyleElement.setAttribute("type", "text/css");
++        extStyleElement.setAttribute("rel", "stylesheet");
++        extStyleElement.appendChild(document.createTextNode(" "));
++        headElement.appendChild(extStyleElement);
++
+         Element scriptElement = document.createElement("script");
+         Text textNode = document.createTextNode(" ");
+         scriptElement.appendChild(textNode);

@@ -81,6 +81,11 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         if (border != null) {
             options['border'] = border;
         }
+        else {
+            options['border'] = false;
+        }
+        
+        options['bodyBorder'] = false;
         
         var layout = this.component.get("layout");
         if (layout != null) {

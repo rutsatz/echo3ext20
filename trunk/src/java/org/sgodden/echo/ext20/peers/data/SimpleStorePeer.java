@@ -36,7 +36,8 @@ public class SimpleStorePeer implements SerialPropertyPeer {
         propertyElement.setAttribute("t",
                 (serialContext.getFlags() & SerialContext.FLAG_RENDER_SHORT_NAMES) == 0 ? "Echo2SimpleStore" : "E2SS");
         try {
-            propertyElement.setTextContent(JSONMapper.toJSON(simpleStore).render(true));
+            // FIXME - render as XML, since FF has a bug with evaluating large JSON objects
+            propertyElement.setTextContent(JSONMapper.toJSON(simpleStore).render(false));
         } catch (MapperException e) {
             throw new SerialException("Error mapping SimpleStore", e);
         }

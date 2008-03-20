@@ -46,7 +46,15 @@ public class AppServlet extends WebContainerServlet {
 		String[] resources = new String[resourceList.size()];
 		resourceList.toArray(resources);
 		extService = JavaScriptService.forResources("Ext20", resources);
-		
+
+                /*
+                 * Whilst we are in development mode, add all the scripts up
+                 * front so that they can be seen by firebug.
+                 * When we go to release, these should be loaded as needed
+                 * by the rendering peers.
+                 * (or should they - these are all tiny, so maybe just loading
+                 * them all up front in one shot is fine).
+                 */
 		resourceList = new ArrayList();
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.Button.js");
@@ -55,6 +63,7 @@ public class AppServlet extends WebContainerServlet {
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TabbedPane.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TablePanel.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TextField.js");
+		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.DateField.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.HtmlEditor.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.GridPanel.js");
 		resourceList.add("/json2.js");

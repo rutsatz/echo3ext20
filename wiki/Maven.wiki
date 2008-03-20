@@ -1,0 +1,14 @@
+#summary Importing into your maven repository.
+
+Since this software is nowhere near ready for release, it is not installed into the central maven repository.
+
+Also, at the time of writing the Echo3 betas are not installed there either.
+
+If you wish to use this in a maven project, then you will have to manually install the following jars from the distribution:
+  * src/webapp/WEB-INF/lib/Echo3_App.jar
+  * src/webapp/WEB-INF/lib/Echo3_WebContainer.jar
+  * build/echo3ext20.jar
+
+Suggested commands for doing this are as follows:
+
+mvn install:install-file -DgroupId=org.sgodden -DartifactId=echo3ext20 -Dversion=1.0-SNAPSHOT -Dpackaging=jar -Dfile=echo3ext20.jar

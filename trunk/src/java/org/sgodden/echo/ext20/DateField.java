@@ -73,6 +73,13 @@ public class DateField
         setProperty(ALLOW_BLANK_PROPERTY, blankAllowed);
     }
 
+    /**
+     * BROKEN - Sets the locale, and derives the ext locale string from it.
+     * <p/>
+     * This is broken for all but the simplest cases - use {@link #setExtLocaleString(String)}
+     * instead.
+     * @param locale
+     */
     @Override
     public void setLocale(Locale locale) {
         log.info(locale);
@@ -85,7 +92,18 @@ public class DateField
             setProperty(DATE_FORMAT_PROPERTY, "m/d/y");
         }
     }
+    
+    /**
+     * Directly sets the locale string, since the automatic derivation of
+     * this from the java locale is currently broken.
+     * @param localeString
+     * @return
+     */
+    public void setExtLocaleString(String localeString) {
+        setProperty(DATE_FORMAT_PROPERTY, localeString);
+    }
 
+    @Override
     public void processInput(String inputName, Object inputValue) {
         if (DATE_CHANGED_PROPERTY.equals(inputName)) {
             setDate((Date) inputValue);

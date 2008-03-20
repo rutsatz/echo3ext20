@@ -62,6 +62,10 @@ public class Panel extends Component {
         setProperty(TITLE_PROPERTY, title);
     }
 
+    /**
+     * FIXME - should be using the existing setInsets method instead.
+     * @param pixels
+     */
     public void setPadding(int pixels) {
         setProperty(PROPERTY_PADDING, pixels + "px");
     }

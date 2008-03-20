@@ -17,6 +17,7 @@
 package org.sgodden.echo.ext20.testapp;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import nextapp.echo.app.ContentPane;
@@ -26,6 +27,7 @@ import nextapp.echo.app.event.ActionListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sgodden.echo.ext20.Button;
+import org.sgodden.echo.ext20.DateField;
 import org.sgodden.echo.ext20.HtmlEditor;
 import org.sgodden.echo.ext20.HtmlPanel;
 import org.sgodden.echo.ext20.Panel;
@@ -167,7 +169,7 @@ public class ApplicationContentPane
 
         userPanel.setRenderId("userPanel");
 
-        final String[][] data = makeData();
+        final Object[][] data = makeData();
 
         userListPanel = createUserList(data);
         userPanel.add(userListPanel);
@@ -195,7 +197,7 @@ public class ApplicationContentPane
      * for a particular user.
      * @return
      */
-    private GridPanel createUserList(String[][] data) {
+    private GridPanel createUserList(Object[][] data) {
         List<ColumnConfiguration> cols = new ArrayList<ColumnConfiguration>();
         cols.add(new ColumnConfiguration("User ,ID", "userid"));
         cols.add(new ColumnConfiguration("Name", "name"));
@@ -204,7 +206,7 @@ public class ApplicationContentPane
         SimpleStore store = new SimpleStore(
                 data,
                 0,
-                new String[]{"id", "userid", "name"});
+                new String[]{"id", "userid", "name", "date"});
 
         final GridPanel ret = new GridPanel(columnModel, store);
         return ret;
@@ -228,21 +230,24 @@ public class ApplicationContentPane
      * Creates a form panel to edit the selected user.
      * @return
      */
-    private void createUserEditPanel(String[] data) {
+    private void createUserEditPanel(Object[] data) {
         userEditPanel = new Panel(new FormLayout());
         userEditPanel.setPadding(5);
         userEditPanel.setRenderId("userFormPanel");
 
-        TextField codeField = new TextField(data[1], "Code");
+        final TextField codeField = new TextField((String)data[1], "Code");
         codeField.setBlankAllowed(false);
         userEditPanel.add(codeField);
 
-        TextField nameField = new TextField(data[2], "Name");
+        final TextField nameField = new TextField((String)data[2], "Name");
         nameField.setBlankAllowed(false);
         userEditPanel.add(nameField);
 
+        final DateField dateField = new DateField((Date)data[3], "Date");
+        dateField.setBlankAllowed(false);
+        userEditPanel.add(dateField);
 
-        Button cancelButton = new Button("cancel");
+        Button cancelButton = new Button("Cancel");
         userEditPanel.add(cancelButton);
 
         // and add a listener to the cancel button which removes that form panel
@@ -253,6 +258,22 @@ public class ApplicationContentPane
                 userPanel.add(userListPanel);
             }
         });
+        
+        Button saveButton = new Button("Save");
+        userEditPanel.add(saveButton);
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // print out field values to make sure they have transferred correctly
+                log.info("Save button pressed:");
+                log.info("  codeField: " + codeField.getText());
+                log.info("  nameField: " + nameField.getText());
+                log.info("  dateField: " + dateField.getDate());
+                
+                userPanel.remove(userEditPanel);
+                userPanel.add(userListPanel);
+            }
+        });
+        
     }
 
     public void actionPerformed(ActionEvent arg0) {
@@ -263,16 +284,17 @@ public class ApplicationContentPane
      * Makes enough data to test the eval bug in Firefox.
      * @return
      */
-    private String[][] makeData() {
-        int rows = 200;
+    private Object[][] makeData() {
+        int rows = 20;
         
-        String[][] ret = new String[rows][];
+        Object[][] ret = new Object[rows][];
         
         for (int i = 0; i < ret.length; i++) {
-            String[] row = new String[3];
+            Object[] row = new Object[4];
             row[0] = String.valueOf(i);
             row[1] = "User id asdasdasdasdasd " + i;
             row[2] = "Name asdasdasdasdasdasd " + i;
+            row[3] = new Date();
             ret[i] = row;
         }
         

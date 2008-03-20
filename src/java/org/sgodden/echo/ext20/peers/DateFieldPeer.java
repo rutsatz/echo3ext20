@@ -16,48 +16,50 @@
 # ================================================================= */
 package org.sgodden.echo.ext20.peers;
 
+import java.util.Date;
 import nextapp.echo.app.Component;
 import nextapp.echo.app.update.ClientUpdateManager;
 import nextapp.echo.app.util.Context;
 import nextapp.echo.webcontainer.AbstractComponentSynchronizePeer;
-import nextapp.echo.webcontainer.ServerMessage;
 import nextapp.echo.webcontainer.Service;
 import nextapp.echo.webcontainer.WebContainerServlet;
 import nextapp.echo.webcontainer.service.JavaScriptService;
 
-import org.sgodden.echo.ext20.TextField;
+import org.sgodden.echo.ext20.DateField;
 
-public class TextFieldPeer 
+public class DateFieldPeer 
 extends AbstractComponentSynchronizePeer {
     
-    protected static final Service TEXT_FIELD_SERVICE = JavaScriptService.forResource("EchoExt20.TextField", 
-            "/org/sgodden/echo/ext20/resource/js/Ext20.TextField.js");
+    protected static final Service DATE_FIELD_SERVICE = JavaScriptService.forResource("EchoExt20.DateField", 
+            "/org/sgodden/echo/ext20/resource/js/Ext20.DateField.js");
     
     static {
-        WebContainerServlet.getServiceRegistry().add(TEXT_FIELD_SERVICE);
+        WebContainerServlet.getServiceRegistry().add(DATE_FIELD_SERVICE);
     }
     
-    public TextFieldPeer() {
+    public DateFieldPeer() {
     	super();
-    	addOutputProperty(TextField.TEXT_CHANGED_PROPERTY);
-    	addOutputProperty(TextField.FIELD_LABEL_PROPERTY);
-    	addOutputProperty(TextField.ALLOW_BLANK_PROPERTY);
+    	addOutputProperty(DateField.DATE_CHANGED_PROPERTY);
+    	addOutputProperty(DateField.FIELD_LABEL_PROPERTY);
+    	addOutputProperty(DateField.ALLOW_BLANK_PROPERTY);
+        addOutputProperty(DateField.DATE_FORMAT_PROPERTY);
     }
 
 	public Class getComponentClass() {
-		return TextField.class;
+		return DateField.class;
 	}
 
 	public String getClientComponentType(boolean shortType) {
-		return shortType ? "E2TF" : "Ext20TextField";
+		return shortType ? "E2DF" : "Ext20DateField";
 	}
 	
     /**
      * @see nextapp.echo.webcontainer.AbstractComponentSynchronizePeer#getInputPropertyClass(java.lang.String)
      */
+    @Override
     public Class getInputPropertyClass(String propertyName) {
-        if (TextField.TEXT_CHANGED_PROPERTY.equals(propertyName)) {
-            return String.class;
+        if (DateField.DATE_CHANGED_PROPERTY.equals(propertyName)) {
+            return Date.class;
         }
         return null;
     }
@@ -66,9 +68,9 @@ extends AbstractComponentSynchronizePeer {
      * @see nextapp.echo.webcontainer.ComponentSynchronizePeer#storeInputProperty(Context, Component, String, int, Object)
      */
     public void storeInputProperty(Context context, Component component, String propertyName, int propertyIndex, Object newValue) {
-        if (propertyName.equals(TextField.TEXT_CHANGED_PROPERTY)) {
+        if (propertyName.equals(DateField.DATE_CHANGED_PROPERTY)) {
             ClientUpdateManager clientUpdateManager = (ClientUpdateManager) context.get(ClientUpdateManager.class);
-            clientUpdateManager.setComponentProperty(component, TextField.TEXT_CHANGED_PROPERTY, newValue);
+            clientUpdateManager.setComponentProperty(component, DateField.DATE_CHANGED_PROPERTY, newValue);
         }
     }
 
@@ -79,7 +81,7 @@ extends AbstractComponentSynchronizePeer {
     public void init(Context context) {
         super.init(context);
         //ServerMessage serverMessage = (ServerMessage) context.get(ServerMessage.class);
-        //serverMessage.addLibrary(TEXT_FIELD_SERVICE.getId());
+        //serverMessage.addLibrary(DATE_FIELD_SERVICE.getId());
     }
 
 

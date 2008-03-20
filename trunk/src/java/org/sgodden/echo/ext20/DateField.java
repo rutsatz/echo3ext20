@@ -85,7 +85,6 @@ public class DateField
      */
     @Override
     public void setLocale(Locale locale) {
-        log.info(locale);
         super.setLocale(locale);
         // FIXME - we need a robust way of calculating the ext date format
         if (locale.getCountry().equals("GB")) {

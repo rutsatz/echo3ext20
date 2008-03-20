@@ -67,6 +67,7 @@ public class AppServlet extends WebContainerServlet {
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TimeField.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.HtmlEditor.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.GridPanel.js");
+		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.CheckboxField.js");
 		resourceList.add("/json2.js");
 		
 		resources = new String[resourceList.size()];

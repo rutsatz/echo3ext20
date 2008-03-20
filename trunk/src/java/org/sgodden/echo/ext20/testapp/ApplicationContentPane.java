@@ -29,6 +29,7 @@ import nextapp.echo.app.event.ActionListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sgodden.echo.ext20.Button;
+import org.sgodden.echo.ext20.CheckboxField;
 import org.sgodden.echo.ext20.DateField;
 import org.sgodden.echo.ext20.HtmlEditor;
 import org.sgodden.echo.ext20.HtmlPanel;
@@ -256,6 +257,9 @@ public class ApplicationContentPane
         final TimeField timeField = new TimeField(cal, "Time");
         timeField.setBlankAllowed(false);
         userEditPanel.add(timeField);
+        
+        final CheckboxField enabledField = new CheckboxField(true, "Enabled");
+        userEditPanel.add(enabledField);
 
         Button cancelButton = new Button("Cancel");
         userEditPanel.add(cancelButton);
@@ -278,6 +282,7 @@ public class ApplicationContentPane
                 log.info("  codeField: " + codeField.getText());
                 log.info("  nameField: " + nameField.getText());
                 log.info("  calendar: " + dateField.getCalendar());
+                log.info("  enabled: " + enabledField.getSelected());
                 
                 userPanel.remove(userEditPanel);
                 userPanel.add(userListPanel);

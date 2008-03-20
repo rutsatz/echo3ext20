@@ -11,7 +11,13 @@ If you wish to use this in a maven project, then you will have to manually insta
 
 Suggested commands for doing this are as follows:
 
-mvn install:install-file -!DgroupId=org.sgodden -!DartifactId=echo3ext20 -Dversion=1.0-SNAPSHOT -Dpackaging=jar -Dfile=echo3ext20.jar
+{{{
+mvn install:install-file -DgroupId=org.sgodden -DartifactId=echo3ext20 -Dversion=1.0-SNAPSHOT -Dpackaging=jar -Dfile=echo3ext20.jar
+mvn install:install-file -DgroupId=com.nextapp -DartifactId=echo3-app -Dversion=1.0-SNAPSHOT -Dpackaging=jar -Dfile=Echo3_App.jar
+mvn install:install-file -DgroupId=com.nextapp -DartifactId=echo3-webcontainer -Dversion=1.0-SNAPSHOT -Dpackaging=jar -Dfile=Echo3_WebContainer.jar
+}}}
+
+N.B. - once !NextApp do actually put the artifacts into the central repository, there's no guarantee that they will follow the names I have used above, so things may change then.
 
 And then add the following dependencies to your pom:
 {{{

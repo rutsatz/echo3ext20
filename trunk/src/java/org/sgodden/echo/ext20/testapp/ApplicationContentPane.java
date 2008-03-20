@@ -17,9 +17,11 @@
 package org.sgodden.echo.ext20.testapp;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import nextapp.echo.app.ApplicationInstance;
 import nextapp.echo.app.ContentPane;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
@@ -33,6 +35,7 @@ import org.sgodden.echo.ext20.HtmlPanel;
 import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.TabbedPane;
 import org.sgodden.echo.ext20.TextField;
+import org.sgodden.echo.ext20.TimeField;
 import org.sgodden.echo.ext20.data.SimpleStore;
 import org.sgodden.echo.ext20.grid.ColumnConfiguration;
 import org.sgodden.echo.ext20.grid.ColumnModel;
@@ -242,10 +245,17 @@ public class ApplicationContentPane
         final TextField nameField = new TextField((String)data[2], "Name");
         nameField.setBlankAllowed(false);
         userEditPanel.add(nameField);
+        
+        Calendar cal = Calendar.getInstance(
+                ApplicationInstance.getActive().getLocale());
 
-        final DateField dateField = new DateField((Date)data[3], "Date");
+        final DateField dateField = new DateField(cal, "Date");
         dateField.setBlankAllowed(false);
         userEditPanel.add(dateField);
+
+        final TimeField timeField = new TimeField(cal, "Time");
+        timeField.setBlankAllowed(false);
+        userEditPanel.add(timeField);
 
         Button cancelButton = new Button("Cancel");
         userEditPanel.add(cancelButton);
@@ -267,7 +277,7 @@ public class ApplicationContentPane
                 log.info("Save button pressed:");
                 log.info("  codeField: " + codeField.getText());
                 log.info("  nameField: " + nameField.getText());
-                log.info("  dateField: " + dateField.getDate());
+                log.info("  calendar: " + dateField.getCalendar());
                 
                 userPanel.remove(userEditPanel);
                 userPanel.add(userListPanel);

@@ -16,7 +16,6 @@
 # ================================================================= */
 package org.sgodden.echo.ext20.peers;
 
-import java.util.Date;
 import nextapp.echo.app.Component;
 import nextapp.echo.app.update.ClientUpdateManager;
 import nextapp.echo.app.util.Context;
@@ -25,68 +24,55 @@ import nextapp.echo.webcontainer.Service;
 import nextapp.echo.webcontainer.WebContainerServlet;
 import nextapp.echo.webcontainer.service.JavaScriptService;
 
-import org.sgodden.echo.ext20.DateField;
+import org.sgodden.echo.ext20.TimeField;
 
-public class DateFieldPeer
+public class TimeFieldPeer
         extends AbstractComponentSynchronizePeer {
 
-    protected static final Service DATE_FIELD_SERVICE = JavaScriptService.forResource("EchoExt20.DateField",
-            "/org/sgodden/echo/ext20/resource/js/Ext20.DateField.js");
+    protected static final Service TIME_FIELD_SERVICE = JavaScriptService.forResource("EchoExt20.TimeField",
+            "/org/sgodden/echo/ext20/resource/js/Ext20.TimeField.js");
 
     static {
-        WebContainerServlet.getServiceRegistry().add(DATE_FIELD_SERVICE);
+        WebContainerServlet.getServiceRegistry().add(TIME_FIELD_SERVICE);
     }
 
-    public DateFieldPeer() {
+    public TimeFieldPeer() {
         super();
-        addOutputProperty(DateField.DATE_CHANGED_PROPERTY);
-        addOutputProperty(DateField.FIELD_LABEL_PROPERTY);
-        addOutputProperty(DateField.ALLOW_BLANK_PROPERTY);
-        addOutputProperty(DateField.DATE_FORMAT_PROPERTY);
+        addOutputProperty(TimeField.TIME_CHANGED_PROPERTY);
+        addOutputProperty(TimeField.FIELD_LABEL_PROPERTY);
+        addOutputProperty(TimeField.ALLOW_BLANK_PROPERTY);
+        addOutputProperty(TimeField.TIME_FORMAT_PROPERTY);
     }
 
     public Class getComponentClass() {
-        return DateField.class;
+        return TimeField.class;
     }
 
     public String getClientComponentType(boolean shortType) {
-        return shortType ? "E2DF" : "Ext20DateField";
-    }
-    
-    @Override
-    public Object getOutputProperty(Context context, Component component, String propertyName, int propertyIndex) {
-        Object ret = null;
-        
-        if (propertyName.equals(DateField.DATE_CHANGED_PROPERTY)) {
-            DateField df = (DateField) component;
-            return df.getCalendar().getTime();
-        }
-        else {
-            ret = super.getOutputProperty(context, component, propertyName, propertyIndex);
-        }
-        
-        return ret;
+        return shortType ? "E2TMF" : "Ext20TimeField";
     }
 
+    
     /**
      * @see nextapp.echo.webcontainer.AbstractComponentSynchronizePeer#getInputPropertyClass(java.lang.String)
      */
     @Override
     public Class getInputPropertyClass(String propertyName) {
-        if (DateField.DATE_CHANGED_PROPERTY.equals(propertyName)) {
-            return Date.class;
+        if (TimeField.TIME_CHANGED_PROPERTY.equals(propertyName)) {
+            return String.class;
         }
         return null;
     }
 
+    
     /**
      * @see nextapp.echo.webcontainer.ComponentSynchronizePeer#storeInputProperty(Context, Component, String, int, Object)
      */
     @Override
     public void storeInputProperty(Context context, Component component, String propertyName, int propertyIndex, Object newValue) {
-        if (propertyName.equals(DateField.DATE_CHANGED_PROPERTY)) {
+        if (propertyName.equals(TimeField.TIME_CHANGED_PROPERTY)) {
             ClientUpdateManager clientUpdateManager = (ClientUpdateManager) context.get(ClientUpdateManager.class);
-            clientUpdateManager.setComponentProperty(component, DateField.DATE_CHANGED_PROPERTY, newValue);
+            clientUpdateManager.setComponentProperty(component, TimeField.TIME_CHANGED_PROPERTY, newValue);
         }
     }
 

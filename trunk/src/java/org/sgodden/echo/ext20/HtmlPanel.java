@@ -26,44 +26,62 @@ import nextapp.echo.app.Component;
  */
 public class HtmlPanel extends Component {
 
-	private static final long serialVersionUID = 20080102L;
-	
-	public static final String PROPERTY_HTML = "html";
-	public static final String PROPERTY_COLLAPSIBLE = "collapsible";
-	public static final String PROPERTY_TITLE = "title";
-	
-	/**
-	 * Creates a panel with the specified html markup.
-	 * 
-	 * @param html the html markup to format and display.
-	 */
-	public HtmlPanel(String html) {
-		super();
-		setHtml(html);
-	}
-	
-	/**
-	 * Creates a panel with the specified title and html markup.
-	 * 
-	 * @param title the title of the panel.
-	 * @param html the html markup to format and display.
-	 */
-	public HtmlPanel(String title, String html) {
-		super();
-		setHtml(html);
-		setTitle(title);
-	}
-	
-	public void setHtml(String html){
-		setProperty(PROPERTY_HTML, html);
-	}
-	
-	public void setTitle(String title){
-		setProperty(PROPERTY_TITLE, title);
-	}
-	
-	public void setCollapsible(boolean collapsible) {
-		setProperty(PROPERTY_COLLAPSIBLE, new Boolean(collapsible));
-	}
-	
+    private static final long serialVersionUID = 20080102L;
+    public static final String PROPERTY_PADDING = "padding";
+    public static final String PROPERTY_BORDER = "border";
+    public static final String HTML_PROPERTY = "html";
+    public static final String COLLAPSIBLE_PROPERTY = "collapsible";
+    public static final String TITLE_PROPERTY = "title";
+    public static final String WIDTH_PROPERTY = "width";
+
+
+    /**
+     * Creates a panel with the specified html markup.
+     * 
+     * @param html the html markup to format and display.
+     */
+    public HtmlPanel(String html) {
+        super();
+        setHtml(html);
+    }
+
+    /**
+     * Creates a panel with the specified title and html markup.
+     * 
+     * @param title the title of the panel.
+     * @param html the html markup to format and display.
+     */
+    public HtmlPanel(String title, String html) {
+        super();
+        setHtml(html);
+        setTitle(title);
+    }
+
+    public void setHtml(String html) {
+        setProperty(HTML_PROPERTY, html);
+    }
+
+    public void setTitle(String title) {
+        setProperty(TITLE_PROPERTY, title);
+    }
+
+    public void setCollapsible(boolean collapsible) {
+        setProperty(COLLAPSIBLE_PROPERTY, new Boolean(collapsible));
+    }
+    
+    public void setBorder(Boolean border) {
+        setProperty(PROPERTY_BORDER, border);
+    }
+        
+    public void setWidth(int pixels) {
+        setProperty(WIDTH_PROPERTY, pixels);
+    }
+    
+    /**
+     * FIXME - should be using the existing setInsets method instead.
+     * @param pixels
+     */
+    public void setPadding(int pixels) {
+        setProperty(PROPERTY_PADDING, pixels + "px");
+    }
 }

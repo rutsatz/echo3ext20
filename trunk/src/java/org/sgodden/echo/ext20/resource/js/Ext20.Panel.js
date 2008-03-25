@@ -85,7 +85,15 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
             options['border'] = false;
         }
         
-        options['bodyBorder'] = false;
+        var width = this.component.get("width");
+        if (width != null) {
+            options['width'] = width;
+        }
+        
+        var height = this.component.get("height");
+        if (height != null) {
+            options['height'] = height;
+        }
         
         var layout = this.component.get("layout");
         if (layout != null) {
@@ -101,6 +109,9 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
                     throw new Error("Only one child may be specified for layout 'fit'");
                 }
                 options['layout'] = 'fit';
+            }
+            else if (layout instanceof EchoExt20.ColumnLayout) {
+                options['layout'] = 'column';
             }
             else {
                 throw new Error("Unsupported layout");
@@ -154,16 +165,52 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     _createChildItems: function(update, children) {
         var layout = this.component.get("layout");
         
-        if (layout == null || layout instanceof EchoExt20.FitLayout || layout instanceof EchoExt20.FormLayout) {
+        if (layout == null 
+            || layout instanceof EchoExt20.FitLayout 
+            || layout instanceof EchoExt20.FormLayout) {
+        
             this._createChildItemsForNullLayout(update, children);
         }
         else if (layout instanceof EchoExt20.BorderLayout) {
             this._createChildItemsForBorderLayout(update, children);
         }
+        else if (layout instanceof EchoExt20.ColumnLayout) {
+            this._createChildItemsForColumnLayout(update, children);
+        }
         else {
             throw new Error("Unsupported layout");
         }
         
+    },
+    
+    _createChildItemsForColumnLayout: function(update, children) {
+        for (var i = 0; i < children.length; i++) {
+            var child = children[i];
+            if (!(child instanceof EchoExt20.Button)) {
+                this.extChildOptions = {};
+                
+                // one of the width of columnWidth must be set on the child
+                var width = child.get("width");
+                if (width == null) {
+                    var layoutData = child.get("layoutData");
+                    if (layoutData != null) {
+                        this.extChildOptions['columnWidth'] = parseFloat(layoutData.columnWidth);
+                    }
+                }
+
+                EchoRender.renderComponentAdd(update, child, null); // null because ext components create the necessary extra divs themselves
+                
+                // add the ext component created by the peer to the child items array
+                var childExtComponent = child.peer.extComponent;
+                if (childExtComponent == null) {
+                    throw new Error("No child ext component was created during renderAdd for component type: " + child.componentType);
+                } 
+                else {
+                    this.extComponent.add(childExtComponent);
+                }
+                delete this.extChildOptions;
+            }
+        }        
     },
     
     _createChildItemsForNullLayout: function(update, children) {
@@ -216,12 +263,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         // set necessary child creation options in map
         this.extChildOptions = {};
         this.extChildOptions['region'] = this._convertToExtRegion(region);
-        if (region == 'w') {
-            this.extChildOptions['split'] = true;
-            this.extChildOptions['collapsible'] = true;
-            this.extChildOptions['title'] = "West panel";
-            this.extChildOptions['width'] = 200;
-        }
         
         // do renderAdd, which will read that map
         EchoRender.renderComponentAdd(update, child, null); // null because ext components create the necessary extra divs themselves
@@ -236,6 +277,7 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         } 
         else {
             this.extComponent.add(childExtComponent);
+            this.extComponent.doLayout();
         }
     },
     

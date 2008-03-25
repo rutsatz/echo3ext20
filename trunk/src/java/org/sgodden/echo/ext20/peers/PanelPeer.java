@@ -24,38 +24,30 @@ import nextapp.echo.webcontainer.service.JavaScriptService;
 
 import org.sgodden.echo.ext20.Panel;
 
-public class PanelPeer 
-extends AbstractComponentSynchronizePeer {
-    
-    protected static final Service PANEL_SERVICE = JavaScriptService.forResource("EchoExt20.Panel", 
+public class PanelPeer
+        extends AbstractComponentSynchronizePeer {
+
+    protected static final Service PANEL_SERVICE = JavaScriptService.forResource("EchoExt20.Panel",
             "/org/sgodden/echo/ext20/resource/js/Ext20.Panel.js");
-    
+
     static {
         WebContainerServlet.getServiceRegistry().add(PANEL_SERVICE);
     }
-    
-    public PanelPeer(){
-    	super();
-    	addOutputProperty(Panel.LAYOUT_PROPERTY);
-    	addOutputProperty(Panel.TITLE_PROPERTY);
+
+    public Class getComponentClass() {
+        return Panel.class;
     }
 
-	public Class getComponentClass() {
-		return Panel.class;
-	}
+    public String getClientComponentType(boolean shortType) {
+        return shortType ? "E2P" : "Ext2Panel";
+    }
 
-	public String getClientComponentType(boolean shortType) {
-		return shortType ? "E2P" : "Ext2Panel";
-	}
-	
     /**
      * @see nextapp.echo.webcontainer.ComponentSynchronizePeer#init(Context)
      */
     public void init(Context context) {
         super.init(context);
-        //ServerMessage serverMessage = (ServerMessage) context.get(ServerMessage.class);
-        //serverMessage.addLibrary(PANEL_SERVICE.getId());
+    //ServerMessage serverMessage = (ServerMessage) context.get(ServerMessage.class);
+    //serverMessage.addLibrary(PANEL_SERVICE.getId());
     }
-
-
 }

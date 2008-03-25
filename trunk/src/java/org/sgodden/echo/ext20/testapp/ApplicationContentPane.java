@@ -23,8 +23,6 @@ import java.util.List;
 
 import nextapp.echo.app.ApplicationInstance;
 import nextapp.echo.app.ContentPane;
-import nextapp.echo.app.Extent;
-import nextapp.echo.app.SplitPane;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
 
@@ -38,6 +36,7 @@ import org.sgodden.echo.ext20.HtmlPanel;
 import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.RadioButton;
 import org.sgodden.echo.ext20.TabbedPane;
+import org.sgodden.echo.ext20.TablePanel;
 import org.sgodden.echo.ext20.TextField;
 import org.sgodden.echo.ext20.TimeField;
 import org.sgodden.echo.ext20.data.SimpleStore;
@@ -46,6 +45,8 @@ import org.sgodden.echo.ext20.grid.ColumnModel;
 import org.sgodden.echo.ext20.grid.GridPanel;
 import org.sgodden.echo.ext20.layout.BorderLayout;
 import org.sgodden.echo.ext20.layout.BorderLayoutData;
+import org.sgodden.echo.ext20.layout.ColumnLayout;
+import org.sgodden.echo.ext20.layout.ColumnLayoutData;
 import org.sgodden.echo.ext20.layout.FitLayout;
 import org.sgodden.echo.ext20.layout.FormLayout;
 
@@ -115,11 +116,8 @@ public class ApplicationContentPane
         Panel main = new Panel(new BorderLayout());
         outer.add(main);
         main.setRenderId("main");
-
-        HtmlPanel panel = new HtmlPanel("<h1>NORTH</h1>");
-        panel.setRenderId("northPanel");
-        panel.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
-        main.add(panel);
+        
+        //main.add(createNorthPanel());
 
         statusField = new TextField("Click the button and see what happens");
         statusField.setEnabled(false);
@@ -141,6 +139,41 @@ public class ApplicationContentPane
         button.addActionListener(this);
 
     }
+    
+    private Panel createNorthPanel() {
+        Panel ret = new Panel(new ColumnLayout());
+        ret.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
+        ret.setHeight(52); // FIXME - not auto-sizing
+        
+        HtmlPanel imagePanel = new HtmlPanel(
+                "<img style='float: left;' src='http://demo.nextapp.com/echo3csjs/image/Logo.png'></img>");
+        imagePanel.setRenderId("northImagePanel");
+        //imagePanel.setLayoutData(new ColumnLayoutData(.2));
+        ret.add(imagePanel);
+        
+        HtmlPanel titlePanel = new HtmlPanel("<h1>NORTH</h1>");
+        titlePanel.setRenderId("northTitlePanel");
+        //titlePanel.setLayoutData(new ColumnLayoutData(.8));
+        ret.add(titlePanel);
+        
+        return ret;
+    }
+    
+    private TablePanel createNorthPanel2() {
+        TablePanel ret = new TablePanel();
+        ret.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
+        
+        HtmlPanel imagePanel = new HtmlPanel(
+                "<img style='float: left;' src='http://demo.nextapp.com/echo3csjs/image/Logo.png'></img>");
+        imagePanel.setRenderId("northImagePanel");
+        ret.add(imagePanel);
+        
+        HtmlPanel titlePanel = new HtmlPanel("<h1>NORTH</h1>");
+        titlePanel.setRenderId("northTitlePanel");
+        ret.add(titlePanel);
+        
+        return ret;
+    }
 
     /**
      * Creates a silly panel for the west region.
@@ -148,18 +181,23 @@ public class ApplicationContentPane
      */
     private Panel createWestPanel() {
         Panel ret = new Panel();
+        ret.setTitle("Navigation");
+        ret.setWidth(143);
+        ret.setCollapsible(true);
+        ret.setBorder(true);
         ret.setLayoutData(new BorderLayoutData(BorderLayout.WEST));
         ret.setRenderId("westPanel");
+        
+        HtmlPanel imagePanel = new HtmlPanel(
+                "<img src='http://demo.nextapp.com/echo3csjs/image/Logo.png'></img>");
+        imagePanel.setRenderId("northImagePanel");
+        ret.add(imagePanel);
+        
+        HtmlPanel titlePanel = new HtmlPanel("Some navigation here");
+        titlePanel.setRenderId("northTitlePanel");
+        titlePanel.setPadding(5);
+        ret.add(titlePanel);
 
-        HtmlPanel panel = new HtmlPanel("<p>First panel</p>");
-        panel.setTitle("First panel");
-        panel.setCollapsible(true);
-        ret.add(panel);
-
-        panel = new HtmlPanel("<p>Second panel</p>");
-        panel.setTitle("Second panel");
-        panel.setCollapsible(true);
-        ret.add(panel);
 
         return ret;
     }
@@ -261,6 +299,7 @@ public class ApplicationContentPane
      */
     private void createUserEditPanel(Object[] data) {
         userEditPanel = new Panel(new FormLayout());
+        //userEditPanel.setBorder(true);
         userEditPanel.setPadding(5);
         userEditPanel.setRenderId("userFormPanel");
 

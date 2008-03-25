@@ -36,14 +36,6 @@ public class TimeFieldPeer
         WebContainerServlet.getServiceRegistry().add(TIME_FIELD_SERVICE);
     }
 
-    public TimeFieldPeer() {
-        super();
-        addOutputProperty(TimeField.TIME_CHANGED_PROPERTY);
-        addOutputProperty(TimeField.FIELD_LABEL_PROPERTY);
-        addOutputProperty(TimeField.ALLOW_BLANK_PROPERTY);
-        addOutputProperty(TimeField.TIME_FORMAT_PROPERTY);
-    }
-
     public Class getComponentClass() {
         return TimeField.class;
     }

@@ -36,48 +36,44 @@ import org.sgodden.echo.ext20.data.SimpleStore;
  * @author sgodden
  *
  */
-public class GridPanel 
-		extends Component {	
-	
-	private static final transient Log log = LogFactory.getLog(GridPanel.class);
-	
-	public static final String PROPERTY_COLUMN_MODEL = "columnModel";
-	public static final String PROPERTY_SIMPLE_STORE = "simpleStore";
-	public static final String PROPERTY_TITLE = "title";
-    public static final String PROPERTY_ACTION_COMMAND = "actionCommand";
+public class GridPanel
+        extends Component {
 
-	public static final String INPUT_ACTION = "action";
+    private static final transient Log log = LogFactory.getLog(GridPanel.class);
+    public static final String PROPERTY_COLUMN_MODEL = "columnModel";
+    public static final String PROPERTY_SIMPLE_STORE = "simpleStore";
+    public static final String PROPERTY_TITLE = "title";
+    public static final String PROPERTY_ACTION_COMMAND = "actionCommand";
+    public static final String INPUT_ACTION = "action";
     public static final String ACTION_LISTENERS_CHANGED_PROPERTY = "actionListeners";
     public static final String SELECTION_CHANGED_PROPERTY = "selection";
     public static final String SELECTION_MODEL_CHANGED_PROPERTY = "selectionModel";
-
     private ListSelectionModel selectionModel;
     private boolean suppressChangeNotifications;
-	
-	public GridPanel(ColumnModel columnModel, SimpleStore simpleStore) {
-		super();
-		setColumnModel(columnModel);
-		setSimpleStore(simpleStore);
-		setSelectionModel(new DefaultListSelectionModel());
-	}
-	
-	public void setColumnModel(ColumnModel columnModel) {
-		setProperty(PROPERTY_COLUMN_MODEL, columnModel);
-	}
-	
-	public void setSimpleStore(SimpleStore simpleStore) {
-		setProperty(PROPERTY_SIMPLE_STORE, simpleStore);
-	}
-	
-	public SimpleStore getSimpleStore() {
-		return (SimpleStore) getProperty(PROPERTY_SIMPLE_STORE);
-	}
-	
-	public void setTitle(String title) {
-		setProperty(PROPERTY_TITLE, title);
-	}
-	
-    
+
+    public GridPanel(ColumnModel columnModel, SimpleStore simpleStore) {
+        super();
+        setColumnModel(columnModel);
+        setSimpleStore(simpleStore);
+        setSelectionModel(new DefaultListSelectionModel());
+    }
+
+    public void setColumnModel(ColumnModel columnModel) {
+        setProperty(PROPERTY_COLUMN_MODEL, columnModel);
+    }
+
+    public void setSimpleStore(SimpleStore simpleStore) {
+        setProperty(PROPERTY_SIMPLE_STORE, simpleStore);
+    }
+
+    public SimpleStore getSimpleStore() {
+        return (SimpleStore) getProperty(PROPERTY_SIMPLE_STORE);
+    }
+
+    public void setTitle(String title) {
+        setProperty(PROPERTY_TITLE, title);
+    }
+
     /**
      * Returns the action command which will be provided in 
      * <code>ActionEvent</code>s fired by this 
@@ -88,7 +84,7 @@ public class GridPanel
     public String getActionCommand() {
         return (String) getProperty(PROPERTY_ACTION_COMMAND);
     }
-    
+
     /**
      * Adds an <code>ActionListener</code> to the <code>Table</code>.
      * <code>ActionListener</code>s will be invoked when the user
@@ -102,8 +98,7 @@ public class GridPanel
         // existence of hasActionListeners() method. 
         firePropertyChange(ACTION_LISTENERS_CHANGED_PROPERTY, null, l);
     }
-    
-    
+
     /**
      * Returns the row selection model.
      * 
@@ -112,8 +107,7 @@ public class GridPanel
     public ListSelectionModel getSelectionModel() {
         return selectionModel;
     }
-    
-    
+
     /**
      * Sets the row selection model.
      * The selection model may not be null.
@@ -133,7 +127,6 @@ public class GridPanel
         firePropertyChange(SELECTION_MODEL_CHANGED_PROPERTY, oldValue, newValue);
     }
 
-    
     /**
      * Determines the any <code>ActionListener</code>s are registered.
      * 
@@ -142,8 +135,7 @@ public class GridPanel
     public boolean hasActionListeners() {
         return getEventListenerList().getListenerCount(ActionListener.class) != 0;
     }
-    
-    
+
     /**
      * @see nextapp.echo.app.Component#processInput(java.lang.String, java.lang.Object)
      */
@@ -173,7 +165,7 @@ public class GridPanel
         suppressChangeNotifications = false;
         firePropertyChange(SELECTION_CHANGED_PROPERTY, null, selectedIndices);
     }
-    
+
     /**
      * Fires an action event to all listeners.
      */
@@ -186,19 +178,18 @@ public class GridPanel
         for (int i = 0; i < listeners.length; ++i) {
             if (e == null) {
                 e = new ActionEvent(this, (String) getRenderProperty(PROPERTY_ACTION_COMMAND));
-            } 
+            }
             ((ActionListener) listeners[i]).actionPerformed(e);
         }
     }
-
     /**
      * Local handler for list selection events.
      */
     private ChangeListener changeHandler = new ChangeListener() {
-        
+
         /** Serial Version UID. */
         private static final long serialVersionUID = 20070101L;
-        
+
         /**
          * @see nextapp.echo.app.event.ChangeListener#stateChanged(nextapp.echo.app.event.ChangeEvent)
          */
@@ -208,6 +199,4 @@ public class GridPanel
             }
         }
     };
-
-
 }

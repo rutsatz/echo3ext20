@@ -8,7 +8,7 @@
 	<property name="jar.name" value="echo3ext20.jar"/>
 	<property name="war.name" value="echo3ext20.war"/>
 
-	<available file="contrib/ext-2.0" type="dir" property="ext-dir-exists"/>
+	<available file="contrib/ext-2.0.2" type="dir" property="ext-dir-exists"/>
 	
 	<path id="compile.class.path">
 		<fileset dir="src/webapp/WEB-INF/lib"/>
@@ -36,12 +36,12 @@
 		<jar destfile="${build.dir}/${jar.name}">
 			<fileset dir="${classes.dir}"/>
 			<fileset dir="src/java" includes="**/*.js, META-INF/**/*"/>
-			<fileset dir="contrib/ext-2.0" includes="ext-all.js, ext-all-debug.js, adapter/ext/ext-base.js"/>
+			<fileset dir="contrib/ext-2.0.2" includes="ext-all.js, ext-all-debug.js, adapter/ext/ext-base.js"/>
 		</jar>
 	</target>
 
 	<target name="unpack-ext" unless="ext-dir-exists">
-		<unzip src="contrib/ext-2.0.zip" dest="contrib"/>
+		<unzip src="contrib/ext-2.0.2.zip" dest="contrib"/>
 	</target>
 	
 	<target name="war" depends="jar">
@@ -68,7 +68,7 @@
 				classname="org.sgodden.echo.ext20.testapp.JettyServer">
 			<jvmarg value="-Xmx256m"/>
 			<jvmarg value="-Xdebug"/>
-			<!--<jvmarg value="-Decho.syncdump=true"/>-->
+			<jvmarg value="-Decho.syncdump=true"/>
 			<!--<jvmarg value="-Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"/>-->
 			<classpath>
 				<pathelement location="${classes.dir}"/>

@@ -40,9 +40,6 @@ public class DateFieldPeer
     public DateFieldPeer() {
         super();
         addOutputProperty(DateField.DATE_CHANGED_PROPERTY);
-        addOutputProperty(DateField.FIELD_LABEL_PROPERTY);
-        addOutputProperty(DateField.ALLOW_BLANK_PROPERTY);
-        addOutputProperty(DateField.DATE_FORMAT_PROPERTY);
     }
 
     public Class getComponentClass() {

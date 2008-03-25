@@ -38,6 +38,7 @@ EchoExt20.TabbedPaneSync = Core.extend(EchoExt20.ExtComponentSync, {
         options['activeTab'] = 0;
         options['deferredRender'] = false;
         options['buttons'] = this._createButtons(update);
+        //options['border'] = false;
         
         var ret = new Ext.TabPanel(options);
         

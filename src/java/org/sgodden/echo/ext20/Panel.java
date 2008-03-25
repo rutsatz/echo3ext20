@@ -38,6 +38,7 @@ public class Panel extends Component {
     public static final String SPLIT_PROPERTY = "split";
     public static final String COLLAPSIBLE_PROPERTY = "collapsible";
     public static final String WIDTH_PROPERTY = "width";
+    public static final String HEIGHT_PROPERTY = "height";
 
     public Panel() {
         this(null, null);
@@ -72,5 +73,17 @@ public class Panel extends Component {
 
     public void setBorder(Boolean border) {
         setProperty(PROPERTY_BORDER, border);
+    }
+    
+    public void setHeight(int pixels) {
+        setProperty(HEIGHT_PROPERTY, pixels);
+    }
+    
+    public void setWidth(int pixels) {
+        setProperty(WIDTH_PROPERTY, pixels);
+    }
+    
+    public void setCollapsible(boolean collapsible) {
+        setProperty(COLLAPSIBLE_PROPERTY, collapsible);
     }
 }

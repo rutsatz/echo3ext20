@@ -61,6 +61,7 @@ EchoExt20.GridPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
 		sm.on("rowdeselect", this._handleRowDeselectEventRef);
 		options["sm"] = sm;
         options["title"] = this.component.get("title");
+        options["border"] = true;
 
         var gridPanel = new Ext.grid.GridPanel(options);
             

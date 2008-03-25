@@ -112,9 +112,7 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
 
 EchoExt20.PropertyTranslator = {
     toJsObject: function(client, propertyElement) {
-        //return eval("(" + propertyElement.firstChild.data + ")"); // FIXME - security risk - use parseJSON instead
-        //return Ext.util.JSON.decode("(" + propertyElement.firstChild.data + ")");
-        return JSON.parse(propertyElement.firstChild.data);
+        return eval("(" + propertyElement.firstChild.data + ")"); // FIXME - security risk - use parseJSON instead
     }
 };
 
@@ -141,6 +139,18 @@ EchoExt20.PropertyTranslator.FitLayout = {
 
 EchoSerial.addPropertyTranslator("Ext20FitLayout", EchoExt20.PropertyTranslator.FitLayout);
 EchoSerial.addPropertyTranslator("E2FL", EchoExt20.PropertyTranslator.FitLayout);
+
+EchoExt20.ColumnLayout = Core.extend({
+});
+
+EchoExt20.PropertyTranslator.ColumnLayout = {
+    toProperty: function(client, propertyElement) {
+        return new EchoExt20.ColumnLayout();
+    }
+}
+
+EchoSerial.addPropertyTranslator("Ext20ColumnLayout", EchoExt20.PropertyTranslator.ColumnLayout);
+EchoSerial.addPropertyTranslator("E2CL", EchoExt20.PropertyTranslator.ColumnLayout);
 
 EchoExt20.FormLayout = Core.extend({
 });

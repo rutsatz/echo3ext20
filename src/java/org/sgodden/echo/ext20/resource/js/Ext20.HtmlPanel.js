@@ -48,19 +48,28 @@ EchoExt20.HtmlPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     	if (collapsible != null) {
     		options['collapsible'] = collapsible;
     	}
-    	
-    	this._outerPanel = new Ext.Panel(options);
-    	this._createInnerPanel(update);
-    	this._outerPanel.add(this._innerPanel);
-    	
-    	return this._outerPanel;
-    },
-    
-    _createInnerPanel: function(update) {
-    	this._innerPanel = new Ext.Panel({
-    		html: this.component.get('html'),
-    		border: false
-    	});
+         
+        var border = this.component.get("border");
+        if (border != null) {
+            options['border'] = border;
+        }
+        else {
+            options['border'] = false;
+        }
+        
+        var padding = this.component.get("padding");
+        if (padding != null) {
+            options['bodyStyle'] = "padding: " + padding;
+        }
+                
+        var width = this.component.get("width");
+        if (width != null) {
+            options['width'] = width;
+        }
+        
+        options['html'] = this.component.get('html');
+        
+        return new Ext.Panel(options);
     },
       
     _createButtons: function(update) {
@@ -79,13 +88,6 @@ EchoExt20.HtmlPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
             }
         }
         return buttons;
-    },
-    
-    syncExtComponent: function(update) {
-    	this._outerPanel.remove(this._innerPanel);
-    	this._createInnerPanel(update);
-    	this._outerPanel.add(this._innerPanel);
-    	this._outerPanel.doLayout();
     },
     
     renderUpdate: function(){}

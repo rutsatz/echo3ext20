@@ -1,0 +1,61 @@
+
+Property changes on: .
+___________________________________________________________________
+Name: svn:ignore
+   + .classpath
+.project
+.settings
+
+
+Index: src/server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java
+===================================================================
+--- src/server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java	(revision 1087)
++++ src/server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java	(working copy)
+@@ -105,6 +105,13 @@
+         styleElement.setAttribute("type", "text/css");
+         styleElement.appendChild(document.createTextNode(" "));
+         headElement.appendChild(styleElement);
++        
++        Element extStyleElement = document.createElement("link");
++        extStyleElement.setAttribute("href", "resources/css/ext-all.css");
++        extStyleElement.setAttribute("type", "text/css");
++        extStyleElement.setAttribute("rel", "stylesheet");
++        extStyleElement.appendChild(document.createTextNode(" "));
++        headElement.appendChild(extStyleElement);
+ 
+         Element scriptElement = document.createElement("script");
+         Text textNode = document.createTextNode(" ");
+Index: src/client/echo/Render.ContentPane.js
+===================================================================
+--- src/client/echo/Render.ContentPane.js	(revision 1087)
++++ src/client/echo/Render.ContentPane.js	(working copy)
+@@ -42,7 +42,6 @@
+         this._divElement.style.position = "absolute";
+         this._divElement.style.width = "100%";
+         this._divElement.style.height = "100%";
+-        this._divElement.style.overflow = "hidden";
+         this._divElement.style.zIndex = "0";
+         EchoAppRender.Font.render(this.component.render("font"), this._divElement);
+         EchoAppRender.Color.render(this.component.render("background", EchoAppRender.ContentPaneSync.DEFAULT_BACKGROUND),
+@@ -91,7 +90,7 @@
+                     divElement.style.overflow = "scroll";
+                     break;
+                 default:
+-                    divElement.style.overflow = "auto";
++                    divElement.style.overflow = "visible";
+                     break;
+                 }
+             }
+Index: ant.properties
+===================================================================
+--- ant.properties	(revision 1087)
++++ ant.properties	(working copy)
+@@ -3,7 +3,7 @@
+ ant.build.javac.source 1.4
+ ant.build.javac.target 1.4
+ 
+-servlet.lib.jar                         ${env.SERVLET_LIB_JAR}
++servlet.lib.jar                         /Program Files/Apache Software Foundation/Apache Tomcat 6.0.14/lib/servlet-api.jar
+ servlet.lib.msg                         The environment variable SERVLET_LIB_JAR must contain the path to the Servlet 2.4 \
+                                         specification JAR file (servlet.jar or servlet-api.jar).
+ debug                                   yes

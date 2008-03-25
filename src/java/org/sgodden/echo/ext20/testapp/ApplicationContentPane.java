@@ -23,6 +23,8 @@ import java.util.List;
 
 import nextapp.echo.app.ApplicationInstance;
 import nextapp.echo.app.ContentPane;
+import nextapp.echo.app.Extent;
+import nextapp.echo.app.SplitPane;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
 
@@ -71,6 +73,29 @@ public class ApplicationContentPane
         super();
         //add(new HtmlPanel("<h1>HTML PANEL!!!</h1>"));
         addViewport();
+        //addSplitPane();
+    }
+    
+    private void addSplitPane() {
+        
+        TimeField tf = new TimeField();
+        add(tf);
+        
+        return;
+        
+//        SplitPane sp1 = new SplitPane(SplitPane.ORIENTATION_VERTICAL);
+//        add(sp1);
+//        
+//        sp1.setSeparatorPosition(new Extent(50));
+//        sp1.add(new HtmlPanel("<h1>Top</h1>"));
+//        
+//        SplitPane sp = new SplitPane(SplitPane.ORIENTATION_HORIZONTAL);
+//        sp.setSeparatorPosition(new Extent(100));
+//        sp.add(new HtmlPanel("<h1>asdasd</h1>"));
+//        sp.add(createUserPanel());
+//        sp.setResizable(true);
+//        
+//        sp1.add(sp);
     }
 
     /**
@@ -168,9 +193,8 @@ public class ApplicationContentPane
      * @return
      */
     private Panel createUserPanel() {
-        userPanel = new Panel(
-                new FitLayout(),
-                "Users");
+        userPanel = new Panel(new FitLayout());
+        userPanel.setTitle("Users");
 
         userPanel.setRenderId("userPanel");
 
@@ -204,7 +228,7 @@ public class ApplicationContentPane
      */
     private GridPanel createUserList(Object[][] data) {
         List<ColumnConfiguration> cols = new ArrayList<ColumnConfiguration>();
-        cols.add(new ColumnConfiguration("User ,ID", "userid"));
+        cols.add(new ColumnConfiguration("User ID", "userid"));
         cols.add(new ColumnConfiguration("Name", "name"));
         ColumnModel columnModel = new ColumnModel(cols);
 

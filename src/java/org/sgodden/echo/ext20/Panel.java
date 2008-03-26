@@ -19,6 +19,7 @@ package org.sgodden.echo.ext20;
 import nextapp.echo.app.Component;
 
 import org.sgodden.echo.ext20.layout.Layout;
+import org.sgodden.echo.ext20.layout.TableLayout;
 
 /**
  * An ext panel.
@@ -87,6 +88,67 @@ public class Panel extends Component {
         setProperty(COLLAPSIBLE_PROPERTY, collapsible);
     }
     
+    public Layout getLayout() {
+        return (Layout) getProperty(LAYOUT_PROPERTY);
+    }
+    
+    /**
+     * Adds a component to this container.
+     * <p/>
+     * Note that if this panel's layout is an instance of
+     * {@link org.sgodden.echo.ext20.layout.TableLayout}, and the component
+     * being added is not a panel, then it will be wrapped in a panel.  This
+     * is necessary in order for table layout padding defaults to take effect.
+     * @param comp the component to add.
+     */
+    @Override
+    public void add(Component comp) {
+        if (getLayout() instanceof TableLayout && !(comp instanceof Panel)) {
+            Panel panel = new Panel();
+            super.add(panel);
+            panel.addNoWrapCheck(comp);
+        }
+        else {
+            super.add(comp);
+        }
+    }
+    
+    /**
+     * Removes the specified component from the container.
+     * <p/>
+     * Contains special processing in case this panel has a table layout
+     * and the component was wrapped in a panel.
+     * @param comp
+     */
+    @Override
+    public void remove(Component comp) {
+        
+        if (getLayout() instanceof TableLayout && !(comp instanceof Panel)) {
+            // Loop through the children.  If we find the passed component
+            // inside the child, remove the child.
+            for (Component child : getComponents()) {
+                if (child instanceof Panel) {
+                    if (child.getComponent(0) == comp) {
+                        super.remove(child);
+                    }
+                }
+            }
+        }
+        else {
+            super.remove(comp);
+        }
+        
+    }
+    
+    /**
+     * Adds a component without checking whether it needs to be
+     * wrapped in an outer panel.
+     * @param comp
+     */
+    private void addNoWrapCheck(Component comp) {
+        super.add(comp);
+    }
+    
     /**
      * Adds a button to the panel's button bar, rather than directly to its
      * layout.
@@ -94,6 +156,6 @@ public class Panel extends Component {
      */
     public void addButton(Button button) {
         button.setAddToButtonBar(true);
-        super.add(button);
+        add(button);
     }
 }

@@ -76,7 +76,17 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
                     if (layoutData == null) {
                         throw new Error("No layout data provided for component in a border layout");
                     }
-                    options['region'] = this._convertToExtRegion(layoutData.region);
+                    var region = this._convertToExtRegion(layoutData.region);
+                    options['region'] = region;
+                    // if we are in the north, and have no height set, then we need autoHeight true.
+                    // fixme - how about handling width in west and east, and height in south?
+                    if (region == 'north') {
+                        var height = this.component.get("height");
+                        if (height == null) {
+                            options['autoHeight'] = true;
+                        }
+                    }
+                    
                 }
                 else if (layout instanceof EchoExt20.ColumnLayout) {
                     var layoutData = this.component.get("layoutData");

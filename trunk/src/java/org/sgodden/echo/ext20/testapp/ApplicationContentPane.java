@@ -274,7 +274,7 @@ public class ApplicationContentPane
         Panel ret = new Panel(new BorderLayout());
         
         final Panel filterOptions = new Panel(new TableLayout(2));
-        filterOptions.setHeight(40);
+        filterOptions.setHeight(38);
         ret.add(filterOptions);
         filterOptions.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
         

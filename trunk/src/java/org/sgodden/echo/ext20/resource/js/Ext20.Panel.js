@@ -43,8 +43,13 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         }
         
         if (this._syncSizeRequired) {
-            //this.extComponent.syncSize();
-            this.extComponent.doLayout();
+            // north parts of a border layout do not autosize properly
+            if (this.extComponent.getLayout().north
+                    && this.extComponent.getLayout().north.autoHeight == true) {
+                alert("Doing resize");
+                this.extComponent.getLayout().north.panel.syncSize();
+                this.extComponent.doLayout();
+            }
             this._syncSizeRequired = false;
         }
     },

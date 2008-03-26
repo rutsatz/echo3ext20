@@ -25,27 +25,6 @@ Index: src/server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtml
  
          Element scriptElement = document.createElement("script");
          Text textNode = document.createTextNode(" ");
-Index: src/client/echo/Render.ContentPane.js
-===================================================================
---- src/client/echo/Render.ContentPane.js	(revision 1087)
-+++ src/client/echo/Render.ContentPane.js	(working copy)
-@@ -42,7 +42,6 @@
-         this._divElement.style.position = "absolute";
-         this._divElement.style.width = "100%";
-         this._divElement.style.height = "100%";
--        this._divElement.style.overflow = "hidden";
-         this._divElement.style.zIndex = "0";
-         EchoAppRender.Font.render(this.component.render("font"), this._divElement);
-         EchoAppRender.Color.render(this.component.render("background", EchoAppRender.ContentPaneSync.DEFAULT_BACKGROUND),
-@@ -91,7 +90,7 @@
-                     divElement.style.overflow = "scroll";
-                     break;
-                 default:
--                    divElement.style.overflow = "auto";
-+                    divElement.style.overflow = "visible";
-                     break;
-                 }
-             }
 Index: ant.properties
 ===================================================================
 --- ant.properties	(revision 1087)

@@ -236,6 +236,7 @@ public class ApplicationContentPane
      */
     private Panel createUserPanel() {
         userPanel = new Panel(new FitLayout());
+        //userPanel = new Panel();
         userPanel.setTitle("Users");
 
         userPanel.setRenderId("userPanel");
@@ -273,6 +274,7 @@ public class ApplicationContentPane
         Panel ret = new Panel(new BorderLayout());
         
         Panel filterOptions = new Panel(new TableLayout(2));
+        filterOptions.setHeight(40);
         ret.add(filterOptions);
 
         filterOptions.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
@@ -410,7 +412,7 @@ public class ApplicationContentPane
      * @return
      */
     private Object[][] makeData() {
-        int rows = 20;
+        int rows = 100;
         
         Object[][] ret = new Object[rows][];
         

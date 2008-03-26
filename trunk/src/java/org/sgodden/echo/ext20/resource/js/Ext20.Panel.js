@@ -36,10 +36,18 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     
     _handleButtonPlacement: true,
     
+    _syncSizeRequired: false,
+    
     syncExtComponent: function(update) {
         if (this._parentElement != null) {
             this.extComponent.setHeight(this._parentElement.offsetHeight);
             this.extComponent.setWidth(this._parentElement.offsetWidth);
+        }
+        
+        if (this._syncSizeRequired) {
+            this.extComponent.syncSize();
+            this.extComponent.doLayout();
+            this._syncSizeRequired = false;
         }
     },
     
@@ -56,13 +64,14 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         
         if (update.hasAddedChildren()) {
             this._createChildItems(update, update.getAddedChildren());
-            this._createButtons(update, update.getAddedChildren());
+            // FIXME - how about adding buttons in this phase?
         }
         
-        this.extComponent.doLayout();
     },
     
     createExtComponent: function(update, options) {
+        
+        //options['bufferResize'] = true;
         
         var handleButtonPlacement = this.component.get("handleButtonPlacement");
         if (handleButtonPlacement != null) {
@@ -147,7 +156,7 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         
         this._createChildItems(update, children);
         
-        this.extComponent.doLayout();
+        //this.extComponent.doLayout();
         
         return this.extComponent;
     },
@@ -180,59 +189,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     },
     
     _createChildItems: function(update, children) {
-        var layout = this.component.get("layout");
-        
-        if (layout == null 
-            || layout instanceof EchoExt20.FitLayout 
-            || layout instanceof EchoExt20.FormLayout
-            || layout instanceof EchoExt20.TableLayout) {
-        
-            this._createChildItemsForNullLayout(update, children);
-        }
-        else if (layout instanceof EchoExt20.BorderLayout) {
-            this._createChildItemsForBorderLayout(update, children);
-        }
-        else if (layout instanceof EchoExt20.ColumnLayout) {
-            this._createChildItemsForColumnLayout(update, children);
-        }
-        else {
-            throw new Error("Unsupported layout");
-        }
-        
-    },
-    
-    _createChildItemsForColumnLayout: function(update, children) {
-        for (var i = 0; i < children.length; i++) {
-            var child = children[i];
-            if ( !this._handleButtonPlacement
-                 || !(child instanceof EchoExt20.Button)) {
-                this.extChildOptions = {};
-                
-                // one of the width of columnWidth must be set on the child
-                var width = child.get("width");
-                if (width == null) {
-                    var layoutData = child.get("layoutData");
-                    if (layoutData != null) {
-                        this.extChildOptions['columnWidth'] = parseFloat(layoutData.columnWidth);
-                    }
-                }
-
-                EchoRender.renderComponentAdd(update, child, null); // null because ext components create the necessary extra divs themselves
-                
-                // add the ext component created by the peer to the child items array
-                var childExtComponent = child.peer.extComponent;
-                if (childExtComponent == null) {
-                    throw new Error("No child ext component was created during renderAdd for component type: " + child.componentType);
-                } 
-                else {
-                    this.extComponent.add(childExtComponent);
-                }
-                delete this.extChildOptions;
-            }
-        }        
-    },
-    
-    _createChildItemsForNullLayout: function(update, children) {
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
             if ( !this._handleButtonPlacement
@@ -247,84 +203,12 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
                 } 
                 else {
                     this.extComponent.add(childExtComponent);
+                    this.extComponent.doLayout();
+                    this._syncSizeRequired = true;
                 }
                 delete this.extChildOptions;
             }
         }
-    },
-    
-    _createChildItemsForBorderLayout: function(update, children) {
-        this._createChildItemForBorderLayout(update, children, 'n');
-        this._createChildItemForBorderLayout(update, children, 'e');
-        this._createChildItemForBorderLayout(update, children, 's');
-        this._createChildItemForBorderLayout(update, children, 'w');
-        this._createChildItemForBorderLayout(update, children, 'c');
-    },
-    
-    _createChildItemForBorderLayout: function(update, children, region) {
-        // find the component with the matching region
-        var child = null;
-        
-        for (var i = 0; i < children.length && child == null; i++) {
-            var candidate = children[i];
-            var layoutData = candidate.get("layoutData");
-            if (layoutData != null) {
-                var candidateRegion = layoutData.region;
-                if (candidateRegion != null && candidateRegion == region) {
-                    child = candidate;
-                }
-            }
-        }
-        
-        if (child == null) {
-            return;
-        }
-        
-        // set necessary child creation options in map
-        this.extChildOptions = {};
-        this.extChildOptions['region'] = this._convertToExtRegion(region);
-        
-        // do renderAdd, which will read that map
-        EchoRender.renderComponentAdd(update, child, null); // null because ext components create the necessary extra divs themselves
-        
-        // delete that map
-        delete this.extChildOptions;
-        
-        // add the ext component created by the peer to the child items array
-        var childExtComponent = child.peer.extComponent;
-        if (childExtComponent == null) {
-            throw new Error("No child ext component was created during renderAdd for component type: " + child.componentType);
-        } 
-        else {
-            this.extComponent.add(childExtComponent);
-            this.extComponent.doLayout();
-        }
-    },
-    
-    _convertToExtRegion: function(shortRegion) {
-        var ret = null;
-        
-        if (shortRegion == 'n') {
-            ret = 'north';
-        }
-        else if (shortRegion == 'e') {
-            ret = 'east';
-        }
-        else if (shortRegion == 's') {
-            ret = 'south';
-        }
-        else if (shortRegion == 'w') {
-            ret = 'west';
-        }
-        else if (shortRegion == 'c') {
-            ret = 'center';
-        }
-        
-        if (ret == null) {
-            throw new Error("Unknown short region code: " + shortRegion);
-        }
-        
-        return ret;
     }
     
 });

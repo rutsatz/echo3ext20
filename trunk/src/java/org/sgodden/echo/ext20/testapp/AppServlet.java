@@ -61,7 +61,6 @@ public class AppServlet extends WebContainerServlet {
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.HtmlPanel.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.Panel.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TabbedPane.js");
-		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TablePanel.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TextField.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.DateField.js");
 		resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TimeField.js");

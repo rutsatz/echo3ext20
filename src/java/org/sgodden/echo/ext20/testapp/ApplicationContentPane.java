@@ -36,7 +36,6 @@ import org.sgodden.echo.ext20.HtmlPanel;
 import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.RadioButton;
 import org.sgodden.echo.ext20.TabbedPane;
-import org.sgodden.echo.ext20.TablePanel;
 import org.sgodden.echo.ext20.TextField;
 import org.sgodden.echo.ext20.TimeField;
 import org.sgodden.echo.ext20.data.SimpleStore;
@@ -46,9 +45,9 @@ import org.sgodden.echo.ext20.grid.GridPanel;
 import org.sgodden.echo.ext20.layout.BorderLayout;
 import org.sgodden.echo.ext20.layout.BorderLayoutData;
 import org.sgodden.echo.ext20.layout.ColumnLayout;
-import org.sgodden.echo.ext20.layout.ColumnLayoutData;
 import org.sgodden.echo.ext20.layout.FitLayout;
 import org.sgodden.echo.ext20.layout.FormLayout;
+import org.sgodden.echo.ext20.layout.TableLayout;
 
 public class ApplicationContentPane
         extends ContentPane implements ActionListener {
@@ -67,7 +66,8 @@ public class ApplicationContentPane
      * Panel which toggles between user list and user edit
      */
     private Panel userPanel;
-    private GridPanel userListPanel;
+    private Panel userListPanel;
+    private GridPanel userGridPanel;
     private Panel userEditPanel;
 
     public ApplicationContentPane() {
@@ -127,14 +127,18 @@ public class ApplicationContentPane
 
         main.add(createWestPanel());
 
-        TabbedPane tabs = createTabbedPane();
-        tabs.setRenderId("tabs");
-        tabs.setLayoutData(new BorderLayoutData(BorderLayout.CENTER));
-        main.add(tabs);
+//        TabbedPane tabs = createTabbedPane();
+//        tabs.setRenderId("tabs");
+//        tabs.setLayoutData(new BorderLayoutData(BorderLayout.CENTER));
+//        main.add(tabs);
+        
+        createUserPanel();
+        userPanel.setLayoutData(new BorderLayoutData(BorderLayout.CENTER));
+        main.add(userPanel);
 
         Button button = new Button("Press me!");
         button.setRenderId("button");
-        tabs.add(button);
+        //tabs.add(button);
 
         button.addActionListener(this);
 
@@ -159,8 +163,8 @@ public class ApplicationContentPane
         return ret;
     }
     
-    private TablePanel createNorthPanel2() {
-        TablePanel ret = new TablePanel();
+    private Panel createNorthPanel2() {
+        Panel ret = new Panel(new TableLayout(2));
         ret.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
         
         HtmlPanel imagePanel = new HtmlPanel(
@@ -242,13 +246,13 @@ public class ApplicationContentPane
         userPanel.add(userListPanel);
         userPanel.setRenderId("userListPanel");
 
-        userListPanel.addActionListener(new ActionListener() {
+        userGridPanel.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 // remove the list panel
                 userPanel.remove(userListPanel);
                 // get the selected row of the data
-                int selectedRow = userListPanel.getSelectionModel().getMinSelectedIndex(); // only one row can be selected
+                int selectedRow = userGridPanel.getSelectionModel().getMinSelectedIndex(); // only one row can be selected
                 // create the form panel with that data
                 createUserEditPanel(data[selectedRow]);
                 userPanel.add(userEditPanel);
@@ -264,7 +268,37 @@ public class ApplicationContentPane
      * for a particular user.
      * @return
      */
-    private GridPanel createUserList(Object[][] data) {
+    private Panel createUserList(Object[][] data) {
+        
+        Panel ret = new Panel(new BorderLayout());
+        
+        Panel filterOptions = new Panel(new TableLayout(2));
+        ret.add(filterOptions);
+
+        filterOptions.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
+        
+        // this is a pain - currently have to add panels to each cell to get padding etc
+        
+        Panel tfPanel = new Panel();
+        filterOptions.add(tfPanel);
+        
+        TextField tf = new TextField("Aasd");
+        tfPanel.add(tf);
+        
+//        TextField tf2 = new TextField("werwer");
+//        filterOptions.add(tf2);
+        
+        Panel buttonPanel = new Panel();
+        buttonPanel.setHandleButtonPlacement(false);
+        filterOptions.add(buttonPanel);
+        
+        Button button = new Button("Search");
+        buttonPanel.add(button);
+        
+//        Panel buttonsPanel = new Panel();
+//        filterOptions.add(buttonsPanel);
+//        buttonsPanel.add(new Button("Search"));
+        
         List<ColumnConfiguration> cols = new ArrayList<ColumnConfiguration>();
         cols.add(new ColumnConfiguration("User ID", "userid"));
         cols.add(new ColumnConfiguration("Name", "name"));
@@ -275,7 +309,11 @@ public class ApplicationContentPane
                 0,
                 new String[]{"id", "userid", "name", "date"});
 
-        final GridPanel ret = new GridPanel(columnModel, store);
+        userGridPanel = new GridPanel(columnModel, store);
+        ret.add(userGridPanel);
+        
+        userGridPanel.setLayoutData(new BorderLayoutData(BorderLayout.CENTER));
+        
         return ret;
     }
 

@@ -34,6 +34,8 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         EchoRender.registerPeer("Ext20Panel", this);
     },
     
+    _handleButtonPlacement: true,
+    
     syncExtComponent: function(update) {
         if (this._parentElement != null) {
             this.extComponent.setHeight(this._parentElement.offsetHeight);
@@ -61,6 +63,11 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     },
     
     createExtComponent: function(update, options) {
+        
+        var handleButtonPlacement = this.component.get("handleButtonPlacement");
+        if (handleButtonPlacement != null) {
+            this._handleButtonPlacement = handleButtonPlacement;
+        }
 
         var title = this.component.get("title");
         if (title != null) {
@@ -113,6 +120,14 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
             else if (layout instanceof EchoExt20.ColumnLayout) {
                 options['layout'] = 'column';
             }
+            else if (layout instanceof EchoExt20.TableLayout) {
+                options['layout'] = 'table';
+                options['layoutConfig'] = {columns: layout.columns};
+                var defaultPadding = layout.defaultPadding;
+                if (defaultPadding != null) {
+                    options['defaults'] = {bodyStyle: 'padding:' + layout.defaultPadding};
+                }
+            }
             else {
                 throw new Error("Unsupported layout");
             }
@@ -124,7 +139,9 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         
         var children = this._createChildComponentArrayFromComponent();
         
-        options['buttons'] = this._createButtons(update, children);
+        if (this._handleButtonPlacement) {
+            options['buttons'] = this._createButtons(update, children);
+        }
         
         this.extComponent = new Ext.Panel(options);
         
@@ -167,7 +184,8 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         
         if (layout == null 
             || layout instanceof EchoExt20.FitLayout 
-            || layout instanceof EchoExt20.FormLayout) {
+            || layout instanceof EchoExt20.FormLayout
+            || layout instanceof EchoExt20.TableLayout) {
         
             this._createChildItemsForNullLayout(update, children);
         }
@@ -186,7 +204,8 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     _createChildItemsForColumnLayout: function(update, children) {
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
-            if (!(child instanceof EchoExt20.Button)) {
+            if ( !this._handleButtonPlacement
+                 || !(child instanceof EchoExt20.Button)) {
                 this.extChildOptions = {};
                 
                 // one of the width of columnWidth must be set on the child
@@ -216,7 +235,8 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     _createChildItemsForNullLayout: function(update, children) {
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
-            if (!(child instanceof EchoExt20.Button)) {
+            if ( !this._handleButtonPlacement
+                 || !(child instanceof EchoExt20.Button)) {
                 this.extChildOptions = {};
                 EchoRender.renderComponentAdd(update, child, null); // null because ext components create the necessary extra divs themselves
                 

@@ -273,25 +273,23 @@ public class ApplicationContentPane
         
         Panel ret = new Panel(new BorderLayout());
         
-        Panel filterOptions = new Panel(new TableLayout(2));
+        final Panel filterOptions = new Panel(new TableLayout(2));
         filterOptions.setHeight(40);
         ret.add(filterOptions);
-
         filterOptions.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
         
-        // this is a pain - currently have to add panels to each cell to get padding etc
-        
-        Panel tfPanel = new Panel();
-        filterOptions.add(tfPanel);
-        
-        TextField tf = new TextField("Aasd");
-        tfPanel.add(tf);
-        
-        Panel buttonPanel = new Panel();
-        filterOptions.add(buttonPanel);
+        final TextField tf = new TextField("Aasd");
+        filterOptions.add(tf);
         
         Button button = new Button("Search");
-        buttonPanel.add(button);
+        filterOptions.add(button);
+        
+        button.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent arg0) {
+                filterOptions.remove(tf);
+                filterOptions.add(new TextField("Wwerwer"));
+            }
+        });
         
         List<ColumnConfiguration> cols = new ArrayList<ColumnConfiguration>();
         cols.add(new ColumnConfiguration("User ID", "userid"));

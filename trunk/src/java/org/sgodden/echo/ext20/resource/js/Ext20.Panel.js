@@ -43,7 +43,7 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         }
         
         if (this._syncSizeRequired) {
-            this.extComponent.syncSize();
+            //this.extComponent.syncSize();
             this.extComponent.doLayout();
             this._syncSizeRequired = false;
         }

@@ -166,9 +166,11 @@ EchoSerial.addPropertyTranslator("E2FML", EchoExt20.PropertyTranslator.FormLayou
 
 EchoExt20.TableLayout = Core.extend({
     columns: 0,
+    defaultPadding: '',
     
-    $construct: function(columns) {
+    $construct: function(columns, defaultPadding) {
         this.columns = columns;
+        this.defaultPadding = defaultPadding;
     }
     
 });
@@ -179,7 +181,14 @@ EchoExt20.PropertyTranslator.TableLayout = {
         if (columns == null) {
             columns = '1';
         }
-        return new EchoExt20.TableLayout(parseInt(columns));
+        var defaultPadding = propertyElement.getAttribute('dp');
+        if (defaultPadding == null) {
+            defaultPadding = '';
+        }
+        return new EchoExt20.TableLayout(
+            parseInt(columns),
+            defaultPadding
+        );
     }
 }
 

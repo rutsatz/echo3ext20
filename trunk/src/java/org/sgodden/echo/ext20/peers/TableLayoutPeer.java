@@ -39,6 +39,7 @@ implements SerialPropertyPeer {
         TableLayout layout = (TableLayout) propertyValue;
         
         propertyElement.setAttribute("c", String.valueOf(layout.getColumns()));
+        propertyElement.setAttribute("dp", String.valueOf(layout.getDefaultPadding() + "px"));
 
 	}
 

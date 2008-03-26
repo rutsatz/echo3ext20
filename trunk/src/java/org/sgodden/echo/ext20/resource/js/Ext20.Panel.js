@@ -34,8 +34,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         EchoRender.registerPeer("Ext20Panel", this);
     },
     
-    _handleButtonPlacement: true,
-    
     _syncSizeRequired: false,
     
     syncExtComponent: function(update) {
@@ -72,11 +70,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     createExtComponent: function(update, options) {
         
         //options['bufferResize'] = true;
-        
-        var handleButtonPlacement = this.component.get("handleButtonPlacement");
-        if (handleButtonPlacement != null) {
-            this._handleButtonPlacement = handleButtonPlacement;
-        }
 
         var title = this.component.get("title");
         if (title != null) {
@@ -148,9 +141,7 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         
         var children = this._createChildComponentArrayFromComponent();
         
-        if (this._handleButtonPlacement) {
-            options['buttons'] = this._createButtons(update, children);
-        }
+        options['buttons'] = this._createButtons(update, children);
         
         this.extComponent = new Ext.Panel(options);
         
@@ -174,7 +165,8 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         var buttons = [];
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
-            if (child instanceof EchoExt20.Button) {
+            if (child instanceof EchoExt20.Button
+                    && child.get("addToButtonBar") == true) {
                 EchoRender.renderComponentAdd(update, child, null);
                 var button = child.peer.extComponent;
                 if (button == null) {
@@ -191,8 +183,9 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     _createChildItems: function(update, children) {
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
-            if ( !this._handleButtonPlacement
-                 || !(child instanceof EchoExt20.Button)) {
+            if ( !(child instanceof EchoExt20.Button)
+                    || (child instanceof EchoExt20.Button && child.get("addToButtonBar") == false)
+                ) {
                 this.extChildOptions = {};
                 EchoRender.renderComponentAdd(update, child, null); // null because ext components create the necessary extra divs themselves
                 

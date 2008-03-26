@@ -39,8 +39,6 @@ public class Panel extends Component {
     public static final String COLLAPSIBLE_PROPERTY = "collapsible";
     public static final String WIDTH_PROPERTY = "width";
     public static final String HEIGHT_PROPERTY = "height";
-    
-    public static final String HANDLE_BUTTON_PLACEMENT_PROPERTY="handleButtonPlacement";
 
     public Panel() {
         this(null, null);
@@ -89,7 +87,13 @@ public class Panel extends Component {
         setProperty(COLLAPSIBLE_PROPERTY, collapsible);
     }
     
-    public void setHandleButtonPlacement(boolean handleButtonPlacement) {
-        setProperty(HANDLE_BUTTON_PLACEMENT_PROPERTY, handleButtonPlacement);
+    /**
+     * Adds a button to the panel's button bar, rather than directly to its
+     * layout.
+     * @param button
+     */
+    public void addButton(Button button) {
+        button.setAddToButtonBar(true);
+        super.add(button);
     }
 }

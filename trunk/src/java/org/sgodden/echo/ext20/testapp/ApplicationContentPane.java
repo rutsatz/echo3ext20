@@ -287,19 +287,11 @@ public class ApplicationContentPane
         TextField tf = new TextField("Aasd");
         tfPanel.add(tf);
         
-//        TextField tf2 = new TextField("werwer");
-//        filterOptions.add(tf2);
-        
         Panel buttonPanel = new Panel();
-        buttonPanel.setHandleButtonPlacement(false);
         filterOptions.add(buttonPanel);
         
         Button button = new Button("Search");
         buttonPanel.add(button);
-        
-//        Panel buttonsPanel = new Panel();
-//        filterOptions.add(buttonsPanel);
-//        buttonsPanel.add(new Button("Search"));
         
         List<ColumnConfiguration> cols = new ArrayList<ColumnConfiguration>();
         cols.add(new ColumnConfiguration("User ID", "userid"));
@@ -374,7 +366,7 @@ public class ApplicationContentPane
         userEditPanel.add(adminRoleButton);
 
         Button cancelButton = new Button("Cancel");
-        userEditPanel.add(cancelButton);
+        userEditPanel.addButton(cancelButton);
 
         // and add a listener to the cancel button which removes that form panel
         // and puts the list back
@@ -386,7 +378,7 @@ public class ApplicationContentPane
         });
         
         Button saveButton = new Button("Save");
-        userEditPanel.add(saveButton);
+        userEditPanel.addButton(saveButton);
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // print out field values to make sure they have transferred correctly

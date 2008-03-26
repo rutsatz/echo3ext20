@@ -28,31 +28,42 @@ import nextapp.echo.app.button.DefaultButtonModel;
  */
 public class Button extends AbstractButton {
 
-	private static final long serialVersionUID = 20080102L;
+    private static final long serialVersionUID = 20080102L;
+    
+    /**
+     * When set to true, tells the client side rendering engine that this
+     * button should go into the container's button bar, rather than being
+     * added directly to its layout.
+     */
+    public static final String ADD_TO_BUTTON_BAR_PROPERTY = "addToButtonBar";
 
     /**
      * Creates a button with no text or icon.
      */
     public Button() {
-        this(null, null);
+        super();
+        setModel(new DefaultButtonModel());
+        setAddToButtonBar(false);
     }
-    
+
     /**
      * Creates a button with text.
      *
      * @param text the text to be displayed in the button
      */
     public Button(String text) {
-        this(text, null);
+        this();
+        setText(text);
     }
-    
+
     /**
      * Creates a button with an icon.
      *
      * @param icon the icon to be displayed in the button
      */
     public Button(ImageReference icon) {
-        this(null, icon);
+        this();
+        setIcon(icon);
     }
 
     /**
@@ -62,12 +73,15 @@ public class Button extends AbstractButton {
      * @param icon the icon to be displayed in the button
      */
     public Button(String text, ImageReference icon) {
-        super();
-        
-        setModel(new DefaultButtonModel());
-    
+        this(text);
         setIcon(icon);
-        setText(text);
     }
-	
+    
+    /**
+     * See {@link #ADD_TO_BUTTON_BAR_PROPERTY}.
+     * @param handleSpecial
+     */
+    void setAddToButtonBar(boolean addToButtonBar) {
+        setProperty(ADD_TO_BUTTON_BAR_PROPERTY, addToButtonBar);
+    }
 }

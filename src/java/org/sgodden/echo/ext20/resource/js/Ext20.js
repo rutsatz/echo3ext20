@@ -66,6 +66,28 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
             }
             options['id'] = this.component.renderId;
             
+            // and now handle the layout data
+            var layout = this.component.parent.get("layout");
+            if (layout != null) {
+                // border layout
+                if (layout instanceof EchoExt20.BorderLayout) {
+                    var layoutData = this.component.get("layoutData");
+                    // layout data mandatory for a border layout
+                    if (layoutData == null) {
+                        throw new Error("No layout data provided for component in a border layout");
+                    }
+                    options['region'] = this._convertToExtRegion(layoutData.region);
+                }
+                else if (layout instanceof EchoExt20.ColumnLayout) {
+                    var layoutData = this.component.get("layoutData");
+                    // layout data is NOT mandatory for column layout
+                    if (layoutData != null) {
+                        options['columnWidth'] = parseFloat(layoutData.columnWidth);
+                    }
+                }
+                // other layouts (form layout, fit layout, table layout) do not require layout data on their children
+            }
+            
             this.extComponent = this.createExtComponent(
                 update,
                 options
@@ -76,6 +98,32 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
         else {
             this._parentElement = parentElement; // rendering will be deferred until renderDisplay
         }
+    },
+        
+    _convertToExtRegion: function(shortRegion) {
+        var ret = null;
+        
+        if (shortRegion == 'n') {
+            ret = 'north';
+        }
+        else if (shortRegion == 'e') {
+            ret = 'east';
+        }
+        else if (shortRegion == 's') {
+            ret = 'south';
+        }
+        else if (shortRegion == 'w') {
+            ret = 'west';
+        }
+        else if (shortRegion == 'c') {
+            ret = 'center';
+        }
+        
+        if (ret == null) {
+            throw new Error("Unknown short region code: " + shortRegion);
+        }
+        
+        return ret;
     },
     
     debugOptions: function(prefix, options) {
@@ -91,6 +139,11 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
         // regular div, which has to happen here, when we can guarantee that the div
         // is in the DOM tree
         if (this.extComponent == null) {
+            // we need the parent div to have overflow visible, or we get 
+            // rendering bugs in IE
+            this._parentElement.style.overflow = "visible";
+            this._parentElement.parentNode.style.overflow = "visible";
+
             var options = {
                 id: this.component.renderId,
                 renderTo: this._parentElement
@@ -112,7 +165,12 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
 
 EchoExt20.PropertyTranslator = {
     toJsObject: function(client, propertyElement) {
-        return eval("(" + propertyElement.firstChild.data + ")"); // FIXME - security risk - use parseJSON instead
+        var jsonArray = new Array();
+        for (i = 0; i < propertyElement.childNodes.length; i++) {
+            jsonArray.push(propertyElement.childNodes.item(i).data);
+        }
+        var jsonText = jsonArray.join("");
+        return eval("(" + jsonText + ")"); // FIXME - security risk - use parseJSON instead
     }
 };
 

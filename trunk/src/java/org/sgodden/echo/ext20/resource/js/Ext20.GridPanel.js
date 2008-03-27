@@ -57,11 +57,20 @@ EchoExt20.GridPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         options["store"] = this.component.get("simpleStore");
         options["cm"] = this.component.get("columnModel");
         var sm = new Ext.grid.RowSelectionModel({singleSelect:true});
-		sm.on("rowselect", this._handleRowSelectEventRef);
-		sm.on("rowdeselect", this._handleRowDeselectEventRef);
-		options["sm"] = sm;
+        sm.on("rowselect", this._handleRowSelectEventRef);
+        sm.on("rowdeselect", this._handleRowDeselectEventRef);
+        options["sm"] = sm;
+        
         options["title"] = this.component.get("title");
         options["border"] = true;
+        
+        options["bbar"] = new Ext.PagingToolbar({
+            pageSize: 25,
+            store: this.component.get("simpleStore"),
+            displayInfo: true,
+            displayMsg: 'Displaying records {0} - {1} of {2}',
+            emptyMsg: "No records to display"
+        });
 
         var gridPanel = new Ext.grid.GridPanel(options);
             

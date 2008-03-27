@@ -205,6 +205,18 @@ EchoExt20.PropertyTranslator = {
     }
 };
 
+EchoExt20.AccordionLayout = Core.extend({
+});
+
+EchoExt20.PropertyTranslator.AccordionLayout = {
+    toProperty: function(client, propertyElement) {
+        return new EchoExt20.AccordionLayout();
+    }
+}
+
+EchoSerial.addPropertyTranslator("Ext20AccordionLayout", EchoExt20.PropertyTranslator.AccordionLayout);
+EchoSerial.addPropertyTranslator("E2AL", EchoExt20.PropertyTranslator.AccordionLayout);
+
 EchoExt20.BorderLayout = Core.extend({
 });
 

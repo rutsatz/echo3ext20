@@ -59,17 +59,18 @@ public abstract class AbstractExtAppServlet extends WebContainerServlet {
          */
         resourceList = new ArrayList();
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.js");
-        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.Button.js");
-        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.HtmlPanel.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.Panel.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.Button.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.CheckboxField.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.DateField.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.FieldSet.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.GridPanel.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.HtmlEditor.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.HtmlPanel.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.RadioButton.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TabbedPane.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TextField.js");
-        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.DateField.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TimeField.js");
-        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.HtmlEditor.js");
-        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.GridPanel.js");
-        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.CheckboxField.js");
-        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.RadioButton.js");
         resourceList.add("/json2.js");
 
         resources = new String[resourceList.size()];

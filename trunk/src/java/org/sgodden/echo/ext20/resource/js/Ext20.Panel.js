@@ -36,6 +36,12 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         EchoRender.registerPeer("Ext20Panel", this);
     },
     
+    $virtual: {
+        newExtComponentInstance: function(options) {
+            return new Ext.Panel(options);
+        }
+    },
+    
     syncExtComponent: function(update) {
         if (this._parentElement != null) {
             this.extComponent.setHeight(this._parentElement.offsetHeight);
@@ -86,8 +92,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     },
     
     createExtComponent: function(update, options) {
-        
-        //options['bufferResize'] = true;
 
         var title = this.component.get("title");
         if (title != null) {
@@ -108,9 +112,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         if (border != null) {
             options['border'] = border;
         }
-        else {
-            options['border'] = false;
-        }
         
         var width = this.component.get("width");
         if (width != null) {
@@ -124,7 +125,11 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         
         var layout = this.component.get("layout");
         if (layout != null) {
-            if (layout instanceof EchoExt20.BorderLayout) {
+            if (layout instanceof EchoExt20.AccordionLayout) {
+                options['layout'] = 'accordion';
+                options['layoutConfig'] = {titleCollapse: true, animate: true};
+            }
+            else if (layout instanceof EchoExt20.BorderLayout) {
                 options['layout'] = 'border';
             }
             else if (layout instanceof EchoExt20.FormLayout) {
@@ -152,16 +157,16 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
                 throw new Error("Unsupported layout");
             }
         }
-        else {
-            options['layout'] = 'table';
-            options['layoutConfig'] = {columns: 1};
-        }
+//        else {
+//            options['layout'] = 'table';
+//            options['layoutConfig'] = {columns: 1};
+//        }
         
         var children = this._createChildComponentArrayFromComponent();
         
         options['buttons'] = this._createButtons(update, children);
         
-        this.extComponent = new Ext.Panel(options);
+        this.extComponent = this.newExtComponentInstance(options);
         
         if (children.length > 0) {
             this._createChildItems(update, children);

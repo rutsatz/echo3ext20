@@ -40,11 +40,14 @@ EchoExt20.TextFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
     createExtComponent: function(update, options) {
     	//this._text = this.component.get("text");
     	//options['value'] = this.component.parent.peer.extChildOptions;
-		options['value'] = this.component.get("text");
-		options['fieldLabel'] = this.component.get("fieldLabel");
-		if (this.component.get("allowBlank") != null) {
-			options['allowBlank'] = this.component.get("allowBlank");
-		}
+        options['value'] = this.component.get("text");
+        options['fieldLabel'] = this.component.get("fieldLabel");
+        if (this.component.get("allowBlank") != null) {
+                options['allowBlank'] = this.component.get("allowBlank");
+        }
+        if (this.component.get("emptyText") != null) {
+                options['emptyText'] = this.component.get("emptyText");
+        }
     	if ( !(this.component.isEnabled()) ) {
     		options['disabled'] = true;
     	}

@@ -32,12 +32,9 @@ EchoExt20.HtmlPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         EchoRender.registerPeer("Ext20HtmlPanel", this);
     },
     
-    _innerPanel: null,
-    _outerPanel: null,
-    
     createExtComponent: function(update, options) {
-    	options['buttons'] = this._createButtons(update);
-    	options['layout'] = 'fit';
+    	//options['buttons'] = this._createButtons(update);
+    	//options['layout'] = 'fit';
     	
     	var title = this.component.get('title');
     	if (title != null) {
@@ -52,9 +49,6 @@ EchoExt20.HtmlPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         var border = this.component.get("border");
         if (border != null) {
             options['border'] = border;
-        }
-        else {
-            options['border'] = false;
         }
         
         var padding = this.component.get("padding");

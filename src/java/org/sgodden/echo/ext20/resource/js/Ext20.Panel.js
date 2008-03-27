@@ -30,31 +30,21 @@ EchoExt20.Panel = Core.extend(EchoApp.Component, {
 */
 EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     
+    _serverUpdateCompleteRef: null,
+    
     $load: function() {
         EchoRender.registerPeer("Ext20Panel", this);
     },
-    
-    _syncSizeRequired: false,
     
     syncExtComponent: function(update) {
         if (this._parentElement != null) {
             this.extComponent.setHeight(this._parentElement.offsetHeight);
             this.extComponent.setWidth(this._parentElement.offsetWidth);
         }
-        
-        if (this._syncSizeRequired) {
-            // north parts of a border layout do not autosize properly
-            if (this.extComponent.getLayout().north
-                    && this.extComponent.getLayout().north.autoHeight == true) {
-                alert("Doing resize");
-                this.extComponent.getLayout().north.panel.syncSize();
-                this.extComponent.doLayout();
-            }
-            this._syncSizeRequired = false;
-        }
     },
     
     renderUpdate: function(update){
+        
         if (update.hasRemovedChildren()) {
             var removedChildren = update.getRemovedChildren();
             for (var i = 0; i < removedChildren.length; i++) {
@@ -66,10 +56,33 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         }
         
         if (update.hasAddedChildren()) {
+        
+            // hide ourselves to prevent progressive rendering in slower browsers
+            this.extComponent.getEl().dom.style.visibility = 'hidden';
+            
+            // and add a server update complete listener if we haven't already
+            if (this._serverUpdateCompleteRef == null) {
+                this._serverUpdateCompleteRef = Core.method(this, this._serverUpdateComplete);
+                this.client.addServerUpdateCompleteListener(this._serverUpdateCompleteRef);
+            }
+            
             this._createChildItems(update, update.getAddedChildren());
-            // FIXME - how about adding buttons in this phase?
+            this._conditionalDoLayout(update.getAddedChildren());
         }
         
+    },
+    
+    /**
+     * Re-shows the component after being hidden during an update
+     */
+    _serverUpdateComplete: function() {
+        this.extComponent.getEl().dom.style.visibility = 'visible';
+    },
+    
+    childDoDispose: function(update) {
+        if (this._serverUpdateCompleteRef != null) {
+            this.client.removeServerUpdateCompleteListener(this._serverUpdateCompleteRef);
+        }
     },
     
     createExtComponent: function(update, options) {
@@ -150,11 +163,37 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         
         this.extComponent = new Ext.Panel(options);
         
-        this._createChildItems(update, children);
-        
-        //this.extComponent.doLayout();
+        if (children.length > 0) {
+            this._createChildItems(update, children);
+            this._conditionalDoLayout(children);
+        }
         
         return this.extComponent;
+    },
+    
+    /**
+     * Calls doLayout on the ext component under the following
+     * conditions:
+     * 1) we are not the top container
+     * 2) any of our children
+     * has a border layout (since they can size their north regions
+     * wrongly).
+     */
+    _conditionalDoLayout: function(children) {
+        
+        //if (this._parentElement != null) {
+        //    return;
+        //}
+        
+        var done = false;
+        for (var i = 0; i < children.length && !done; i++) {
+            var layout = children[i].get("layout");
+            if ( layout != null && layout instanceof EchoExt20.BorderLayout ) {
+                //alert("Calling doLayout on " + this.component.renderId);
+                this.extComponent.doLayout();
+                done = true;
+            }
+        }
     },
     
     _createChildComponentArrayFromComponent: function() {
@@ -201,8 +240,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
                 } 
                 else {
                     this.extComponent.add(childExtComponent);
-                    this.extComponent.doLayout();
-                    this._syncSizeRequired = true;
                 }
                 delete this.extChildOptions;
             }

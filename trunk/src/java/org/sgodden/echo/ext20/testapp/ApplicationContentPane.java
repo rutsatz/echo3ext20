@@ -186,7 +186,7 @@ public class ApplicationContentPane
     private Panel createWestPanel() {
         Panel ret = new Panel();
         ret.setTitle("Navigation");
-        ret.setWidth(143);
+        ret.setWidth(143); // FIXME should not have to do this
         ret.setCollapsible(true);
         ret.setBorder(true);
         ret.setLayoutData(new BorderLayoutData(BorderLayout.WEST));
@@ -245,7 +245,6 @@ public class ApplicationContentPane
 
         userListPanel = createUserList(data);
         userPanel.add(userListPanel);
-        userPanel.setRenderId("userListPanel");
 
         userGridPanel.addActionListener(new ActionListener() {
 
@@ -272,11 +271,12 @@ public class ApplicationContentPane
     private Panel createUserList(Object[][] data) {
         
         Panel ret = new Panel(new BorderLayout());
+        ret.setRenderId("userList");
         
         final Panel filterOptions = new Panel(new TableLayout(2));
-        filterOptions.setHeight(38);
-        ret.add(filterOptions);
         filterOptions.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
+        //filterOptions.setHeight(35); // FIXME should not have to do this
+        ret.add(filterOptions);
         
         final TextField tf = new TextField("Aasd");
         filterOptions.add(tf);

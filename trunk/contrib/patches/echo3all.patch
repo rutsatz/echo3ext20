@@ -7,6 +7,80 @@ Name: svn:ignore
 .settings
 
 
+Index: src/server-java/webcontainer/nextapp/echo/webcontainer/resource/RemoteClient.js
+===================================================================
+--- src/server-java/webcontainer/nextapp/echo/webcontainer/resource/RemoteClient.js	(revision 1087)
++++ src/server-java/webcontainer/nextapp/echo/webcontainer/resource/RemoteClient.js	(working copy)
+@@ -31,6 +31,13 @@
+     },
+     
+     /**
++     *
++     * @private
++     * @type Core.ListenerList
++     */
++    _listenerList: null,
++    
++    /**
+      * The base server url.
+      * @type String
+      * @private
+@@ -129,6 +136,7 @@
+         EchoClient.call(this);
+         
+         this._serverUrl = serverUrl;
++        this._listenerList = new Core.ListenerList();
+         this._processClientUpdateRef = Core.method(this, this._processClientUpdate);
+         this._processClientEventRef = Core.method(this, this._processClientEvent);
+         this._urlMappings = {};
+@@ -155,6 +163,17 @@
+     },
+     
+     /**
++     * Adds a listener to be notified when a server update has been
++     * completely processed, that is, all component and rendering
++     * updates have been completed.
++     * 
++     * @param {Function} l the listener to add
++     */
++    addServerUpdateCompleteListener: function(l) {
++        this._listenerList.addListener("serverUpdateComplete", l);
++    },
++    
++    /**
+      * Decompresses a shorthand URL into a valid full-length URL.
+      * A shorthand URL is expressed as "!A!xxxx" where
+      * "A" is a key whose value contains the first portion of the URL
+@@ -354,6 +373,10 @@
+             this._waitIndicatorActive = false;
+             this._waitIndicator.deactivate();
+         }
++        
++        if (this._listenerList.hasListeners("serverUpdateComplete")) {
++            this._listenerList.fireEvent({type: "serverUpdateComplete"});
++        }
+     },
+     
+     /**
+@@ -417,8 +440,17 @@
+     removeComponentListener: function(component, eventType) {
+         component.removeListener(eventType, this._processClientEventRef);
+     },
+-    
++        
+     /**
++     * Removes a ServerUpdateCompleteListener.
++     * 
++     * @param {Function} l the listener to remove
++     */
++    removeServerUpdateCompleteListener: function(l) {
++        this._listenerList.removeListener("serverUpdateComplete", l);
++    },
++
++    /**
+      * Sets the wait indicator that will be displayed when a client-server action takes longer than
+      * a specified period of time.
+      * 
 Index: src/server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java
 ===================================================================
 --- src/server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java	(revision 1087)

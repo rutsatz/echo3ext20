@@ -83,14 +83,6 @@ EchoExt20.TabbedPaneSync = Core.extend(EchoExt20.ExtComponentSync, {
                 
             }
         }    	
-        this.syncRequired = true;
-    },
-    
-    syncExtComponent: function(update) {
-        if (this._syncRequired) {
-            this.extComponent.doLayout();
-            this._syncRequired = false;
-        }
     },
     
     renderUpdate: function(){}

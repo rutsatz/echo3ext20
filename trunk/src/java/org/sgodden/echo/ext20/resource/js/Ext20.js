@@ -35,7 +35,8 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
     },
     
     $virtual: {
-        syncExtComponent: function(update) {}
+        syncExtComponent: function(update) {},
+        childDoDispose: function(update) {}
     },
 	
     isExtComponent: true,
@@ -43,6 +44,8 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
     extComponent: null,
     
     _parentElement: null,
+    
+    _rootServerUpdateCompleteRef: null,
     
     renderAdd: function(update, parentElement) {
         /*
@@ -107,7 +110,19 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
         }
         else {
             this._parentElement = parentElement; // rendering will be deferred until renderDisplay
+            // this is the top-level container, so we want to be told about
+            // updates so that we can re-render ourselves properly.
+            this._rootServerUpdateCompleteRef = Core.method(this, this._rootServerUpdateComplete);
+            this.client.addServerUpdateCompleteListener(this._rootServerUpdateCompleteRef);
         }
+    },
+    
+    /*
+     Performs doLayout on the root component once the server update is complete.
+     TODO - don't do this if there were no adds / removes in the server update
+    */
+    _rootServerUpdateComplete: function() {
+        this.extComponent.doLayout();
     },
         
     _convertToExtRegion: function(shortRegion) {
@@ -168,7 +183,13 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
     },
     
     renderDispose: function(update) {
+        if (this._parentElement != null) {
+            // we are the top level container, so remove the
+            // update listener we added earlier
+            this.client.removeServerUpdateCompleteListener(this._rootServerUpdateCompleteRef);
+        }
         this.extComponent.destroy();
+        this.childDoDispose(); // allow the subclass to do any cleanup it needs to
     }
     
 });

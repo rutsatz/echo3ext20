@@ -147,7 +147,6 @@ public class ApplicationContentPane
     private Panel createNorthPanel() {
         Panel ret = new Panel(new ColumnLayout());
         ret.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
-        ret.setHeight(52); // FIXME - not auto-sizing
         
         HtmlPanel imagePanel = new HtmlPanel(
                 "<img style='float: left;' src='http://demo.nextapp.com/echo3csjs/image/Logo.png'></img>");
@@ -275,7 +274,6 @@ public class ApplicationContentPane
         
         final Panel filterOptions = new Panel(new TableLayout(2));
         filterOptions.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
-        //filterOptions.setHeight(35); // FIXME should not have to do this
         ret.add(filterOptions);
         
         final TextField tf = new TextField("Aasd");

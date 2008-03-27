@@ -105,6 +105,7 @@ public class Panel extends Component {
     public void add(Component comp) {
         if (getLayout() instanceof TableLayout && !(comp instanceof Panel)) {
             Panel panel = new Panel();
+            panel.setBorder(false);
             super.add(panel);
             panel.addNoWrapCheck(comp);
         }

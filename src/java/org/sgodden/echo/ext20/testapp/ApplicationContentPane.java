@@ -31,6 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.sgodden.echo.ext20.Button;
 import org.sgodden.echo.ext20.CheckboxField;
 import org.sgodden.echo.ext20.DateField;
+import org.sgodden.echo.ext20.FieldSet;
 import org.sgodden.echo.ext20.HtmlEditor;
 import org.sgodden.echo.ext20.HtmlPanel;
 import org.sgodden.echo.ext20.Panel;
@@ -42,6 +43,7 @@ import org.sgodden.echo.ext20.data.SimpleStore;
 import org.sgodden.echo.ext20.grid.ColumnConfiguration;
 import org.sgodden.echo.ext20.grid.ColumnModel;
 import org.sgodden.echo.ext20.grid.GridPanel;
+import org.sgodden.echo.ext20.layout.AccordionLayout;
 import org.sgodden.echo.ext20.layout.BorderLayout;
 import org.sgodden.echo.ext20.layout.BorderLayoutData;
 import org.sgodden.echo.ext20.layout.ColumnLayout;
@@ -110,6 +112,7 @@ public class ApplicationContentPane
          * just seems to go wrong.
          */
         Panel outer = new Panel(new FitLayout());
+        outer.setBorder(false);
         outer.setRenderId("viewport");
         add(outer);
 
@@ -194,13 +197,52 @@ public class ApplicationContentPane
         HtmlPanel imagePanel = new HtmlPanel(
                 "<img src='http://demo.nextapp.com/echo3csjs/image/Logo.png'></img>");
         imagePanel.setRenderId("northImagePanel");
+        imagePanel.setBorder(false);
         ret.add(imagePanel);
         
-        HtmlPanel titlePanel = new HtmlPanel("Some navigation here");
-        titlePanel.setRenderId("northTitlePanel");
-        titlePanel.setPadding(5);
-        ret.add(titlePanel);
-
+        HtmlPanel suppliersPanel = new HtmlPanel("Suppliers");
+        ret.add(suppliersPanel);
+        
+//        Panel fit = new Panel(new FitLayout());
+//        fit.setWidth(100);
+//        ret.add(fit);
+//
+//        Panel accordion = new Panel(new AccordionLayout());
+//        accordion.setTitle("Accordion");
+//        accordion.setRenderId("accordion");
+//        fit.add(accordion);
+        
+//        Panel section1 = new Panel();
+//        section1.setTitle("Suppliers");
+//        section1.setBorder(false);
+//        accordion.add(section1);
+        
+//        HtmlPanel childPanel = new HtmlPanel("Supplier list");
+//        //childPanel.setCollapsible(true);
+//        childPanel.setTitle("Blah");
+//        //childPanel.setPadding(5);
+//        accordion.add(childPanel);
+//        
+//        HtmlPanel childPanel2 = new HtmlPanel("New Supplier request");
+//        //childPanel.setCollapsible(true);
+//        childPanel2.setTitle("Wer");
+//        //childPanel2.setPadding(5);
+//        accordion.add(childPanel2);
+        
+//        Panel section2 = new Panel();
+//        section2.setBorder(false);
+//        section2.setTitle("Sites");
+//        accordion.add(section2);
+//        
+//        HtmlPanel childPanel3 = new HtmlPanel("Site list");
+//        //childPanel.setCollapsible(true);
+//        childPanel3.setPadding(5);
+//        section2.add(childPanel3);
+//        
+//        HtmlPanel childPanel4 = new HtmlPanel("New Site request");
+//        //childPanel.setCollapsible(true);
+//        childPanel4.setPadding(5);
+//        section2.add(childPanel4);
 
         return ret;
     }
@@ -235,7 +277,6 @@ public class ApplicationContentPane
      */
     private Panel createUserPanel() {
         userPanel = new Panel(new FitLayout());
-        //userPanel = new Panel();
         userPanel.setTitle("Users");
 
         userPanel.setRenderId("userPanel");
@@ -270,24 +311,20 @@ public class ApplicationContentPane
     private Panel createUserList(Object[][] data) {
         
         Panel ret = new Panel(new BorderLayout());
+        ret.setBorder(false);
         ret.setRenderId("userList");
         
         final Panel filterOptions = new Panel(new TableLayout(2));
+        filterOptions.setBorder(false);
         filterOptions.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
         ret.add(filterOptions);
         
-        final TextField tf = new TextField("Aasd");
+        final TextField tf = new TextField();
+        tf.setEmptyText("Enter search text");
         filterOptions.add(tf);
         
         Button button = new Button("Search");
         filterOptions.add(button);
-        
-        button.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent arg0) {
-                filterOptions.remove(tf);
-                filterOptions.add(new TextField("Wwerwer"));
-            }
-        });
         
         List<ColumnConfiguration> cols = new ArrayList<ColumnConfiguration>();
         cols.add(new ColumnConfiguration("User ID", "userid"));
@@ -327,7 +364,7 @@ public class ApplicationContentPane
      */
     private void createUserEditPanel(Object[] data) {
         userEditPanel = new Panel(new FormLayout());
-        //userEditPanel.setBorder(true);
+        userEditPanel.setBorder(false);
         userEditPanel.setPadding(5);
         userEditPanel.setRenderId("userFormPanel");
 
@@ -349,17 +386,26 @@ public class ApplicationContentPane
         final TimeField timeField = new TimeField(cal, "Time");
         timeField.setBlankAllowed(false);
         userEditPanel.add(timeField);
+
+        // and let's put these last few in a field set
+        FieldSet fieldSet = new FieldSet();
+        fieldSet.setTitle("A field set");
+        fieldSet.setCheckboxToggle(true);
+        userEditPanel.add(fieldSet);
         
         final CheckboxField enabledField = new CheckboxField(true, "Enabled");
-        userEditPanel.add(enabledField);
+        fieldSet.add(enabledField);
         
         final RadioButton userRoleButton = new RadioButton(true, "User");
         userRoleButton.setName("role");
-        userEditPanel.add(userRoleButton);
+        fieldSet.add(userRoleButton);
         
         final RadioButton adminRoleButton = new RadioButton(false, "Admin");
         adminRoleButton.setName("role");
-        userEditPanel.add(adminRoleButton);
+        fieldSet.add(adminRoleButton);
+        
+        HtmlEditor editor = new HtmlEditor();
+        userEditPanel.add(editor);
 
         Button cancelButton = new Button("Cancel");
         userEditPanel.addButton(cancelButton);

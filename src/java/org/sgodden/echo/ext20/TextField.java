@@ -27,47 +27,52 @@ import nextapp.echo.app.Component;
  * @author simon
  *
  */
-public class TextField 
-		extends Component {
-	
-	public static final String TEXT_CHANGED_PROPERTY = "text";
-	public static final String FIELD_LABEL_PROPERTY = "fieldLabel";
-	public static final String ALLOW_BLANK_PROPERTY = "allowBlank";
-	
-	public TextField() {
-		super();
-	}
-	
-	public TextField(String text) {
-		this();
-		setText(text);
-	}
-	
-	public TextField(String text, String fieldLabel) {
-		setText(text);
-		setFieldLabel(fieldLabel);
-	}
-	
-	public void setText(String text) {
-		setProperty(TEXT_CHANGED_PROPERTY, text);
-	}
-	
-	public String getText() {
-		return (String) getProperty(TEXT_CHANGED_PROPERTY);
-	}
-	
-	public void setFieldLabel(String fieldLabel) {
-		setProperty(FIELD_LABEL_PROPERTY, fieldLabel);
-	}
-	
-	public void setBlankAllowed(boolean blankAllowed) {
-		setProperty(ALLOW_BLANK_PROPERTY, blankAllowed);
-	}
+public class TextField
+        extends Component {
 
-    public void processInput(String inputName, Object inputValue) {    	
-    	if (TEXT_CHANGED_PROPERTY.equals(inputName)) {
-    		setText((String)inputValue);
-    	}
+    public static final String TEXT_CHANGED_PROPERTY = "text";
+    public static final String FIELD_LABEL_PROPERTY = "fieldLabel";
+    public static final String ALLOW_BLANK_PROPERTY = "allowBlank";
+    public static final String EMPTY_TEXT_PROEPRTY = "emptyText";
+
+    public TextField() {
+        super();
     }
 
+    public TextField(String text) {
+        this();
+        setText(text);
+    }
+
+    public TextField(String text, String fieldLabel) {
+        setText(text);
+        setFieldLabel(fieldLabel);
+    }
+
+    public void setText(String text) {
+        setProperty(TEXT_CHANGED_PROPERTY, text);
+    }
+
+    public String getText() {
+        return (String) getProperty(TEXT_CHANGED_PROPERTY);
+    }
+
+    public void setFieldLabel(String fieldLabel) {
+        setProperty(FIELD_LABEL_PROPERTY, fieldLabel);
+    }
+
+    public void setBlankAllowed(boolean blankAllowed) {
+        setProperty(ALLOW_BLANK_PROPERTY, blankAllowed);
+    }
+    
+    public void setEmptyText(String emptyText) {
+        setProperty(EMPTY_TEXT_PROEPRTY, emptyText);
+    }
+
+    @Override
+    public void processInput(String inputName, Object inputValue) {
+        if (TEXT_CHANGED_PROPERTY.equals(inputName)) {
+            setText((String) inputValue);
+        }
+    }
 }

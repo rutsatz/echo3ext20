@@ -31,12 +31,10 @@ EchoExt20 = {};
 EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
     
     $abstract: {
+        /**
+         * Called during renderAdd to actually create the ext component.
+         */
         createExtComponent: function(update, options) {}
-    },
-    
-    $virtual: {
-        syncExtComponent: function(update) {},
-        childDoDispose: function(update) {}
     },
 	
     isExtComponent: true,
@@ -178,8 +176,6 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
                 options
             );
         }
-        
-        this.syncExtComponent(update);
     },
     
     renderDispose: function(update) {
@@ -189,7 +185,6 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
             this.client.removeServerUpdateCompleteListener(this._rootServerUpdateCompleteRef);
         }
         this.extComponent.destroy();
-        this.childDoDispose(); // allow the subclass to do any cleanup it needs to
     }
     
 });

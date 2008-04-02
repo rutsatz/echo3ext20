@@ -42,13 +42,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         }
     },
     
-    syncExtComponent: function(update) {
-        if (this._parentElement != null) {
-            this.extComponent.setHeight(this._parentElement.offsetHeight);
-            this.extComponent.setWidth(this._parentElement.offsetWidth);
-        }
-    },
-    
     renderUpdate: function(update){
         
         if (update.hasRemovedChildren()) {
@@ -62,7 +55,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         }
         
         if (update.hasAddedChildren()) {
-        
             // hide ourselves to prevent progressive rendering in slower browsers
             this.extComponent.getEl().dom.style.visibility = 'hidden';
             
@@ -76,6 +68,26 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
             this._conditionalDoLayout(update.getAddedChildren());
         }
         
+        this.syncExtComponent(update);
+    },
+    
+    renderDisplay: function(update) {
+        EchoExt20.ExtComponentSync.prototype.renderDisplay.call(this, update);
+        this.syncExtComponent();
+    },
+    
+    renderDispose: function(update) {
+        EchoExt20.ExtComponentSync.prototype.renderDispose.call(this, update);
+        if (this._serverUpdateCompleteRef != null) {
+            this.client.removeServerUpdateCompleteListener(this._serverUpdateCompleteRef);
+        }
+    },
+    
+    syncExtComponent: function() {
+        if (this._parentElement != null) {
+            this.extComponent.setHeight(this._parentElement.offsetHeight);
+            this.extComponent.setWidth(this._parentElement.offsetWidth);
+        }
     },
     
     /**
@@ -83,12 +95,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
      */
     _serverUpdateComplete: function() {
         this.extComponent.getEl().dom.style.visibility = 'visible';
-    },
-    
-    childDoDispose: function(update) {
-        if (this._serverUpdateCompleteRef != null) {
-            this.client.removeServerUpdateCompleteListener(this._serverUpdateCompleteRef);
-        }
     },
     
     createExtComponent: function(update, options) {

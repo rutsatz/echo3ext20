@@ -40,6 +40,7 @@ public class Panel extends Component {
     public static final String COLLAPSIBLE_PROPERTY = "collapsible";
     public static final String WIDTH_PROPERTY = "width";
     public static final String HEIGHT_PROPERTY = "height";
+    public static final String HTML_PROPERTY = "html";
 
     public Panel() {
         this(null, null);
@@ -78,6 +79,10 @@ public class Panel extends Component {
     
     public void setHeight(int pixels) {
         setProperty(HEIGHT_PROPERTY, pixels);
+    }
+    
+    public void setHtml(String html) {
+        setProperty(HTML_PROPERTY, html);
     }
     
     public void setWidth(int pixels) {

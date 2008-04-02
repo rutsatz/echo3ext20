@@ -36,13 +36,27 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
          */
         createExtComponent: function(update, options) {}
     },
-	
+    
+    /**
+     * Simple marker property to identify that this as an ext-related peer.
+     */
     isExtComponent: true,
     
+    /**
+     * The ext component created by the peer.
+     */
     extComponent: null,
     
+    /**
+     * If this is not an ext component, then this references the
+     * DOM element we have been asked to render ourself into.
+     */
     _parentElement: null,
     
+    /**
+     * If we are the root ext container, then we have to perform special
+     * processing once all rendering has been done.
+     */
     _rootServerUpdateCompleteRef: null,
     
     renderAdd: function(update, parentElement) {
@@ -115,14 +129,19 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
         }
     },
     
-    /*
-     Performs doLayout on the root component once the server update is complete.
-     TODO - don't do this if there were no adds / removes in the server update
-    */
+    /**
+     * Performs doLayout on the root component once the server update is complete.
+     * <p/>
+     * TODO - don't do this if there were no adds / removes in the server update
+     */
     _rootServerUpdateComplete: function() {
         this.extComponent.doLayout();
     },
         
+    /**
+     * Convenience method to turn a single character region into an
+     * ext region equivalent.
+     */
     _convertToExtRegion: function(shortRegion) {
         var ret = null;
         
@@ -149,6 +168,9 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
         return ret;
     },
     
+    /**
+     * Convenience method to debug out a set of options.
+     */
     debugOptions: function(prefix, options) {
         var out = prefix += "\n";
         for (var key in options) {

@@ -19,58 +19,41 @@ package org.sgodden.echo.ext20.peers;
 import nextapp.echo.app.Component;
 import nextapp.echo.app.update.ClientUpdateManager;
 import nextapp.echo.app.util.Context;
-import nextapp.echo.webcontainer.AbstractComponentSynchronizePeer;
 import nextapp.echo.webcontainer.Service;
 import nextapp.echo.webcontainer.WebContainerServlet;
 import nextapp.echo.webcontainer.service.JavaScriptService;
 
+import org.sgodden.echo.ext20.ComboBox;
 import org.sgodden.echo.ext20.TextField;
 
-public class TextFieldPeer
-        extends AbstractComponentSynchronizePeer {
+public class ComboBoxPeer
+        extends TextFieldPeer {
 
-    protected static final Service TEXT_FIELD_SERVICE = JavaScriptService.forResource("EchoExt20.TextField",
-            "/org/sgodden/echo/ext20/resource/js/Ext20.TextField.js");
+    protected static final Service COMBO_BOX_SERVICE = JavaScriptService.forResource("EchoExt20.ComboBox",
+            "/org/sgodden/echo/ext20/resource/js/Ext20.ComboBox.js");
 
     static {
-        WebContainerServlet.getServiceRegistry().add(TEXT_FIELD_SERVICE);
+        WebContainerServlet.getServiceRegistry().add(COMBO_BOX_SERVICE);
     }
 
-    public TextFieldPeer() {
+    public ComboBoxPeer() {
         super();
     }
 
+    @Override
     public Class getComponentClass() {
-        return TextField.class;
+        return ComboBox.class;
     }
 
+    @Override
     public String getClientComponentType(boolean shortType) {
-        return shortType ? "E2TF" : "Ext20TextField";
-    }
-
-    /**
-     * @see nextapp.echo.webcontainer.AbstractComponentSynchronizePeer#getInputPropertyClass(java.lang.String)
-     */
-    public Class getInputPropertyClass(String propertyName) {
-        if (TextField.VALUE_CHANGED_PROPERTY.equals(propertyName)) {
-            return String.class;
-        }
-        return null;
-    }
-
-    /**
-     * @see nextapp.echo.webcontainer.ComponentSynchronizePeer#storeInputProperty(Context, Component, String, int, Object)
-     */
-    public void storeInputProperty(Context context, Component component, String propertyName, int propertyIndex, Object newValue) {
-        if (propertyName.equals(TextField.VALUE_CHANGED_PROPERTY)) {
-            ClientUpdateManager clientUpdateManager = (ClientUpdateManager) context.get(ClientUpdateManager.class);
-            clientUpdateManager.setComponentProperty(component, TextField.VALUE_CHANGED_PROPERTY, newValue);
-        }
+        return shortType ? "E2CB" : "Ext20ComboBox";
     }
 
     /**
      * @see nextapp.echo.webcontainer.ComponentSynchronizePeer#init(Context)
      */
+    @Override
     public void init(Context context) {
         super.init(context);
     //ServerMessage serverMessage = (ServerMessage) context.get(ServerMessage.class);

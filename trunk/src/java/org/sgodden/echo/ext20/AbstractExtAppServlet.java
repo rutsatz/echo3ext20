@@ -20,7 +20,6 @@ import org.sgodden.echo.ext20.testapp.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import nextapp.echo.webcontainer.Service;
 import nextapp.echo.webcontainer.WebContainerServlet;
 import nextapp.echo.webcontainer.service.JavaScriptService;
@@ -58,9 +57,12 @@ public abstract class AbstractExtAppServlet extends WebContainerServlet {
          * them all up front in one shot is fine).
          */
         resourceList = new ArrayList();
+        // ORDER IS IMPORTANT FOR INHERITANCE!
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.Panel.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.Button.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TextField.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.ComboBox.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.CheckboxField.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.DateField.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.FieldSet.js");
@@ -69,7 +71,6 @@ public abstract class AbstractExtAppServlet extends WebContainerServlet {
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.HtmlPanel.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.RadioButton.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TabbedPane.js");
-        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TextField.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TimeField.js");
         resourceList.add("/json2.js");
 

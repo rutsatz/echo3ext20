@@ -24,15 +24,14 @@ EchoExt20.GridPanel = Core.extend(EchoApp.Component, {
     componentType: "Ext20GridPanel",
     focusable: true,
 
-	$virtual: {
-		/**
-         * Programatically performs a row click.
-         */
-        doAction: function() {
-            this.fireEvent({type: "action", source: this, actionCommand: this.get("actionCommand")});
-        }
-
-	}
+    $virtual: {
+            /**
+             * Programatically performs a row click.
+             */
+            doAction: function() {
+                this.fireEvent({type: "action", source: this, actionCommand: this.get("actionCommand")});
+            }
+    }
     
 });
 
@@ -78,24 +77,24 @@ EchoExt20.GridPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     },
     
     _handleRowSelectEvent: function(selectionModel, rowIndex, record) {
-		// update the selection value
-		this._selectedRows[rowIndex] = true;
+        // update the selection value
+        this._selectedRows[rowIndex] = true;
 
-		// and now update the selection in the component
-		var selectionString = "";
-		var first = true;
+        // and now update the selection in the component
+        var selectionString = "";
+        var first = true;
 
-		for (var row in this._selectedRows) {
-			if (!first) {
-				selectionString += ",";
-			}
-			first = false;
+        for (var row in this._selectedRows) {
+                if (!first) {
+                        selectionString += ",";
+                }
+                first = false;
 
-			selectionString += row;
-		}
+                selectionString += row;
+        }
 
-		this.component.set("selection", selectionString);
-		this.component.doAction();
+        this.component.set("selection", selectionString);
+        this.component.doAction();
 
     },
     

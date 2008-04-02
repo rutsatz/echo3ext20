@@ -16,27 +16,25 @@
 # ================================================================= */
 package org.sgodden.echo.ext20.testapp;
 
-
 import nextapp.echo.app.ApplicationInstance;
 import nextapp.echo.app.Window;
 
 /**
- * The application instance.
+ * The application instance for the test application.
  * 
  * @author goddens
  *
  */
-public class AppInstance extends ApplicationInstance{
+public class AppInstance extends ApplicationInstance {
 
-	private static final long serialVersionUID = 20080103L;
+    private static final long serialVersionUID = 20080103L;
 
-	public Window init() {
-		Window ret = new Window();
-		
-		ret.setTitle("Echo3 and Ext2.0 test application");
-		ret.setContent(new ApplicationContentPane());
-		
-		return ret;
-	}
+    public Window init() {
+        Window ret = new Window();
 
+        ret.setTitle("Echo3 and Ext2.0 test application");
+        ret.setContent(new ApplicationContentPane());
+
+        return ret;
+    }
 }

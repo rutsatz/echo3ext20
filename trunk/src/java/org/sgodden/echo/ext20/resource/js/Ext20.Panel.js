@@ -99,16 +99,7 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     
     createExtComponent: function(update, options) {
 
-        var title = this.component.get("title");
-        if (title != null) {
-            options['title'] = title;
-        }
-        
-        var collapsible = this.component.get("collapsible");
-        if (collapsible != null) {
-            options['collapsible'] = collapsible;
-        }
-
+        // handle properties
         var padding = this.component.get("padding");
         if (padding != null) {
             options['bodyStyle'] = "padding: " + padding;
@@ -119,9 +110,9 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
             options['border'] = border;
         }
         
-        var width = this.component.get("width");
-        if (width != null) {
-            options['width'] = width;
+        var collapsible = this.component.get("collapsible");
+        if (collapsible != null) {
+            options['collapsible'] = collapsible;
         }
         
         var height = this.component.get("height");
@@ -129,6 +120,22 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
             options['height'] = height;
         }
         
+        var html = this.component.get("html");
+        if (html != null) {
+            options['html'] = html;
+        }
+        
+        var title = this.component.get("title");
+        if (title != null) {
+            options['title'] = title;
+        }
+        
+        var width = this.component.get("width");
+        if (width != null) {
+            options['width'] = width;
+        }
+
+        // now handle the layout
         var layout = this.component.get("layout");
         if (layout != null) {
             if (layout instanceof EchoExt20.AccordionLayout) {

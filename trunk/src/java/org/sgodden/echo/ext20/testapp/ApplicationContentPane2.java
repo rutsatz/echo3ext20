@@ -35,7 +35,6 @@ import nextapp.echo.app.event.ActionListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sgodden.echo.ext20.HtmlPanel;
 import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.data.SimpleStore;
 import org.sgodden.echo.ext20.grid.ColumnConfiguration;
@@ -97,12 +96,14 @@ public class ApplicationContentPane2
         Column ret = new Column();
         ret.setRenderId("westPanel");
         
-        HtmlPanel imagePanel = new HtmlPanel(
+        Panel imagePanel = new Panel();
+        imagePanel.setHtml(
                 "<img src='http://demo.nextapp.com/echo3csjs/image/Logo.png'></img>");
         imagePanel.setRenderId("northImagePanel");
         ret.add(imagePanel);
         
-        HtmlPanel titlePanel = new HtmlPanel("Some navigation here");
+        Panel titlePanel = new Panel();
+        titlePanel.setHtml("Some navigation here");
         titlePanel.setRenderId("northTitlePanel");
         titlePanel.setPadding(5);
         ret.add(titlePanel);
@@ -184,84 +185,6 @@ public class ApplicationContentPane2
         
         return ret;
     }
-
-//    /**
-//     * Creates a form panel to edit the selected user.
-//     * @return
-//     */
-//    private void createUserEditPanel(Object[] data) {
-//        userEditPanel = new Grid(2);
-//        userEditPanel.setRenderId("userEditPanel");
-//        
-//        userEditPanel.add(new Label("Code"));
-//        final TextField codeField = new TextField((String)data[1]);
-//        codeField.setBlankAllowed(false);
-//        userEditPanel.add(codeField);
-//        
-//        userEditPanel.add(new Label("Name"));
-//        final TextField nameField = new TextField((String)data[2]);
-//        nameField.setBlankAllowed(false);
-//        userEditPanel.add(nameField);
-//        
-//                
-//        userEditPanel.add(new Label("Date"));
-//        Calendar cal = Calendar.getInstance(
-//                ApplicationInstance.getActive().getLocale());
-//        final DateField dateField = new DateField(cal);
-//        dateField.setBlankAllowed(false);
-//        userEditPanel.add(dateField);
-//
-//                
-//        userEditPanel.add(new Label("Time"));
-//        final TimeField timeField = new TimeField(cal);
-//        timeField.setBlankAllowed(false);
-//        userEditPanel.add(timeField);
-//        
-//                
-//        userEditPanel.add(new Label("Enabled"));
-//        final CheckboxField enabledField = new CheckboxField(true);
-//        userEditPanel.add(enabledField);
-//        
-//                
-//        userEditPanel.add(new Label("Role"));
-//        final RadioButton userRoleButton = new RadioButton(true);
-//        userRoleButton.setName("role");
-//        userEditPanel.add(userRoleButton);
-//
-//        userEditPanel.add(new Label(" "));
-//        final RadioButton adminRoleButton = new RadioButton(false);
-//        adminRoleButton.setName("role");
-//        userEditPanel.add(adminRoleButton);
-//
-//        Button cancelButton = new Button("Cancel");
-//        userEditPanel.add(cancelButton);
-//
-//        // and add a listener to the cancel button which removes that form panel
-//        // and puts the list back
-//        cancelButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                mainSplitPane.remove(userEditPanel);
-//                mainSplitPane.add(userListPanel);
-//            }
-//        });
-//        
-//        Button saveButton = new Button("Save");
-//        userEditPanel.add(saveButton);
-//        saveButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                // print out field values to make sure they have transferred correctly
-//                log.info("Save button pressed:");
-//                log.info("  codeField: " + codeField.getText());
-//                log.info("  nameField: " + nameField.getText());
-//                log.info("  calendar: " + dateField.getCalendar());
-//                log.info("  enabled: " + enabledField.getSelected());
-//                
-//                mainSplitPane.remove(userEditPanel);
-//                mainSplitPane.add(userListPanel);
-//            }
-//        });
-//        
-//    }
     
     /**
      * Creates a form panel to edit the selected user.

@@ -25,7 +25,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sgodden.echo.ext20.Button;
 import org.sgodden.echo.ext20.HtmlEditor;
-import org.sgodden.echo.ext20.HtmlPanel;
 import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.TabbedPane;
 import org.sgodden.echo.ext20.TextField;
@@ -101,12 +100,15 @@ public class ApplicationContentPane
         Panel ret = new Panel(new ColumnLayout());
         ret.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
         
-        HtmlPanel imagePanel = new HtmlPanel(
+        Panel imagePanel = new Panel();
+        
+        imagePanel.setHtml(
                 "<img style='float: left;' src='http://demo.nextapp.com/echo3csjs/image/Logo.png'></img>");
         imagePanel.setRenderId("northImagePanel");
         ret.add(imagePanel);
-        
-        HtmlPanel titlePanel = new HtmlPanel("<h1>NORTH</h1>");
+
+        Panel titlePanel = new Panel();
+        titlePanel.setHtml("<h1>NORTH</h1>");
         titlePanel.setRenderId("northTitlePanel");
         ret.add(titlePanel);
         
@@ -126,13 +128,16 @@ public class ApplicationContentPane
         ret.setLayoutData(new BorderLayoutData(BorderLayout.WEST));
         ret.setRenderId("westPanel");
         
-        HtmlPanel imagePanel = new HtmlPanel(
+        Panel imagePanel = new Panel();
+        imagePanel.setHtml(
                 "<img src='http://demo.nextapp.com/echo3csjs/image/Logo.png'></img>");
         imagePanel.setRenderId("northImagePanel");
         imagePanel.setBorder(false);
         ret.add(imagePanel);
         
-        HtmlPanel suppliersPanel = new HtmlPanel("Suppliers");
+        Panel suppliersPanel = new Panel();
+        
+        suppliersPanel.setHtml("Suppliers");
         ret.add(suppliersPanel);
 
         return ret;
@@ -145,14 +150,16 @@ public class ApplicationContentPane
     private TabbedPane createTabbedPane() {
         TabbedPane ret = new TabbedPane();
 
-        HtmlPanel centerPanel = new HtmlPanel("<h1>Welcome</h1>" +
+        Panel centerPanel = new Panel();
+        centerPanel.setHtml("<h1>Welcome</h1>" +
                 "<p>This test application is very rudimentary right now.</p>" +
                 "<p/>" +
                 "<p>I will put some details here about what it does soon</p>.");
         centerPanel.setTitle("Welcome");
         ret.add(centerPanel);
 
-        HtmlPanel panel2 = new HtmlPanel("<h1>PANEL 2</h1><p><em>I am the second center panel</em></p>");
+        Panel panel2 = new Panel();
+        panel2.setHtml("<h1>PANEL 2</h1><p><em>I am the second center panel</em></p>");
         panel2.setTitle("Panel 2");
         ret.add(panel2);
 

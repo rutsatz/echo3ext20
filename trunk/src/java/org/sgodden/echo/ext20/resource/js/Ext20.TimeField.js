@@ -70,9 +70,12 @@ EchoExt20.TimeFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
         this.component.set("time", value);
     },
     
-    syncExtComponent: function(update) {
-    },
-    
-    renderUpdate: function(){}
+    renderUpdate: function(update){
+        EchoExt20.ExtComponentSync.prototype.renderUpdate.call(this, update);
+        var time = this.component.get("time");
+        if (time != null) {
+            extComponent.setValue(time);
+        }
+    }
     
 });

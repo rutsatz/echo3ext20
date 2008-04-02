@@ -27,38 +27,39 @@ import org.mortbay.jetty.handler.ContextHandlerCollection;
 import org.mortbay.jetty.handler.RequestLogHandler;
 
 public class JettyServer {
-	private static final Log log = LogFactory.getLog(JettyServer.class);
-	
-	public static void main(String[] args){
-		
-		BasicConfigurator.configure();
+
+    private static final Log log = LogFactory.getLog(JettyServer.class);
+
+    public static void main(String[] args) {
+
+        BasicConfigurator.configure();
         Logger l = Logger.getLogger("org.hibernate");
         l.setLevel(Level.INFO);
         l = Logger.getLogger("org.sgodden");
         l.setLevel(Level.DEBUG);
         l = Logger.getLogger("org.mortbay");
         l.setLevel(Level.DEBUG);
-		
-		
-		final Server server = new Server(8080);
-		server.setStopAtShutdown(true);
-		
-		server.addHandler(new RequestLogHandler());
-		
-		ContextHandlerCollection contexts = new ContextHandlerCollection();
-		server.setHandler(contexts);
 
-		WebAppDeployer deployer = new WebAppDeployer();
-		deployer.setContexts(contexts);
-		deployer.setWebAppDir("./build/webapps");
-		deployer.setExtract(true);
-		server.addLifeCycle(deployer);
-		
-		try {
-			server.start();
-		} catch (Exception e) {
-			log.error("Error starting jetty server", e);
-			System.exit(-1);
-		}
-	}
+
+        final Server server = new Server(8080);
+        server.setStopAtShutdown(true);
+
+        server.addHandler(new RequestLogHandler());
+
+        ContextHandlerCollection contexts = new ContextHandlerCollection();
+        server.setHandler(contexts);
+
+        WebAppDeployer deployer = new WebAppDeployer();
+        deployer.setContexts(contexts);
+        deployer.setWebAppDir("./build/webapps");
+        deployer.setExtract(true);
+        server.addLifeCycle(deployer);
+
+        try {
+            server.start();
+        } catch (Exception e) {
+            log.error("Error starting jetty server", e);
+            System.exit(-1);
+        }
+    }
 }

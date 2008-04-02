@@ -45,22 +45,16 @@ EchoExt20.HtmlEditorSync = Core.extend(EchoExt20.ExtComponentSync, {
     	var extComponent = new Ext.form.HtmlEditor(options);
     	extComponent.on('sync', this._handleSyncEventRef);
     	
-    	this._syncRequired = true;
-    	
     	return extComponent;
     },
     
     _handleSyncEvent: function(htmlEditor, html) {
     	this.component.set("text", html);
     },
-        
-    syncExtComponent: function(update) {
-    	if (this._syncRequired) {
-    		this.extComponent.setValue(this.component.get("text"));
-    		this._syncRequired = false;
-    	}
-    },
     
-    renderUpdate: function(){}
+    renderUpdate: function(update){
+        EchoExt20.ExtComponentSync.prototype.renderUpdate.call(this, update);
+	this.extComponent.setValue(this.component.get("text"));
+    }
 
 });

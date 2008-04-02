@@ -77,8 +77,6 @@ public class ApplicationContentPane
         Panel main = new Panel(new BorderLayout());
         outer.add(main);
         main.setRenderId("main");
-        
-        //main.add(createNorthPanel());
 
         statusField = new TextField("Click the button and see what happens");
         statusField.setEnabled(false);
@@ -87,11 +85,6 @@ public class ApplicationContentPane
         main.add(statusField);
 
         main.add(createWestPanel());
-
-//        TabbedPane tabs = createTabbedPane();
-//        tabs.setRenderId("tabs");
-//        tabs.setLayoutData(new BorderLayoutData(BorderLayout.CENTER));
-//        main.add(tabs);
         
         TabbedPane tabs = createTabbedPane();
         tabs.setLayoutData(new BorderLayoutData(BorderLayout.CENTER));
@@ -99,7 +92,6 @@ public class ApplicationContentPane
 
         Button button = new Button("Press me!");
         button.setRenderId("button");
-        //tabs.add(button);
 
         button.addActionListener(this);
 
@@ -107,22 +99,6 @@ public class ApplicationContentPane
     
     private Panel createNorthPanel() {
         Panel ret = new Panel(new ColumnLayout());
-        ret.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
-        
-        HtmlPanel imagePanel = new HtmlPanel(
-                "<img style='float: left;' src='http://demo.nextapp.com/echo3csjs/image/Logo.png'></img>");
-        imagePanel.setRenderId("northImagePanel");
-        ret.add(imagePanel);
-        
-        HtmlPanel titlePanel = new HtmlPanel("<h1>NORTH</h1>");
-        titlePanel.setRenderId("northTitlePanel");
-        ret.add(titlePanel);
-        
-        return ret;
-    }
-    
-    private Panel createNorthPanel2() {
-        Panel ret = new Panel(new TableLayout(2));
         ret.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
         
         HtmlPanel imagePanel = new HtmlPanel(
@@ -158,47 +134,6 @@ public class ApplicationContentPane
         
         HtmlPanel suppliersPanel = new HtmlPanel("Suppliers");
         ret.add(suppliersPanel);
-        
-//        Panel fit = new Panel(new FitLayout());
-//        fit.setWidth(100);
-//        ret.add(fit);
-//
-//        Panel accordion = new Panel(new AccordionLayout());
-//        accordion.setTitle("Accordion");
-//        accordion.setRenderId("accordion");
-//        fit.add(accordion);
-        
-//        Panel section1 = new Panel();
-//        section1.setTitle("Suppliers");
-//        section1.setBorder(false);
-//        accordion.add(section1);
-        
-//        HtmlPanel childPanel = new HtmlPanel("Supplier list");
-//        //childPanel.setCollapsible(true);
-//        childPanel.setTitle("Blah");
-//        //childPanel.setPadding(5);
-//        accordion.add(childPanel);
-//        
-//        HtmlPanel childPanel2 = new HtmlPanel("New Supplier request");
-//        //childPanel.setCollapsible(true);
-//        childPanel2.setTitle("Wer");
-//        //childPanel2.setPadding(5);
-//        accordion.add(childPanel2);
-        
-//        Panel section2 = new Panel();
-//        section2.setBorder(false);
-//        section2.setTitle("Sites");
-//        accordion.add(section2);
-//        
-//        HtmlPanel childPanel3 = new HtmlPanel("Site list");
-//        //childPanel.setCollapsible(true);
-//        childPanel3.setPadding(5);
-//        section2.add(childPanel3);
-//        
-//        HtmlPanel childPanel4 = new HtmlPanel("New Site request");
-//        //childPanel.setCollapsible(true);
-//        childPanel4.setPadding(5);
-//        section2.add(childPanel4);
 
         return ret;
     }
@@ -222,20 +157,6 @@ public class ApplicationContentPane
         ret.add(panel2);
 
         ret.add(new UserPanel());
-
-        return ret;
-    }
-
-    /**
-     * Creates an html editor panel.
-     * @return
-     */
-    private Panel createHtmlEditorPanel() {
-        Panel ret = new Panel(new FitLayout());
-        ret.setTitle("Welcome");
-
-        HtmlEditor htmlEditor = new HtmlEditor("<b>Here's a HTML editor.</b><br><br><i>Note that in Firefox, this cannot be added as a component which is not initially rendered (e.g. as a tab which is not initially selected in a tabbed panel), due to a bug in Firefox's implementation of doc.designMode.</i><br>");
-        ret.add(htmlEditor);
 
         return ret;
     }

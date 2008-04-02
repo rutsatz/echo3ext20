@@ -62,8 +62,6 @@ EchoExt20.TextFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
     
     	var extComponent = this.newExtComponentInstance(options)
     	extComponent.on('blur', this._handleBlurEventRef);
-         
-        //this.debugOptions("TextField", options);
     	
     	return extComponent;
     },
@@ -71,11 +69,10 @@ EchoExt20.TextFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
     _handleBlurEvent: function() {
     	this.component.set("value", this.extComponent.getValue());
     },
-        
-    syncExtComponent: function(update) {
-    	this.extComponent.setValue(this.component.get("text"));
-    },
     
-    renderUpdate: function(){}
+    renderUpdate: function(update){
+        EchoExt20.ExtComponentSync.prototype.renderUpdate.call(this, update);
+        this.extComponent.setValue(this.component.get("text"));
+    }
 
 });

@@ -16,12 +16,7 @@
 # ================================================================= */
 package org.sgodden.echo.ext20.testapp;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
-import nextapp.echo.app.ApplicationInstance;
 import nextapp.echo.app.ContentPane;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
@@ -29,28 +24,22 @@ import nextapp.echo.app.event.ActionListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sgodden.echo.ext20.Button;
-import org.sgodden.echo.ext20.CheckboxField;
-import org.sgodden.echo.ext20.DateField;
-import org.sgodden.echo.ext20.FieldSet;
 import org.sgodden.echo.ext20.HtmlEditor;
 import org.sgodden.echo.ext20.HtmlPanel;
 import org.sgodden.echo.ext20.Panel;
-import org.sgodden.echo.ext20.RadioButton;
 import org.sgodden.echo.ext20.TabbedPane;
 import org.sgodden.echo.ext20.TextField;
-import org.sgodden.echo.ext20.TimeField;
-import org.sgodden.echo.ext20.data.SimpleStore;
-import org.sgodden.echo.ext20.grid.ColumnConfiguration;
-import org.sgodden.echo.ext20.grid.ColumnModel;
-import org.sgodden.echo.ext20.grid.GridPanel;
-import org.sgodden.echo.ext20.layout.AccordionLayout;
 import org.sgodden.echo.ext20.layout.BorderLayout;
 import org.sgodden.echo.ext20.layout.BorderLayoutData;
 import org.sgodden.echo.ext20.layout.ColumnLayout;
 import org.sgodden.echo.ext20.layout.FitLayout;
-import org.sgodden.echo.ext20.layout.FormLayout;
 import org.sgodden.echo.ext20.layout.TableLayout;
 
+/**
+ * Application content pane for the test application.
+ * 
+ * @author sgodden
+ */
 public class ApplicationContentPane
         extends ContentPane implements ActionListener {
 
@@ -64,41 +53,10 @@ public class ApplicationContentPane
      * Number of button clicks performed.
      */
     private int buttonClicks = 0;
-    /**
-     * Panel which toggles between user list and user edit
-     */
-    private Panel userPanel;
-    private Panel userListPanel;
-    private GridPanel userGridPanel;
-    private Panel userEditPanel;
 
     public ApplicationContentPane() {
         super();
-        //add(new HtmlPanel("<h1>HTML PANEL!!!</h1>"));
         addViewport();
-        //addSplitPane();
-    }
-    
-    private void addSplitPane() {
-        
-        TimeField tf = new TimeField();
-        add(tf);
-        
-        return;
-        
-//        SplitPane sp1 = new SplitPane(SplitPane.ORIENTATION_VERTICAL);
-//        add(sp1);
-//        
-//        sp1.setSeparatorPosition(new Extent(50));
-//        sp1.add(new HtmlPanel("<h1>Top</h1>"));
-//        
-//        SplitPane sp = new SplitPane(SplitPane.ORIENTATION_HORIZONTAL);
-//        sp.setSeparatorPosition(new Extent(100));
-//        sp.add(new HtmlPanel("<h1>asdasd</h1>"));
-//        sp.add(createUserPanel());
-//        sp.setResizable(true);
-//        
-//        sp1.add(sp);
     }
 
     /**
@@ -135,9 +93,9 @@ public class ApplicationContentPane
 //        tabs.setLayoutData(new BorderLayoutData(BorderLayout.CENTER));
 //        main.add(tabs);
         
-        createUserPanel();
-        userPanel.setLayoutData(new BorderLayoutData(BorderLayout.CENTER));
-        main.add(userPanel);
+        TabbedPane tabs = createTabbedPane();
+        tabs.setLayoutData(new BorderLayoutData(BorderLayout.CENTER));
+        main.add(tabs);
 
         Button button = new Button("Press me!");
         button.setRenderId("button");
@@ -154,12 +112,10 @@ public class ApplicationContentPane
         HtmlPanel imagePanel = new HtmlPanel(
                 "<img style='float: left;' src='http://demo.nextapp.com/echo3csjs/image/Logo.png'></img>");
         imagePanel.setRenderId("northImagePanel");
-        //imagePanel.setLayoutData(new ColumnLayoutData(.2));
         ret.add(imagePanel);
         
         HtmlPanel titlePanel = new HtmlPanel("<h1>NORTH</h1>");
         titlePanel.setRenderId("northTitlePanel");
-        //titlePanel.setLayoutData(new ColumnLayoutData(.8));
         ret.add(titlePanel);
         
         return ret;
@@ -265,82 +221,8 @@ public class ApplicationContentPane
         panel2.setTitle("Panel 2");
         ret.add(panel2);
 
-        ret.add(createUserPanel());
+        ret.add(new UserPanel());
 
-        return ret;
-    }
-
-    /**
-     * Creates a panel which toggles between a list of users, and 
-     * an edit panel for the selected user. 
-     * @return
-     */
-    private Panel createUserPanel() {
-        userPanel = new Panel(new FitLayout());
-        userPanel.setTitle("Users");
-
-        userPanel.setRenderId("userPanel");
-
-        final Object[][] data = makeData();
-
-        userListPanel = createUserList(data);
-        userPanel.add(userListPanel);
-
-        userGridPanel.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                // remove the list panel
-                userPanel.remove(userListPanel);
-                // get the selected row of the data
-                int selectedRow = userGridPanel.getSelectionModel().getMinSelectedIndex(); // only one row can be selected
-                // create the form panel with that data
-                createUserEditPanel(data[selectedRow]);
-                userPanel.add(userEditPanel);
-            }
-        });
-
-
-        return userPanel;
-    }
-
-    /**
-     * Creates a panel which toggles between a list of users and an edit panel
-     * for a particular user.
-     * @return
-     */
-    private Panel createUserList(Object[][] data) {
-        
-        Panel ret = new Panel(new BorderLayout());
-        ret.setBorder(false);
-        ret.setRenderId("userList");
-        
-        final Panel filterOptions = new Panel(new TableLayout(2));
-        filterOptions.setBorder(false);
-        filterOptions.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
-        ret.add(filterOptions);
-        
-        final TextField tf = new TextField();
-        tf.setEmptyText("Enter search text");
-        filterOptions.add(tf);
-        
-        Button button = new Button("Search");
-        filterOptions.add(button);
-        
-        List<ColumnConfiguration> cols = new ArrayList<ColumnConfiguration>();
-        cols.add(new ColumnConfiguration("User ID", "userid"));
-        cols.add(new ColumnConfiguration("Name", "name"));
-        ColumnModel columnModel = new ColumnModel(cols);
-
-        SimpleStore store = new SimpleStore(
-                data,
-                0,
-                new String[]{"id", "userid", "name", "date"});
-
-        userGridPanel = new GridPanel(columnModel, store);
-        ret.add(userGridPanel);
-        
-        userGridPanel.setLayoutData(new BorderLayoutData(BorderLayout.CENTER));
-        
         return ret;
     }
 
@@ -358,107 +240,7 @@ public class ApplicationContentPane
         return ret;
     }
 
-    /**
-     * Creates a form panel to edit the selected user.
-     * @return
-     */
-    private void createUserEditPanel(Object[] data) {
-        userEditPanel = new Panel(new FormLayout());
-        userEditPanel.setBorder(false);
-        userEditPanel.setPadding(5);
-        userEditPanel.setRenderId("userFormPanel");
-
-        final TextField codeField = new TextField((String)data[1], "Code");
-        codeField.setBlankAllowed(false);
-        userEditPanel.add(codeField);
-
-        final TextField nameField = new TextField((String)data[2], "Name");
-        nameField.setBlankAllowed(false);
-        userEditPanel.add(nameField);
-        
-        Calendar cal = Calendar.getInstance(
-                ApplicationInstance.getActive().getLocale());
-
-        final DateField dateField = new DateField(cal, "Date");
-        dateField.setBlankAllowed(false);
-        userEditPanel.add(dateField);
-
-        final TimeField timeField = new TimeField(cal, "Time");
-        timeField.setBlankAllowed(false);
-        userEditPanel.add(timeField);
-
-        // and let's put these last few in a field set
-        FieldSet fieldSet = new FieldSet();
-        fieldSet.setTitle("A field set");
-        fieldSet.setCheckboxToggle(true);
-        userEditPanel.add(fieldSet);
-        
-        final CheckboxField enabledField = new CheckboxField(true, "Enabled");
-        fieldSet.add(enabledField);
-        
-        final RadioButton userRoleButton = new RadioButton(true, "User");
-        userRoleButton.setName("role");
-        fieldSet.add(userRoleButton);
-        
-        final RadioButton adminRoleButton = new RadioButton(false, "Admin");
-        adminRoleButton.setName("role");
-        fieldSet.add(adminRoleButton);
-        
-        HtmlEditor editor = new HtmlEditor();
-        userEditPanel.add(editor);
-
-        Button cancelButton = new Button("Cancel");
-        userEditPanel.addButton(cancelButton);
-
-        // and add a listener to the cancel button which removes that form panel
-        // and puts the list back
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                userPanel.remove(userEditPanel);
-                userPanel.add(userListPanel);
-            }
-        });
-        
-        Button saveButton = new Button("Save");
-        userEditPanel.addButton(saveButton);
-        saveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // print out field values to make sure they have transferred correctly
-                log.info("Save button pressed:");
-                log.info("  codeField: " + codeField.getText());
-                log.info("  nameField: " + nameField.getText());
-                log.info("  calendar: " + dateField.getCalendar());
-                log.info("  enabled: " + enabledField.getSelected());
-                
-                userPanel.remove(userEditPanel);
-                userPanel.add(userListPanel);
-            }
-        });
-        
-    }
-
     public void actionPerformed(ActionEvent arg0) {
-        statusField.setText("You clicked the button " + ++buttonClicks + " times.");
-    }
-    
-    /**
-     * Makes enough data to test the eval bug in Firefox.
-     * @return
-     */
-    private Object[][] makeData() {
-        int rows = 100;
-        
-        Object[][] ret = new Object[rows][];
-        
-        for (int i = 0; i < ret.length; i++) {
-            Object[] row = new Object[4];
-            row[0] = String.valueOf(i);
-            row[1] = "User id asdasdasdasdasd " + i;
-            row[2] = "Name asdasdasdasdasdasd " + i;
-            row[3] = new Date();
-            ret[i] = row;
-        }
-        
-        return ret;
+        statusField.setValue("You clicked the button " + ++buttonClicks + " times.");
     }
 }

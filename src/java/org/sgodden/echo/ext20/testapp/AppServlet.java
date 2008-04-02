@@ -20,7 +20,7 @@ import nextapp.echo.app.ApplicationInstance;
 import org.sgodden.echo.ext20.AbstractExtAppServlet;
 
 /**
- * Application servlet.
+ * Application servlet for the test application.
  * 
  * @author goddens
  *

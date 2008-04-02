@@ -1,0 +1,166 @@
+/* =================================================================
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ================================================================= */
+package org.sgodden.echo.ext20.testapp;
+
+import java.util.Calendar;
+import nextapp.echo.app.ApplicationInstance;
+import nextapp.echo.app.event.ActionEvent;
+import nextapp.echo.app.event.ActionListener;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sgodden.echo.ext20.Button;
+import org.sgodden.echo.ext20.CheckboxField;
+import org.sgodden.echo.ext20.ComboBox;
+import org.sgodden.echo.ext20.DateField;
+import org.sgodden.echo.ext20.FieldSet;
+import org.sgodden.echo.ext20.Panel;
+import org.sgodden.echo.ext20.RadioButton;
+import org.sgodden.echo.ext20.TextField;
+import org.sgodden.echo.ext20.TimeField;
+import org.sgodden.echo.ext20.data.SimpleStore;
+import org.sgodden.echo.ext20.layout.FormLayout;
+
+/**
+ * A panel which allows edit of a single user.
+ * @author sgodden
+ */
+public class UserEditPanel 
+        extends Panel {
+    
+    private static final transient Log log = LogFactory.getLog(UserEditPanel.class);
+    
+    private Button cancelButton;
+    private Button saveButton;
+    
+    public UserEditPanel(Object[] data){
+        super(new FormLayout());
+        setBorder(false);
+        setPadding(5);
+        setRenderId("userFormPanel");
+
+        final TextField codeField = new TextField((String)data[1], "Code");
+        codeField.setBlankAllowed(false);
+        add(codeField);
+
+        final TextField nameField = new TextField((String)data[2], "Name");
+        nameField.setBlankAllowed(false);
+        add(nameField);
+        
+        Calendar cal = Calendar.getInstance(
+                ApplicationInstance.getActive().getLocale());
+
+        final DateField dateField = new DateField(cal, "Date");
+        dateField.setBlankAllowed(false);
+        add(dateField);
+
+        final TimeField timeField = new TimeField(cal, "Time");
+        timeField.setBlankAllowed(false);
+        add(timeField);
+
+        // and let's put these last few in a field set
+        FieldSet fieldSet = new FieldSet();
+        fieldSet.setTitle("A field set");
+        fieldSet.setCheckboxToggle(true);
+        add(fieldSet);
+        
+        final CheckboxField enabledField = new CheckboxField(true, "Enabled");
+        fieldSet.add(enabledField);
+        
+        final RadioButton userRoleButton = new RadioButton(true, "User");
+        userRoleButton.setName("role");
+        fieldSet.add(userRoleButton);
+        
+        final RadioButton adminRoleButton = new RadioButton(false, "Admin");
+        adminRoleButton.setName("role");
+        fieldSet.add(adminRoleButton);
+        
+        SimpleStore roleStore = makeRoleStore();
+        ComboBox roleCombo = makeRoleCombo(roleStore);
+        fieldSet.add(roleCombo);
+        
+//        HtmlEditor editor = new HtmlEditor();
+//        userEditPanel.add(editor);
+
+        cancelButton = new Button("Cancel");
+        addButton(cancelButton);
+        
+        saveButton = new Button("Save");
+        addButton(saveButton);
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // print out field values to make sure they have transferred correctly
+                log.info("Save button pressed:");
+                log.info("  codeField: " + codeField.getValue());
+                log.info("  nameField: " + nameField.getValue());
+                log.info("  calendar: " + dateField.getCalendar());
+                log.info("  enabled: " + enabledField.getSelected());
+            }
+        });
+    }
+    
+    /**
+     * Adds a listener to be notified when the cancel action
+     * is taken.
+     * 
+     * @param listener
+     */
+    public void addCancelListener(ActionListener listener) {
+        cancelButton.addActionListener(listener);
+    }
+    
+    /**
+     * Adds a listener to be notified when the save action is taken.
+     * @param listener
+     */
+    public void addSaveListener(ActionListener listener) {
+        saveButton.addActionListener(listener);
+    }
+    
+    /**
+     * Returns a combox box for selection of roles, based
+     * on the passed store.
+     * @param store the store.
+     * @return the combo box.
+     */
+    private ComboBox makeRoleCombo(SimpleStore store) {
+        ComboBox ret = new ComboBox(store);
+        ret.setFieldLabel("Role");
+        ret.setDisplayField("description");
+        ret.setValueField("id");
+        ret.setTypeAhead(true);
+        return ret;
+    }
+    
+    /**
+     * Creates a dummy store for role data.
+     * @return the store.
+     */
+    private SimpleStore makeRoleStore() {
+        Object[][] data = new Object[2][2];
+        data[0] = new String[]{"admin", "Administrator"};
+        data[1] = new String[]{"user", "User"};
+        
+        SimpleStore store = new SimpleStore(
+                data,
+                0,
+                new String[]{"id", "description"});
+        
+        return store;
+    }
+
+
+}

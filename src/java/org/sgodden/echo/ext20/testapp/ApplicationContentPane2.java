@@ -43,6 +43,13 @@ import org.sgodden.echo.ext20.grid.ColumnModel;
 import org.sgodden.echo.ext20.grid.GridPanel;
 import org.sgodden.echo.ext20.layout.FitLayout;
 
+/**
+ * This is an alternative application content pane
+ * whch demonstrates combined use of echo3 components
+ * and ext components.
+ * 
+ * @author sgodden
+ */
 public class ApplicationContentPane2
         extends ContentPane implements ActionListener {
 

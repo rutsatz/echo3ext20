@@ -30,7 +30,7 @@ import nextapp.echo.app.Component;
 public class TextField
         extends Component {
 
-    public static final String TEXT_CHANGED_PROPERTY = "text";
+    public static final String VALUE_CHANGED_PROPERTY = "value";
     public static final String FIELD_LABEL_PROPERTY = "fieldLabel";
     public static final String ALLOW_BLANK_PROPERTY = "allowBlank";
     public static final String EMPTY_TEXT_PROEPRTY = "emptyText";
@@ -41,22 +41,26 @@ public class TextField
 
     public TextField(String text) {
         this();
-        setText(text);
+        setValue(text);
     }
 
     public TextField(String text, String fieldLabel) {
-        setText(text);
+        setValue(text);
         setFieldLabel(fieldLabel);
     }
 
-    public void setText(String text) {
-        setProperty(TEXT_CHANGED_PROPERTY, text);
+    public void setValue(Object value) {
+        setProperty(VALUE_CHANGED_PROPERTY, value);
+    }
+
+    public Object getValue() {
+        return getProperty(VALUE_CHANGED_PROPERTY);
     }
 
     public String getText() {
-        return (String) getProperty(TEXT_CHANGED_PROPERTY);
+        return (String) getProperty(VALUE_CHANGED_PROPERTY);
     }
-
+    
     public void setFieldLabel(String fieldLabel) {
         setProperty(FIELD_LABEL_PROPERTY, fieldLabel);
     }
@@ -71,8 +75,8 @@ public class TextField
 
     @Override
     public void processInput(String inputName, Object inputValue) {
-        if (TEXT_CHANGED_PROPERTY.equals(inputName)) {
-            setText((String) inputValue);
+        if (VALUE_CHANGED_PROPERTY.equals(inputName)) {
+            setValue((String) inputValue);
         }
     }
 }

@@ -30,6 +30,12 @@ EchoExt20.TextFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
     $load: function() {
         EchoRender.registerPeer("Ext20TextField", this);
     },
+
+    $virtual: {
+        newExtComponentInstance: function(options) {
+            return new Ext.form.TextField(options);
+        }
+    },
     
     _handleBlurEventRef: null,
     
@@ -38,10 +44,12 @@ EchoExt20.TextFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
     },
     
     createExtComponent: function(update, options) {
-    	//this._text = this.component.get("text");
-    	//options['value'] = this.component.parent.peer.extChildOptions;
-        options['value'] = this.component.get("text");
-        options['fieldLabel'] = this.component.get("fieldLabel");
+        if (this.component.get('value') != null) {
+            options['value'] = this.component.get("value");
+        }
+        if (this.component.get('fieldLabel') != null) {
+            options['fieldLabel'] = this.component.get("fieldLabel");
+        }
         if (this.component.get("allowBlank") != null) {
                 options['allowBlank'] = this.component.get("allowBlank");
         }
@@ -52,14 +60,16 @@ EchoExt20.TextFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
     		options['disabled'] = true;
     	}
     
-    	var extComponent = new Ext.form.TextField(options);
+    	var extComponent = this.newExtComponentInstance(options)
     	extComponent.on('blur', this._handleBlurEventRef);
+         
+        //this.debugOptions("TextField", options);
     	
     	return extComponent;
     },
     
     _handleBlurEvent: function() {
-    	this.component.set("text", this.extComponent.getValue());
+    	this.component.set("value", this.extComponent.getValue());
     },
         
     syncExtComponent: function(update) {

@@ -39,7 +39,7 @@ extends AbstractComponentSynchronizePeer {
     
     public HtmlEditorPeer() {
     	super();
-    	addOutputProperty(TextField.TEXT_CHANGED_PROPERTY);
+    	addOutputProperty(TextField.VALUE_CHANGED_PROPERTY);
     }
 
 	public Class getComponentClass() {
@@ -54,7 +54,7 @@ extends AbstractComponentSynchronizePeer {
      * @see nextapp.echo.webcontainer.AbstractComponentSynchronizePeer#getInputPropertyClass(java.lang.String)
      */
     public Class getInputPropertyClass(String propertyName) {
-        if (TextField.TEXT_CHANGED_PROPERTY.equals(propertyName)) {
+        if (TextField.VALUE_CHANGED_PROPERTY.equals(propertyName)) {
             return String.class;
         }
         return null;
@@ -65,9 +65,9 @@ extends AbstractComponentSynchronizePeer {
      */
     public void storeInputProperty(Context context, Component component, String propertyName, int propertyIndex, Object newValue) {
     	System.out.println("Text field peer - property '" + propertyName + "', value '" + newValue+ "'");
-        if (propertyName.equals(TextField.TEXT_CHANGED_PROPERTY)) {
+        if (propertyName.equals(TextField.VALUE_CHANGED_PROPERTY)) {
             ClientUpdateManager clientUpdateManager = (ClientUpdateManager) context.get(ClientUpdateManager.class);
-            clientUpdateManager.setComponentProperty(component, TextField.TEXT_CHANGED_PROPERTY, newValue);
+            clientUpdateManager.setComponentProperty(component, TextField.VALUE_CHANGED_PROPERTY, newValue);
         }
     }
 

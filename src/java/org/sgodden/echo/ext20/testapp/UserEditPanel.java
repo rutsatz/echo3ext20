@@ -22,6 +22,7 @@ import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sgodden.echo.ext20.Alignment;
 import org.sgodden.echo.ext20.Button;
 import org.sgodden.echo.ext20.CheckboxField;
 import org.sgodden.echo.ext20.ComboBox;
@@ -96,6 +97,7 @@ public class UserEditPanel
 //        userEditPanel.add(editor);
 
         cancelButton = new Button("Cancel");
+        cancelButton.setRenderId("cancelButton");
         addButton(cancelButton);
         
         saveButton = new Button("Save");
@@ -110,6 +112,25 @@ public class UserEditPanel
                 log.info("  enabled: " + enabledField.getSelected());
             }
         });
+        
+        addButton(createAlignTestButton());
+    }
+
+    /**
+     * Creates a button which moves the save button above the cancel button
+     * using ext alignment.
+     * @return the button.
+     */
+    private Button createAlignTestButton(){
+        Button ret = new Button("Alignment test");
+        
+        ret.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                saveButton.alignTo(cancelButton, Alignment.BOTTOM, Alignment.TOP, 0, -10);
+            }
+        });
+        
+        return ret;
     }
     
     /**

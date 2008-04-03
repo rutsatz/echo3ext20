@@ -16,8 +16,6 @@
 # ================================================================= */
 package org.sgodden.echo.ext20;
 
-import nextapp.echo.app.Component;
-
 /**
  * A text field.
  * <p/>
@@ -28,7 +26,7 @@ import nextapp.echo.app.Component;
  *
  */
 public class TextField
-        extends Component {
+        extends ExtComponent {
 
     public static final String VALUE_CHANGED_PROPERTY = "value";
     public static final String FIELD_LABEL_PROPERTY = "fieldLabel";

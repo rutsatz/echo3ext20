@@ -24,7 +24,6 @@ import nextapp.echo.app.event.ActionListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sgodden.echo.ext20.Button;
-import org.sgodden.echo.ext20.HtmlEditor;
 import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.TabbedPane;
 import org.sgodden.echo.ext20.TextField;
@@ -32,7 +31,6 @@ import org.sgodden.echo.ext20.layout.BorderLayout;
 import org.sgodden.echo.ext20.layout.BorderLayoutData;
 import org.sgodden.echo.ext20.layout.ColumnLayout;
 import org.sgodden.echo.ext20.layout.FitLayout;
-import org.sgodden.echo.ext20.layout.TableLayout;
 
 /**
  * Application content pane for the test application.

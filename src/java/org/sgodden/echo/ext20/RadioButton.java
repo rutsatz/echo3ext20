@@ -16,8 +16,6 @@
 # ================================================================= */
 package org.sgodden.echo.ext20;
 
-import nextapp.echo.app.Component;
-
 /**
  * A text field.
  * <p/>
@@ -28,7 +26,7 @@ import nextapp.echo.app.Component;
  *
  */
 public class RadioButton
-        extends Component {
+        extends ExtComponent {
 
     public static final String SELECTED_CHANGED_PROPERTY = "selected";
     public static final String FIELD_LABEL_PROPERTY = "fieldLabel";

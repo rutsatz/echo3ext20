@@ -17,8 +17,6 @@
 package org.sgodden.echo.ext20;
 
 import java.util.Calendar;
-import java.util.Date;
-import nextapp.echo.app.Component;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -31,7 +29,7 @@ import org.apache.commons.logging.LogFactory;
  *
  */
 public class TimeField
-        extends Component {
+        extends ExtComponent {
     
     private static final transient Log log = LogFactory.getLog(TimeField.class);
 

@@ -16,15 +16,13 @@
 # ================================================================= */
 package org.sgodden.echo.ext20;
 
-import nextapp.echo.app.Component;
-
 /**
  * A tabbed pane.
  * 
  * @author goddens
  *
  */
-public class TabbedPane extends Component {
+public class TabbedPane extends ExtComponent {
 
 	private static final long serialVersionUID = 20080102L;
 	

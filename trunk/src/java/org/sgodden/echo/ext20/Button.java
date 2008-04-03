@@ -16,9 +16,9 @@
 # ================================================================= */
 package org.sgodden.echo.ext20;
 
-import nextapp.echo.app.ImageReference;
-import nextapp.echo.app.button.AbstractButton;
-import nextapp.echo.app.button.DefaultButtonModel;
+import java.util.EventListener;
+import nextapp.echo.app.event.ActionEvent;
+import nextapp.echo.app.event.ActionListener;
 
 /**
  * An ext button.
@@ -26,9 +26,14 @@ import nextapp.echo.app.button.DefaultButtonModel;
  * @author goddens
  *
  */
-public class Button extends AbstractButton {
+public class Button extends ExtComponent {
 
     private static final long serialVersionUID = 20080102L;
+    
+    public static final String TEXT_PROPERTY = "text";
+    public static final String ICON_URL_PROPERTY = "iconUrl";
+    public static final String INPUT_ACTION = "action";
+    public static final String ACTION_COMMAND_PROPERTY = "actionCommand";
     
     /**
      * When set to true, tells the client side rendering engine that this
@@ -36,13 +41,14 @@ public class Button extends AbstractButton {
      * added directly to its layout.
      */
     public static final String ADD_TO_BUTTON_BAR_PROPERTY = "addToButtonBar";
+    
+    public static final String ACTION_LISTENERS_CHANGED_PROPERTY = "actionListeners";
 
     /**
      * Creates a button with no text or icon.
      */
     public Button() {
         super();
-        setModel(new DefaultButtonModel());
         setAddToButtonBar(false);
     }
 
@@ -57,24 +63,88 @@ public class Button extends AbstractButton {
     }
 
     /**
-     * Creates a button with an icon.
-     *
-     * @param icon the icon to be displayed in the button
-     */
-    public Button(ImageReference icon) {
-        this();
-        setIcon(icon);
-    }
-
-    /**
      * Creates a button with text and an icon.
      *
      * @param text the text to be displayed in the button
      * @param icon the icon to be displayed in the button
      */
-    public Button(String text, ImageReference icon) {
+    public Button(String text, String iconUrl) {
         this(text);
-        setIcon(icon);
+        setIconUrl(iconUrl);
+    }
+    
+    /**
+     * Sets the text to appear in the button.
+     * @param text the text.
+     */
+    public void setText(String text) {
+        setProperty(TEXT_PROPERTY, text);
+    }
+    
+    /**
+     * Sets the url of the icon for the button.
+     * <p/>
+     * Note that if the url is not absolute, then the context path of
+     * the application will be prepended to it.
+     * 
+     * @param iconUrl the url of the icon for the button.
+     */
+    public void setIconUrl(String iconUrl) {
+        setProperty(ICON_URL_PROPERTY, iconUrl);
+    }
+    
+    /**
+     * Returns whether any <code>ActionListener</code>s are registered.
+     * 
+     * @return true if any action listeners are registered
+     */
+    public boolean hasActionListeners() {
+        return getEventListenerList().getListenerCount(ActionListener.class) != 0;
+    }
+
+    
+    /**
+     * Adds an <code>ActionListener</code> to the button.
+     * <code>ActionListener</code>s will be invoked when the button
+     * is clicked.
+     * 
+     * @param l the <code>ActionListener</code> to add
+     */
+    public void addActionListener(ActionListener l) {
+        getEventListenerList().addListener(ActionListener.class, l);
+        // Notification of action listener changes is provided due to 
+        // existence of hasActionListeners() method. 
+        firePropertyChange(ACTION_LISTENERS_CHANGED_PROPERTY, null, l);
+    }
+    
+    
+    /**
+     * @see nextapp.echo.app.Component#processInput(java.lang.String, java.lang.Object)
+     */
+    @Override
+    public void processInput(String inputName, Object inputValue) {
+        super.processInput(inputName, inputValue);
+        if (INPUT_ACTION.equals(inputName)) {
+            fireActionEvent();
+        }
+    }
+    
+    
+    /**
+     * Fires an action event to all listeners.
+     */
+    private void fireActionEvent() {
+        if (!hasEventListenerList()) {
+            return;
+        }
+        EventListener[] listeners = getEventListenerList().getListeners(ActionListener.class);
+        ActionEvent e = null;
+        for (int i = 0; i < listeners.length; ++i) {
+            if (e == null) {
+                e = new ActionEvent(this, (String) getRenderProperty(ACTION_COMMAND_PROPERTY));
+            }
+            ((ActionListener) listeners[i]).actionPerformed(e);
+        }
     }
     
     /**

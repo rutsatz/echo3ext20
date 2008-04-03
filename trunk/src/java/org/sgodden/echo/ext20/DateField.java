@@ -20,7 +20,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import nextapp.echo.app.ApplicationInstance;
-import nextapp.echo.app.Component;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -33,7 +32,7 @@ import org.apache.commons.logging.LogFactory;
  *
  */
 public class DateField
-        extends Component {
+        extends ExtComponent {
     
     private static final transient Log log = LogFactory.getLog(DateField.class);
 

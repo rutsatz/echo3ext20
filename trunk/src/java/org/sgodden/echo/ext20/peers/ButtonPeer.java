@@ -17,7 +17,6 @@
 package org.sgodden.echo.ext20.peers;
 
 import nextapp.echo.app.Component;
-import nextapp.echo.app.button.AbstractButton;
 import nextapp.echo.app.util.Context;
 import nextapp.echo.webcontainer.AbstractComponentSynchronizePeer;
 import nextapp.echo.webcontainer.Service;
@@ -25,6 +24,7 @@ import nextapp.echo.webcontainer.WebContainerServlet;
 import nextapp.echo.webcontainer.service.JavaScriptService;
 
 import org.sgodden.echo.ext20.Button;
+import org.sgodden.echo.ext20.ExtComponent;
 
 /**
  * Synchronization peer for {@link Button}.
@@ -44,11 +44,14 @@ public class ButtonPeer extends AbstractComponentSynchronizePeer {
     public ButtonPeer() {
         super();
         
-        addEvent(new AbstractComponentSynchronizePeer.EventPeer("action", AbstractButton.ACTION_LISTENERS_CHANGED_PROPERTY) {
+        addEvent(new AbstractComponentSynchronizePeer.EventPeer(Button.INPUT_ACTION, Button.ACTION_LISTENERS_CHANGED_PROPERTY) {
+            @Override
             public boolean hasListeners(Context context, Component component) {
-                return ((AbstractButton) component).hasActionListeners();
+                return ((Button) component).hasActionListeners();
             }
         });
+        
+        addOutputProperty(Button.ALIGNTO_PROPERTY);
     }
     
     public String getClientComponentType(boolean shortType) {
@@ -62,10 +65,29 @@ public class ButtonPeer extends AbstractComponentSynchronizePeer {
         return Button.class;
     }
     
+        
+    @Override
+    public Object getOutputProperty(Context context, Component component, String propertyName, int propertyIndex) {
+        Object ret = null;
+        
+        if (propertyName.equals(ExtComponent.ALIGNTO_PROPERTY)) {
+            return ((ExtComponent)component).getAlignToPropertyString();
+        }
+        else {
+            ret = super.getOutputProperty(context, component, propertyName, propertyIndex);
+        }
+        
+        return ret;
+    }
+    
+    
+
+    
 
     /**
      * @see nextapp.echo.webcontainer.ComponentSynchronizePeer#init(Context)
      */
+    @Override
     public void init(Context context) {
         super.init(context);
         //ServerMessage serverMessage = (ServerMessage) context.get(ServerMessage.class);

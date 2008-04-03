@@ -118,6 +118,12 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
                 options
             );
             
+            if (this.component.get("alignTo") != null) {
+                this.extComponent.on("render", function(){
+                    this.alignTo(this.component.get("alignTo"));
+                }, this);
+            }
+            
             this._parentElement = null;
         }
         else {
@@ -207,6 +213,33 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
             this.client.removeServerUpdateCompleteListener(this._rootServerUpdateCompleteRef);
         }
         this.extComponent.destroy();
+    },
+    
+    renderUpdate: function(update) {
+        if (update.hasUpdatedProperties()) {
+            var alignToUpdate = update.getUpdatedProperty("alignTo");
+            if (alignToUpdate != null) {
+                var alignToString = alignToUpdate.newValue;
+            }
+            this.alignTo(alignToString);
+        }
+    },
+    
+    alignTo: function(alignToString) {
+        
+        var strings = alignToString.split(",");
+        
+        var otherId = "c_" + strings[0];
+        
+        var alignmentString = strings[1];
+        
+        var offsets = strings[2].split(':');
+        var offsetX = offsets[0];
+        var offsetY = offsets[1];
+        
+        var extEl = this.extComponent.getEl();
+        extEl.dom.style.position = "absolute";
+        extEl.alignTo(otherId, alignmentString, [offsetX,offsetY]);
     }
     
 });

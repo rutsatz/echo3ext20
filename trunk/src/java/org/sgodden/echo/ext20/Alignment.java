@@ -17,39 +17,18 @@
 package org.sgodden.echo.ext20;
 
 /**
- * A html editor field.
- * <p/>
- * TODO - listeners on value change
+ * Enumerates the alignment positions of a component.
  * 
- * @author simon
- *
+ * @author sgodden
  */
-public class HtmlEditor 
-		extends ExtComponent {
-	
-	public static final String TEXT_CHANGED_PROPERTY = "text";
-	
-	public HtmlEditor() {
-		super();
-	}
-	
-	public HtmlEditor(String text) {
-		setText(text);
-	}
-	
-	public void setText(String text) {
-		setProperty(TEXT_CHANGED_PROPERTY, text);
-	}
-	
-	public String getText() {
-		return (String) getProperty(TEXT_CHANGED_PROPERTY);
-	}
-
-    public void processInput(String inputName, Object inputValue) {    	
-    	if (TEXT_CHANGED_PROPERTY.equals(inputName)) {
-    		setText((String)inputValue);
-    	}
-    }
-
-
+public enum Alignment {
+    TOP_LEFT,
+    TOP,
+    TOP_RIGHT,
+    LEFT,
+    CENTER,
+    RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM,
+    BOTTOM_RIGHT
 }

@@ -14,14 +14,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.Button = Core.extend(EchoApp.AbstractButton, {
+// TODO - abstract button class and sync peer
+EchoExt20.Button = Core.extend(EchoApp.Component, {
 	
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20Button", this);
         EchoApp.ComponentFactory.registerType("E2B", this);
     },
 
-    componentType: "Ext20Button"
+    componentType: "Ext20Button",
+    
+    $virtual: {
+            /**
+             * Programatically performs a row click.
+             */
+            doAction: function() {
+                this.fireEvent({type: "action", source: this, actionCommand: this.get("actionCommand")});
+            }
+    }
 	
 });
 
@@ -49,8 +59,6 @@ EchoExt20.ButtonSync = Core.extend(EchoExt20.ExtComponentSync, {
     
     _handleClickEvent: function() {
     	this.component.doAction();
-    },
-    
-    renderUpdate: function(){}
+    }
 
 });

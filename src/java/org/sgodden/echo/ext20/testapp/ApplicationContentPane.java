@@ -31,6 +31,7 @@ import org.sgodden.echo.ext20.Toolbar;
 import org.sgodden.echo.ext20.ToolbarButton;
 import org.sgodden.echo.ext20.ToolbarFill;
 import org.sgodden.echo.ext20.ToolbarSeparator;
+import org.sgodden.echo.ext20.ToolbarTextItem;
 import org.sgodden.echo.ext20.layout.BorderLayout;
 import org.sgodden.echo.ext20.layout.BorderLayoutData;
 import org.sgodden.echo.ext20.layout.ColumnLayout;
@@ -186,6 +187,7 @@ public class ApplicationContentPane
         ret.add(new ToolbarSeparator());
         ret.add(new ToolbarFill());
         ret.add(new ToolbarSeparator());
+        ret.add(new ToolbarTextItem("Some text"));
         ret.add(new ToolbarButton("Button2"));
         ret.add(new ToolbarSeparator());
         TextField tf = new TextField();

@@ -280,7 +280,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
                   )
                   && !(child instanceof EchoExt20.Toolbar)
                 ) {
-                this.extChildOptions = {};
                 EchoRender.renderComponentAdd(update, child, null); // null because ext components create the necessary extra divs themselves
                 
                 // add the ext component created by the peer to the child items array
@@ -291,7 +290,6 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
                 else {
                     this.extComponent.add(childExtComponent);
                 }
-                delete this.extChildOptions;
             }
         }
     }

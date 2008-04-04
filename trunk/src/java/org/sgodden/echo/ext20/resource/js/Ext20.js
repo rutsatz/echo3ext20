@@ -75,10 +75,7 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
         */
         
         if (this.component.parent.peer.isExtComponent) {
-            var options = this.component.parent.peer.extChildOptions;
-            if (options == null) {
-                options = {};
-            }
+            options = {};
             options['id'] = this.component.renderId;
             
             // and now handle the layout data

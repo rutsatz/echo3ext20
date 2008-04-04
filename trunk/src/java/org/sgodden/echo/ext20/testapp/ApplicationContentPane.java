@@ -187,12 +187,20 @@ public class ApplicationContentPane
         
         button.setMenu(makeMenu());
         
+        ToolbarButton button2 = new ToolbarButton("Button2");
+        button2.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                log.info("Button2 was pressed");
+            }
+        });
+        
         ret.add(button);
         ret.add(new ToolbarSeparator());
         ret.add(new ToolbarFill());
         ret.add(new ToolbarSeparator());
         ret.add(new ToolbarTextItem("Some text"));
-        ret.add(new ToolbarButton("Button2"));
+        ret.add(button2);
         ret.add(new ToolbarSeparator());
         TextField tf = new TextField();
         tf.setEmptyText("Enter search criteria");

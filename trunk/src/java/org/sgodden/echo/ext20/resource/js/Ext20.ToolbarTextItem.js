@@ -14,24 +14,27 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-package org.sgodden.echo.ext20;
+EchoExt20.ToolbarTextItem = Core.extend(EchoApp.Component, {
+    
+    $load: function() {
+        EchoApp.ComponentFactory.registerType("Ext20ToolbarTextItem", this);
+        EchoApp.ComponentFactory.registerType("E2TTX", this);
+    },
+    
+    componentType: "Ext20ToolbarTextItem"
+    
+});
 
-/**
- * Renders text directly into a toolbar.
- * @author sgodden
- */
-public class ToolbarTextItem 
-        extends ExtComponent {
+EchoExt20.ToolbarTextItemSync = Core.extend(EchoExt20.ExtComponentSync, {
     
-    public static final String TEXT_PROPERTY = "text";
+    $load: function() {
+        EchoRender.registerPeer("Ext20ToolbarTextItem", this);
+    },
     
-    public ToolbarTextItem(String text) {
-        super();
-        setText(text);
+    createExtComponent: function(update, options) {
+        return new Ext.Toolbar.TextItem({
+            text: this.component.get("text")
+        });
     }
     
-    public void setText(String text) {
-        setProperty(TEXT_PROPERTY, text);
-    }
-
-}
+});

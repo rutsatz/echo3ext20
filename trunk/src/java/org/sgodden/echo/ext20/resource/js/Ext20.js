@@ -244,6 +244,10 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
     
 });
 
+// Abstract component classes and sync peers
+
+// Property translators
+
 EchoExt20.PropertyTranslator = {
     toJsObject: function(client, propertyElement) {
         var jsonArray = new Array();

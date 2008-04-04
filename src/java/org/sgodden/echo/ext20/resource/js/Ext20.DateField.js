@@ -38,8 +38,6 @@ EchoExt20.DateFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
     },
     
     createExtComponent: function(update, options) {
-        //this._text = this.component.get("text");
-        //options['value'] = this.component.parent.peer.extChildOptions;
         var date = this.component.get("date");
         options['value'] = date;
         

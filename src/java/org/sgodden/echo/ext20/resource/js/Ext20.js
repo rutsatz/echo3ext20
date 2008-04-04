@@ -220,8 +220,8 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
             var alignToUpdate = update.getUpdatedProperty("alignTo");
             if (alignToUpdate != null) {
                 var alignToString = alignToUpdate.newValue;
+                this.alignTo(alignToString);
             }
-            this.alignTo(alignToString);
         }
     },
     

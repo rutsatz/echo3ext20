@@ -52,7 +52,7 @@ public class JettyServer {
         WebAppDeployer deployer = new WebAppDeployer();
         deployer.setContexts(contexts);
         deployer.setWebAppDir("./build/webapps");
-        deployer.setExtract(true);
+        deployer.setExtract(true); // necessary
         server.addLifeCycle(deployer);
 
         try {

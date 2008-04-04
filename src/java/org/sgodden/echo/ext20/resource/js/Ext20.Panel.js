@@ -179,6 +179,9 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         
         options['buttons'] = this._createButtons(update, children);
         
+        this._makeToolbar(update, children, "top", options);
+        this._makeToolbar(update, children, "bottom", options);
+        
         this.extComponent = this.newExtComponentInstance(options);
         
         if (children.length > 0) {
@@ -187,6 +190,31 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         }
         
         return this.extComponent;
+    },
+    
+    _makeToolbar: function(update, children, position, options) {
+        var done = false;
+        
+        for (var i = 0; i < children.length && !done; i++) {
+            if (children[i] instanceof EchoExt20.Toolbar) {
+                var childPosition = children[i].get("position");
+                if (childPosition == position) {
+                    // create the child
+                    EchoRender.renderComponentAdd(update, children[i], null);
+                    var tbar = children[i].peer.extComponent;
+                    if (tbar == null) {
+                        throw new Error("No toobar ext component was created during renderAdd");
+                    }
+                    if (position == "top") {
+                        options["tbar"] = tbar;
+                    }
+                    else if (position == "bottom") {
+                        options["bbar"] = tbar;
+                    }
+                }
+            }
+        }
+        
     },
     
     /**
@@ -245,8 +273,12 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     _createChildItems: function(update, children) {
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
-            if ( !(child instanceof EchoExt20.Button)
+            if ( 
+                  (
+                    !(child instanceof EchoExt20.Button)
                     || (child instanceof EchoExt20.Button && child.get("addToButtonBar") == false)
+                  )
+                  && !(child instanceof EchoExt20.Toolbar)
                 ) {
                 this.extChildOptions = {};
                 EchoRender.renderComponentAdd(update, child, null); // null because ext components create the necessary extra divs themselves

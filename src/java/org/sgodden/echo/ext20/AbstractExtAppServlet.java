@@ -71,6 +71,11 @@ public abstract class AbstractExtAppServlet extends WebContainerServlet {
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.RadioButton.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TabbedPane.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TimeField.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.Toolbar.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.ToolbarButton.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.ToolbarFill.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.ToolbarSeparator.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.ToolbarSpacer.js");
         resourceList.add("/json2.js");
 
         resources = new String[resourceList.size()];

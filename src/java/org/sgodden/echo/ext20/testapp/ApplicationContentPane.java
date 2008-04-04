@@ -24,6 +24,8 @@ import nextapp.echo.app.event.ActionListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sgodden.echo.ext20.Button;
+import org.sgodden.echo.ext20.Menu;
+import org.sgodden.echo.ext20.MenuItem;
 import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.TabbedPane;
 import org.sgodden.echo.ext20.TextField;
@@ -183,6 +185,8 @@ public class ApplicationContentPane
             }
         });
         
+        button.setMenu(makeMenu());
+        
         ret.add(button);
         ret.add(new ToolbarSeparator());
         ret.add(new ToolbarFill());
@@ -193,6 +197,22 @@ public class ApplicationContentPane
         TextField tf = new TextField();
         tf.setEmptyText("Enter search criteria");
         ret.add(tf);
+        
+        return ret;
+    }
+    
+    private Menu makeMenu(){
+        Menu ret = new Menu();
+        
+        MenuItem item1 = new MenuItem("Item 1");
+        ret.add(item1);
+        
+        item1.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                log.info("Menu item was clicked");
+            }
+        });
         
         return ret;
     }

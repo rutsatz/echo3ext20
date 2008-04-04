@@ -16,66 +16,43 @@
 # ================================================================= */
 package org.sgodden.echo.ext20.peers;
 
-import nextapp.echo.app.Component;
 import nextapp.echo.app.util.Context;
-import nextapp.echo.webcontainer.AbstractComponentSynchronizePeer;
 import nextapp.echo.webcontainer.Service;
 import nextapp.echo.webcontainer.WebContainerServlet;
 import nextapp.echo.webcontainer.service.JavaScriptService;
 
-import org.sgodden.echo.ext20.Button;
-import org.sgodden.echo.ext20.ExtComponent;
+import org.sgodden.echo.ext20.MenuItem;
 
 /**
  * Synchronization peer for {@link Button}.
  */
-public class ButtonPeer extends AbstractComponentSynchronizePeer {
+public class MenuItemPeer extends AbstractButtonPeer {
     
-    protected static final Service BUTTON_SERVICE = JavaScriptService.forResource("EchoExt20.Button", 
-            "/org/sgodden/echo/ext20/resource/js/Ext20.Button.js");
+    protected static final Service MENU_ITEM_SERVICE = JavaScriptService.forResource("EchoExt20.MenuItem", 
+            "/org/sgodden/echo/ext20/resource/js/Ext20.MenuItem.js");
     
     static {
-        WebContainerServlet.getServiceRegistry().add(BUTTON_SERVICE);
+        WebContainerServlet.getServiceRegistry().add(MENU_ITEM_SERVICE);
     }
     
     /**
      * Default constructor.
      */
-    public ButtonPeer() {
+    public MenuItemPeer() {
         super();
-        
-        addOutputProperty(Button.ALIGNTO_PROPERTY);
     }
     
     public String getClientComponentType(boolean shortType) {
-        return shortType ? "E2B" : "Echo20Button";
+        return shortType ? "E2MI" : "Echo20MenuItem";
     }
     
     /**
      * @see nextapp.echo.webcontainer.AbstractComponentSynchronizePeer#getComponentClass()
      */
-    public Class getComponentClass() {
-        return Button.class;
-    }
-    
-        
     @Override
-    public Object getOutputProperty(Context context, Component component, String propertyName, int propertyIndex) {
-        Object ret = null;
-        
-        if (propertyName.equals(ExtComponent.ALIGNTO_PROPERTY)) {
-            return ((ExtComponent)component).getAlignToPropertyString();
-        }
-        else {
-            ret = super.getOutputProperty(context, component, propertyName, propertyIndex);
-        }
-        
-        return ret;
+    public Class getComponentClass() {
+        return MenuItem.class;
     }
-    
-    
-
-    
 
     /**
      * @see nextapp.echo.webcontainer.ComponentSynchronizePeer#init(Context)

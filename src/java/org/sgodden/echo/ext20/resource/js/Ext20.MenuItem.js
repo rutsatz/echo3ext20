@@ -15,14 +15,14 @@
 #
 # ================================================================= */
 // TODO - abstract button class and sync peer
-EchoExt20.Button = Core.extend(EchoApp.Component, {
+EchoExt20.MenuItem = Core.extend(EchoApp.Component, {
 	
     $load: function() {
-        EchoApp.ComponentFactory.registerType("Ext20Button", this);
-        EchoApp.ComponentFactory.registerType("E2B", this);
+        EchoApp.ComponentFactory.registerType("Ext20MenuItem", this);
+        EchoApp.ComponentFactory.registerType("E2MI", this);
     },
 
-    componentType: "Ext20Button",
+    componentType: "Ext20MenuItem",
     
     $virtual: {
             /**
@@ -35,10 +35,10 @@ EchoExt20.Button = Core.extend(EchoApp.Component, {
 	
 });
 
-EchoExt20.ButtonSync = Core.extend(EchoExt20.ExtComponentSync, {
+EchoExt20.MenuItemSync = Core.extend(EchoExt20.ExtComponentSync, {
 
     $load: function() {
-        EchoRender.registerPeer("Ext20Button", this);
+        EchoRender.registerPeer("Ext20MenuItem", this);
     },
     
     _handleClickEventRef: null,
@@ -49,29 +49,13 @@ EchoExt20.ButtonSync = Core.extend(EchoExt20.ExtComponentSync, {
 
     $virtual: {
         newExtComponentInstance: function(options) {
-            return new Ext.Button(options);
+            return new Ext.menu.Item(options);
         }
     },
     
     createExtComponent: function(update, options) {
     
     	options['text'] = this.component.get("text");
-         
-        // see if we have a menu child item
-        if (this.component.getComponentCount() == 1) {
-            var child = this.component.getComponent(0);
-            if (child instanceof EchoExt20.Menu) {
-                EchoRender.renderComponentAdd(update, child, null);
-                var menu = child.peer.extComponent;
-                if (menu == null) {
-                    throw new Error("Menu not created for button");
-                }
-                options['menu'] = menu;
-            }
-            else {
-                throw new Error("Illegal child added to a button");
-            }
-        }
     
     	var extComponent = this.newExtComponentInstance(options);
     	extComponent.on('click', this._handleClickEventRef);

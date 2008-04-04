@@ -46,12 +46,18 @@ EchoExt20.ButtonSync = Core.extend(EchoExt20.ExtComponentSync, {
     $construct: function() {
     	this._handleClickEventRef = Core.method(this, this._handleClickEvent);
     },
+
+    $virtual: {
+        newExtComponentInstance: function(options) {
+            return new Ext.Button(options);
+        }
+    },
     
     createExtComponent: function(update, options) {
     
     	options['text'] = this.component.get("text")
     
-    	var extComponent = new Ext.Button(options);
+    	var extComponent = this.newExtComponentInstance(options);
     	extComponent.on('click', this._handleClickEventRef);
     	
     	return extComponent;

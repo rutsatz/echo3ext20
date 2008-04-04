@@ -27,6 +27,10 @@ import org.sgodden.echo.ext20.Button;
 import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.TabbedPane;
 import org.sgodden.echo.ext20.TextField;
+import org.sgodden.echo.ext20.Toolbar;
+import org.sgodden.echo.ext20.ToolbarButton;
+import org.sgodden.echo.ext20.ToolbarFill;
+import org.sgodden.echo.ext20.ToolbarSeparator;
 import org.sgodden.echo.ext20.layout.BorderLayout;
 import org.sgodden.echo.ext20.layout.BorderLayoutData;
 import org.sgodden.echo.ext20.layout.ColumnLayout;
@@ -154,6 +158,7 @@ public class ApplicationContentPane
                 "<p/>" +
                 "<p>I will put some details here about what it does soon</p>.");
         centerPanel.setTitle("Welcome");
+        centerPanel.setToolbar(makeToolbar());
         ret.add(centerPanel);
 
         Panel panel2 = new Panel();
@@ -163,6 +168,30 @@ public class ApplicationContentPane
 
         ret.add(new UserPanel());
 
+        return ret;
+    }
+    
+    private Toolbar makeToolbar() {
+        Toolbar ret = new Toolbar();
+        
+        ToolbarButton button = new ToolbarButton("Button");
+        button.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                log.info("Toolbar button was pressed");
+            }
+        });
+        
+        ret.add(button);
+        ret.add(new ToolbarSeparator());
+        ret.add(new ToolbarFill());
+        ret.add(new ToolbarSeparator());
+        ret.add(new ToolbarButton("Button2"));
+        ret.add(new ToolbarSeparator());
+        TextField tf = new TextField();
+        tf.setEmptyText("Enter search criteria");
+        ret.add(tf);
+        
         return ret;
     }
 

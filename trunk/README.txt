@@ -11,3 +11,7 @@ BUILDING
 1. Copy build.properties.sample to build.properties and alter the two properties in there to point to the correct locations for the servlet jar and 
 your tomcat deployment directoy.
 2. Run ant.  The war file will be produced in the 'dist' directory and copied to the deployment directory.
+
+NOTES
+-----
+Need to add portal stuff, and remember to add portal css when do.

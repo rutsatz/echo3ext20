@@ -41,6 +41,9 @@ public class Panel extends ExtComponent {
     public static final String WIDTH_PROPERTY = "width";
     public static final String HEIGHT_PROPERTY = "height";
     public static final String HTML_PROPERTY = "html";
+    
+    private Toolbar topToolbar;
+    private Toolbar bottomToolbar;
 
     public Panel() {
         this(null, null);
@@ -163,5 +166,35 @@ public class Panel extends ExtComponent {
     public void addButton(Button button) {
         button.setAddToButtonBar(true);
         add(button);
+    }
+    
+    /**
+     * Sets the panel's top tool bar.
+     * @param toolbar the tool bar to put at the top of the panel.
+     */
+    public void setToolbar(Toolbar toolbar) {
+        if (topToolbar != null) {
+            remove(topToolbar);
+        }
+        
+        toolbar.setPosition(Toolbar.Position.TOP);
+        add(toolbar);
+        
+        this.topToolbar = toolbar;
+    }
+    
+    /**
+     * Sets the panel's bottom tool bar.
+     * @param toolbar the tool bar to put at the bottom of the panel.
+     */
+    public void setBottomToolbar(Toolbar toolbar) {
+        if (bottomToolbar != null) {
+            remove(bottomToolbar);
+        }
+        
+        toolbar.setPosition(Toolbar.Position.BOTTOM);
+        add(toolbar);
+        
+        this.bottomToolbar = toolbar;
     }
 }

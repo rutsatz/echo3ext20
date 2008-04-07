@@ -30,6 +30,7 @@ import org.sgodden.echo.ext20.DateField;
 import org.sgodden.echo.ext20.FieldSet;
 import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.RadioButton;
+import org.sgodden.echo.ext20.TextArea;
 import org.sgodden.echo.ext20.TextField;
 import org.sgodden.echo.ext20.TimeField;
 import org.sgodden.echo.ext20.data.SimpleStore;
@@ -71,6 +72,9 @@ public class UserEditPanel
         final TimeField timeField = new TimeField(cal, "Time");
         timeField.setBlankAllowed(false);
         add(timeField);
+        
+        TextArea textArea = new TextArea("Some text in a text area", "Notes");
+        add(textArea);
 
         // and let's put these last few in a field set
         FieldSet fieldSet = new FieldSet();

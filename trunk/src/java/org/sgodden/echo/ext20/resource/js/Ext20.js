@@ -37,6 +37,10 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
         createExtComponent: function(update, options) {}
     },
     
+    $static: {
+        currentWindow: null
+    },
+    
     /**
      * Simple marker property to identify that this as an ext-related peer.
      */
@@ -138,7 +142,13 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
      * TODO - don't do this if there were no adds / removes in the server update
      */
     _rootServerUpdateComplete: function() {
-        this.extComponent.doLayout();
+        if (EchoExt20.ExtComponentSync.currentWindow == null) {
+            this.extComponent.doLayout();
+        }
+        else {
+            EchoExt20.ExtComponentSync.currentWindow.doLayout();
+        }
+        
     },
         
     /**

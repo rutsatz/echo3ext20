@@ -48,12 +48,11 @@ public class Panel extends ExtComponent {
     public Panel() {
         this(null, null);
     }
+    
+    public Panel(String title) {
+        this(null, title);
+    }
 
-    /**
-     * Creates a viewport with the specified layout.
-     * 
-     * @param regionFlags
-     */
     public Panel(Layout layout) {
         this(layout, null);
     }

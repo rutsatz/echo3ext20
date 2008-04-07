@@ -1,4 +1,5 @@
 #summary Importing into your maven repository.
+#labels Featured
 
 Since this software is nowhere near ready for release, it is not installed into the central maven repository.
 

@@ -1,0 +1,33 @@
+#summary Implementation status of the various Ext components.
+#labels Featured
+
+The following table provides a list of all the components I currently plan to implement, and their implementation status.  Please note that even components listed as implemented are usually only partially implemented.  Update support is far from complete, as is the set of events that can be listened to.
+
+||*Component*||*Implemented?*||*Notes*||
+||Button||Yes|| ||
+||Checkbox||Yes|| ||
+||ComboBox||Yes||The model API is poorly implemented||
+||DateField||Yes|| ||
+||EditorGridPanel||No|| ||
+||FieldSet||Yes||Seems to have rendering problems in some situations||
+||GridPanel||Yes||Model API is poorly implemented||
+||HtmlEditor||Yes||Seems to have rendering problems - look at implementing TinyMCE instead||
+||NumberField||No|| ||
+||Panel||Yes|| ||
+||Portal||No||The portal example provided with the distribution||
+||Radio||Yes|| ||
+||TabPanel||Yes|| ||
+||TextArea||No|| ||
+||TextField||Yes|| ||
+||TimeField||Yes|| ||
+||TreePanel||No|| ||
+||Window||Yes||Multiple open windows not handled properly||
+
+Layouts:
+
+||*Layout*||*Implemented?*||
+||BorderLayout||Yes||
+||ColumnLayout||Yes||
+||FitLayout||Yes||
+||FormLayout||Yes||
+||TableLayout||Yes||

@@ -170,6 +170,8 @@ public class ApplicationContentPane
         ret.add(panel2);
 
         ret.add(new UserPanel());
+        
+        ret.add(new WindowTest());
 
         return ret;
     }

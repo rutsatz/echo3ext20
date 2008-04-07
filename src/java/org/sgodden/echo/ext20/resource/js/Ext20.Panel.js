@@ -273,12 +273,15 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     _createChildItems: function(update, children) {
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
-            if ( 
+            if (child instanceof EchoExt20.Window) {
+                this._createWindow(update, child);
+            }
+            else if ( 
                   (
                     !(child instanceof EchoExt20.Button)
                     || (child instanceof EchoExt20.Button && child.get("addToButtonBar") == false)
                   )
-                  && !(child instanceof EchoExt20.Toolbar)
+                  && !(child instanceof EchoExt20.Toolbar) // toolbars handled separately
                 ) {
                 EchoRender.renderComponentAdd(update, child, null); // null because ext components create the necessary extra divs themselves
                 
@@ -292,6 +295,12 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
                 }
             }
         }
+    },
+    
+    _createWindow: function(update, child) {
+        EchoRender.renderComponentAdd(update, child, null);
+        EchoExt20.ExtComponentSync.currentWindow = child.peer.extComponent;
+        child.peer.extComponent.show();
     }
     
 });

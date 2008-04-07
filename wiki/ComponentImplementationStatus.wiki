@@ -17,7 +17,7 @@ The following table provides a list of all the components I currently plan to im
 ||Portal||No||The portal example provided with the distribution||
 ||Radio||Yes|| ||
 ||TabPanel||Yes|| ||
-||TextArea||No|| ||
+||TextArea||Yes|| ||
 ||TextField||Yes|| ||
 ||TimeField||Yes|| ||
 ||TreePanel||No|| ||

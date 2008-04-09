@@ -21,6 +21,8 @@ EchoExt20.CheckboxField = Core.extend(EchoApp.Component, {
         EchoApp.ComponentFactory.registerType("E2CBF", this);
     },
     
+    focusable: true,
+    
     componentType: "Ext20CheckboxField"
     
 });
@@ -57,6 +59,10 @@ EchoExt20.CheckboxFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
         this.component.set("selected", this.extComponent.getValue());
     },
     
-    renderUpdate: function(){}
+    renderUpdate: function(){},
+    
+    renderFocus: function() {
+        this.extComponent.focus(true);
+    }
     
 });

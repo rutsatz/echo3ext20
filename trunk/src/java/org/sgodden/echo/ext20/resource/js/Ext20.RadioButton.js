@@ -20,6 +20,8 @@ EchoExt20.RadioButton = Core.extend(EchoApp.Component, {
         EchoApp.ComponentFactory.registerType("Ext20RadioButton", this);
         EchoApp.ComponentFactory.registerType("E2RB", this);
     },
+
+    focusable: true,
     
     componentType: "Ext20RadioButton"
     
@@ -59,6 +61,10 @@ EchoExt20.RadioButtonSync = Core.extend(EchoExt20.ExtComponentSync, {
         this.component.set("selected", this.extComponent.getValue());
     },
     
-    renderUpdate: function(){}
+    renderUpdate: function(){},
+    
+    renderFocus: function() {
+        this.extComponent.focus(true);
+    }
     
 });

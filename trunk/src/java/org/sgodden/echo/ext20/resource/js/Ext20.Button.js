@@ -21,6 +21,8 @@ EchoExt20.Button = Core.extend(EchoApp.Component, {
         EchoApp.ComponentFactory.registerType("Ext20Button", this);
         EchoApp.ComponentFactory.registerType("E2B", this);
     },
+    
+    focusable: true,
 
     componentType: "Ext20Button",
     
@@ -81,6 +83,10 @@ EchoExt20.ButtonSync = Core.extend(EchoExt20.ExtComponentSync, {
     
     _handleClickEvent: function() {
     	this.component.doAction();
+    },
+    
+    renderFocus: function() {
+        this.extComponent.focus(true);
     }
 
 });

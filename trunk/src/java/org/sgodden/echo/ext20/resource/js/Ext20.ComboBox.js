@@ -21,6 +21,8 @@ EchoExt20.ComboBox = Core.extend(EchoApp.Component, {
         EchoApp.ComponentFactory.registerType("E2CB", this);
     },
 
+    focusable: true,
+
     componentType: "Ext20ComboBox"
 	
 });
@@ -69,6 +71,10 @@ EchoExt20.ComboBoxSync = Core.extend(EchoExt20.TextFieldSync, {
      */
     newExtComponentInstance: function(options) {
         return new Ext.form.ComboBox(options);
+    },
+    
+    renderFocus: function() {
+        this.extComponent.focus(true);
     }
 
 });

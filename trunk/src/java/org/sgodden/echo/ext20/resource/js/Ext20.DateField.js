@@ -20,6 +20,8 @@ EchoExt20.DateField = Core.extend(EchoApp.Component, {
         EchoApp.ComponentFactory.registerType("Ext20DateField", this);
         EchoApp.ComponentFactory.registerType("E2DF", this);
     },
+
+    focusable: true,
     
     componentType: "Ext20DateField"
     
@@ -69,6 +71,10 @@ EchoExt20.DateFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
         this.extComponent.setValue(this.component.get("date"));
     },
     
-    renderUpdate: function(){}
+    renderUpdate: function(){},
+    
+    renderFocus: function() {
+        this.extComponent.focus(true);
+    }
     
 });

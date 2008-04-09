@@ -21,6 +21,8 @@ EchoExt20.TextField = Core.extend(EchoApp.Component, {
         EchoApp.ComponentFactory.registerType("E2TF", this);
     },
 
+    focusable: true,
+
     componentType: "Ext20TextField"
 	
 });
@@ -73,6 +75,10 @@ EchoExt20.TextFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
     renderUpdate: function(update){
         EchoExt20.ExtComponentSync.prototype.renderUpdate.call(this, update);
         this.extComponent.setValue(this.component.get("text"));
+    },
+    
+    renderFocus: function() {
+        this.extComponent.focus(true);
     }
 
 });

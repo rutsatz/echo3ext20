@@ -36,7 +36,10 @@
 		<jar destfile="${build.dir}/${jar.name}">
 			<fileset dir="${classes.dir}"/>
 			<fileset dir="src/java" includes="**/*.js, META-INF/**/*"/>
-			<fileset dir="contrib/ext-2.0.2" includes="ext-all.js, ext-all-debug.js, adapter/ext/ext-base.js"/>
+			<zipfileset 
+                            prefix = "ext" 
+                            dir="contrib/ext-2.0.2" 
+                            includes="ext-all.js, ext-all-debug.js, adapter/ext/ext-base.js"/>
 		</jar>
 	</target>
 

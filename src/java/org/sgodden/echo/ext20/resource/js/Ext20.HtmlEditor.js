@@ -21,6 +21,8 @@ EchoExt20.HtmlEditor = Core.extend(EchoApp.Component, {
         EchoApp.ComponentFactory.registerType("E2HE", this);
     },
 
+    focusable: true,
+
     componentType: "Ext20HtmlEditor"
 	
 });
@@ -55,6 +57,10 @@ EchoExt20.HtmlEditorSync = Core.extend(EchoExt20.ExtComponentSync, {
     renderUpdate: function(update){
         EchoExt20.ExtComponentSync.prototype.renderUpdate.call(this, update);
 	this.extComponent.setValue(this.component.get("text"));
+    },
+    
+    renderFocus: function() {
+        this.extComponent.focus(true);
     }
 
 });

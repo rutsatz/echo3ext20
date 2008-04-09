@@ -41,8 +41,9 @@ public abstract class AbstractExtAppServlet extends WebContainerServlet {
 
     static {
         List resourceList = new ArrayList();
-        resourceList.add("/adapter/ext/ext-base.js");
-        resourceList.add("/ext-all-debug.js");
+        resourceList.add("/ext/adapter/ext/ext-base.js");
+        resourceList.add("/ext/ext-all-debug.js");
+        //resourceList.add("/ext/portal/")
 
         String[] resources = new String[resourceList.size()];
         resourceList.toArray(resources);

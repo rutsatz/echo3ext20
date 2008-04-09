@@ -20,6 +20,8 @@ EchoExt20.TabbedPane = Core.extend(EchoApp.Component, {
         EchoApp.ComponentFactory.registerType("Ext20TabbedPane", this);
         EchoApp.ComponentFactory.registerType("E2TP", this);
     },
+
+    focusable: true,
     
     componentType: "Ext20TabbedPane"
     
@@ -85,6 +87,10 @@ EchoExt20.TabbedPaneSync = Core.extend(EchoExt20.ExtComponentSync, {
         }    	
     },
     
-    renderUpdate: function(){}
+    renderUpdate: function(){},
+    
+    renderFocus: function() {
+        this.extComponent.focus();
+    }
     
 });

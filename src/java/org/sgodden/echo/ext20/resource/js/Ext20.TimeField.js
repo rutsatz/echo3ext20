@@ -20,6 +20,8 @@ EchoExt20.TimeField = Core.extend(EchoApp.Component, {
         EchoApp.ComponentFactory.registerType("Ext20TimeField", this);
         EchoApp.ComponentFactory.registerType("E2TMF", this);
     },
+
+    focusable: true,
     
     componentType: "Ext20TimeField"
     
@@ -76,6 +78,10 @@ EchoExt20.TimeFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
         if (time != null) {
             extComponent.setValue(time);
         }
+    },
+    
+    renderFocus: function() {
+        this.extComponent.focus(true);
     }
     
 });

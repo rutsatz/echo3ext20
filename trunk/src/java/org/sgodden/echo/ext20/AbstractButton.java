@@ -57,7 +57,7 @@ public abstract class AbstractButton
      * Creates a button with text and an icon.
      *
      * @param text the text to be displayed in the button
-     * @param icon the icon to be displayed in the button
+     * @param iconUrl the icon to be displayed in the button
      */
     public AbstractButton(String text, String iconUrl) {
         this(text);
@@ -118,6 +118,13 @@ public abstract class AbstractButton
         if (INPUT_ACTION.equals(inputName)) {
             fireActionEvent();
         }
+    }
+    
+    /**
+     * Perform a button click programatically.
+     */
+    public void doClick() {
+        fireActionEvent();
     }
     
     

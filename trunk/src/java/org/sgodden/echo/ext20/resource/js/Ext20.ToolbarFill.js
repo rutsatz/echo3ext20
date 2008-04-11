@@ -14,7 +14,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.ToolbarFill = Core.extend(EchoApp.Component, {
+EchoExt20.ToolbarFill = Core.extend(EchoExt20.ExtComponent, {
     
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20ToolbarFill", this);

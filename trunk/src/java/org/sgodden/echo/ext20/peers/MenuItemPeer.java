@@ -24,7 +24,7 @@ import nextapp.echo.webcontainer.service.JavaScriptService;
 import org.sgodden.echo.ext20.MenuItem;
 
 /**
- * Synchronization peer for {@link Button}.
+ * Synchronization peer for {@link MenuItem}.
  */
 public class MenuItemPeer extends AbstractButtonPeer {
     

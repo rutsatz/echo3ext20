@@ -14,7 +14,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.HtmlEditor = Core.extend(EchoApp.Component, {
+EchoExt20.HtmlEditor = Core.extend(EchoExt20.ExtComponent, {
 	
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20HtmlEditor", this);
@@ -57,10 +57,6 @@ EchoExt20.HtmlEditorSync = Core.extend(EchoExt20.ExtComponentSync, {
     renderUpdate: function(update){
         EchoExt20.ExtComponentSync.prototype.renderUpdate.call(this, update);
 	this.extComponent.setValue(this.component.get("text"));
-    },
-    
-    renderFocus: function() {
-        this.extComponent.focus(true);
     }
 
 });

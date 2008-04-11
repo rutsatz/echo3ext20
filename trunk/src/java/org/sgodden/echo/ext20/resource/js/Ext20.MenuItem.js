@@ -15,7 +15,7 @@
 #
 # ================================================================= */
 // TODO - abstract button class and sync peer
-EchoExt20.MenuItem = Core.extend(EchoApp.Component, {
+EchoExt20.MenuItem = Core.extend(EchoExt20.ExtComponent, {
 	
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20MenuItem", this);

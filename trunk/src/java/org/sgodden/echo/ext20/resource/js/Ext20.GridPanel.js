@@ -14,7 +14,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.GridPanel = Core.extend(EchoApp.Component, {
+EchoExt20.GridPanel = Core.extend(EchoExt20.ExtComponent, {
     
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20GridPanel", this);
@@ -35,7 +35,7 @@ EchoExt20.GridPanel = Core.extend(EchoApp.Component, {
     
 });
 
-EchoExt20.GridPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
+EchoExt20.GridPanelSync = Core.extend(EchoExt20.PanelSync, {
 
     $load: function() {
         EchoRender.registerPeer("Ext20GridPanel", this);
@@ -50,7 +50,15 @@ EchoExt20.GridPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
     	this._handleRowSelectEventRef = Core.method(this, this._handleRowSelectEvent);
     	this._handleRowDeselectEventRef = Core.method(this, this._handleRowDeselectEvent);
     },
-
+    
+    newExtComponentInstance: function(options) {
+        var ret = new Ext.grid.GridPanel(options);
+        
+        ret.on("rowdblclick", this._handleRowActivation, this);
+        
+        return ret;
+    },
+    
     createExtComponent: function(update, options) {
 
         options["store"] = this.component.get("simpleStore");
@@ -60,7 +68,6 @@ EchoExt20.GridPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         sm.on("rowdeselect", this._handleRowDeselectEventRef);
         options["sm"] = sm;
         
-        options["title"] = this.component.get("title");
         options["border"] = true;
         
         options["bbar"] = new Ext.PagingToolbar({
@@ -71,9 +78,11 @@ EchoExt20.GridPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
             emptyMsg: "No records to display"
         });
 
-        var gridPanel = new Ext.grid.GridPanel(options);
-            
-        return gridPanel;
+        return EchoExt20.PanelSync.prototype.createExtComponent.call(this, update, options);
+    },
+    
+    _handleRowActivation: function() {
+        this.component.doAction();
     },
     
     _handleRowSelectEvent: function(selectionModel, rowIndex, record) {
@@ -94,8 +103,6 @@ EchoExt20.GridPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         }
 
         this.component.set("selection", selectionString);
-        this.component.doAction();
-
     },
     
     _handleRowDeselectEvent: function(selectionModel, rowIndex, record) {
@@ -103,8 +110,6 @@ EchoExt20.GridPanelSync = Core.extend(EchoExt20.ExtComponentSync, {
 		if (this._selectedRows[rowIndex] != null) {
 			delete this._selectedRows[rowIndex];
 		}
-    },
-    
-    renderUpdate: function(){}
+    }
 
 });

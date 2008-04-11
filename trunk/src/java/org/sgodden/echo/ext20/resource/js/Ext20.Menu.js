@@ -14,7 +14,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.Menu = Core.extend(EchoApp.Component, {
+EchoExt20.Menu = Core.extend(EchoExt20.ExtComponent, {
 	
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20Menu", this);

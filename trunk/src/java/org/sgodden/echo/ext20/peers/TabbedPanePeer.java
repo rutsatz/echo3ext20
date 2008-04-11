@@ -17,8 +17,6 @@
 package org.sgodden.echo.ext20.peers;
 
 import nextapp.echo.app.util.Context;
-import nextapp.echo.webcontainer.AbstractComponentSynchronizePeer;
-import nextapp.echo.webcontainer.ServerMessage;
 import nextapp.echo.webcontainer.Service;
 import nextapp.echo.webcontainer.WebContainerServlet;
 import nextapp.echo.webcontainer.service.JavaScriptService;
@@ -26,7 +24,7 @@ import nextapp.echo.webcontainer.service.JavaScriptService;
 import org.sgodden.echo.ext20.TabbedPane;
 
 public class TabbedPanePeer 
-extends AbstractComponentSynchronizePeer {
+extends ExtComponentPeer {
     
     protected static final Service TABBED_PANE_SERVICE = JavaScriptService.forResource("EchoExt20.TabbedPane", 
             "/org/sgodden/echo/ext20/resource/js/Ext20.TabbedPane.js");

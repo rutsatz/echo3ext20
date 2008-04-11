@@ -27,7 +27,7 @@ import nextapp.echo.webcontainer.service.JavaScriptService;
 import org.sgodden.echo.ext20.TextField;
 
 public class TextFieldPeer
-        extends AbstractComponentSynchronizePeer {
+        extends ExtComponentPeer {
 
     protected static final Service TEXT_FIELD_SERVICE = JavaScriptService.forResource("EchoExt20.TextField",
             "/org/sgodden/echo/ext20/resource/js/Ext20.TextField.js");

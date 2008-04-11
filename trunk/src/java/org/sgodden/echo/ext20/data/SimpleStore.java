@@ -107,9 +107,8 @@ public class SimpleStore
 	}
 
 	/**
-	 * Returns the array of field names, which map by their position to the columns
+	 * Sets the array of field names, which map by their position to the columns
 	 * in the store data.
-	 * @return the array of field names.
 	 */
 	public void setFields(String[] fields) {
 		this.fields = fields;

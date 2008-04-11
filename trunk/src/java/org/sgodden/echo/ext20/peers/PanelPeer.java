@@ -16,6 +16,8 @@
 # ================================================================= */
 package org.sgodden.echo.ext20.peers;
 
+import nextapp.echo.app.Component;
+import nextapp.echo.app.update.ClientUpdateManager;
 import nextapp.echo.app.util.Context;
 import nextapp.echo.webcontainer.AbstractComponentSynchronizePeer;
 import nextapp.echo.webcontainer.Service;
@@ -25,13 +27,27 @@ import nextapp.echo.webcontainer.service.JavaScriptService;
 import org.sgodden.echo.ext20.Panel;
 
 public class PanelPeer
-        extends AbstractComponentSynchronizePeer {
+        extends ExtComponentPeer {
 
     protected static final Service PANEL_SERVICE = JavaScriptService.forResource("EchoExt20.Panel",
             "/org/sgodden/echo/ext20/resource/js/Ext20.Panel.js");
 
     static {
         WebContainerServlet.getServiceRegistry().add(PANEL_SERVICE);
+    }
+    
+    public PanelPeer() {
+                
+        addEvent(
+            new AbstractComponentSynchronizePeer.EventPeer(
+                    Panel.INPUT_KEYPRESS_ACTION, 
+                    Panel.KEYPRESS_LISTENERS_CHANGED_PROPERTY) {
+                @Override
+                public boolean hasListeners(Context context, Component component) {
+                    return ((Panel) component).hasKeyPressListeners();
+                }
+        });
+
     }
 
     public Class getComponentClass() {
@@ -40,6 +56,29 @@ public class PanelPeer
 
     public String getClientComponentType(boolean shortType) {
         return shortType ? "E2P" : "Ext2Panel";
+    }
+    
+    
+    /**
+     * @see nextapp.echo.webcontainer.AbstractComponentSynchronizePeer#getInputPropertyClass(java.lang.String)
+     */
+    @Override
+    public Class getInputPropertyClass(String propertyName) {
+        if (Panel.INPUT_KEY_PRESSED.equals(propertyName)) {
+            return String.class;
+        }
+        return null;
+    }
+
+    /**
+     * @see nextapp.echo.webcontainer.ComponentSynchronizePeer#storeInputProperty(Context, Component, String, int, Object)
+     */
+    @Override
+    public void storeInputProperty(Context context, Component component, String propertyName, int propertyIndex, Object newValue) {
+        if (propertyName.equals(Panel.INPUT_KEY_PRESSED)) {
+            ClientUpdateManager clientUpdateManager = (ClientUpdateManager) context.get(ClientUpdateManager.class);
+            clientUpdateManager.setComponentProperty(component, Panel.INPUT_KEY_PRESSED, newValue);
+        }
     }
 
     /**

@@ -25,7 +25,7 @@ import nextapp.echo.webcontainer.service.JavaScriptService;
 import org.sgodden.echo.ext20.TextArea;
 
 public class TextAreaPeer
-        extends AbstractComponentSynchronizePeer {
+        extends ExtComponentPeer {
 
     protected static final Service TEXT_AREA_SERVICE = JavaScriptService.forResource("EchoExt20.TextArea",
             "/org/sgodden/echo/ext20/resource/js/Ext20.TextArea.js");

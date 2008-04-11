@@ -14,14 +14,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.Panel = Core.extend(EchoApp.Component, {
+EchoExt20.Panel = Core.extend(EchoExt20.ExtComponent, {
     
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20Panel", this);
         EchoApp.ComponentFactory.registerType("E2P", this);
     },
     
-    componentType: "Ext20Panel"
+    componentType: "Ext20Panel",
+    
+    doKeyPress: function() {
+        this.fireEvent({type: "keyPress", source: this});
+    }
     
 });
 
@@ -182,6 +186,8 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         this._makeToolbar(update, children, "top", options);
         this._makeToolbar(update, children, "bottom", options);
         
+        this._registerKeyPresses(update, options);
+        
         this.extComponent = this.newExtComponentInstance(options);
         
         if (children.length > 0) {
@@ -190,6 +196,41 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         }
         
         return this.extComponent;
+    },
+    
+    _registerKeyPresses: function(update, options) {
+        if (this.component.get("registeredKeyPresses") != null) {
+            // FIXME - implement this properly
+            options['keys'] = [];
+            
+            var keyString = this.component.get("registeredKeyPresses");
+            //alert(keyString);
+            if (keyString == "enter") {
+                options['keys'].push({
+                    key: Ext.EventObject.ENTER,
+                    fn: this._handleKeyPress,
+                    scope: this
+                });
+            }
+            else if (keyString == "esc") {
+                options['keys'].push({
+                    key: Ext.EventObject.ESC,
+                    fn: this._handleKeyPress,
+                    scope: this
+                });
+            }
+        }
+    },
+    
+    _handleKeyPress: function(key, evt) {
+        if (key == Ext.EventObject.ENTER) {
+            this.component.set("keyPressed", "enter");
+        }
+        else if (key == Ext.EventObject.ESC) {
+            this.component.set("keyPressed", "esc");
+        }
+        evt.stopEvent();
+        this.component.doKeyPress();
     },
     
     _makeToolbar: function(update, children, position, options) {

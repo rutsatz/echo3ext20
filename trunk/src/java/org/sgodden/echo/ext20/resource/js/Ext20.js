@@ -25,6 +25,16 @@ Ext.QuickTips.init();
 */
 EchoExt20 = {};
 
+EchoExt20.ExtComponent = Core.extend(EchoApp.Component, {
+    /**
+     * Fires a before render event.
+     */
+    doBeforeRender: function() {
+        this.fireEvent({type: "beforeRender", source: this});
+    }
+});
+
+
 /**
 * Abstract base class for all Ext20 sync peers.
 */
@@ -125,6 +135,8 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
                 }, this);
             }
             
+            this._addBeforeRenderListener();
+            
             this._parentElement = null;
         }
         else {
@@ -210,7 +222,19 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
                 update,
                 options
             );
+            this._addBeforeRenderListener();
         }
+    },
+    
+    _addBeforeRenderListener: function() {
+        if (this.component._listenerList != null
+                && this.component._listenerList.hasListeners("beforeRender")) {
+            this.extComponent.on("beforerender", this._beforeRender, this);
+        }
+    },
+    
+    _beforeRender: function() {
+        this.component.doBeforeRender();
     },
     
     renderDispose: function(update) {
@@ -247,6 +271,13 @@ EchoExt20.ExtComponentSync = Core.extend(EchoRender.ComponentSync, {
         var extEl = this.extComponent.getEl();
         extEl.dom.style.position = "absolute";
         extEl.alignTo(otherId, alignmentString, [offsetX,offsetY]);
+    },
+    
+    renderFocus: function() {
+//        this.extComponent.on("render", function(){
+//            this.extComponent.focus(true);
+//        }, this);
+        this.extComponent.focus();
     }
     
 });

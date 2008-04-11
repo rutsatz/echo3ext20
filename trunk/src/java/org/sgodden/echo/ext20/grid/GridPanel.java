@@ -18,7 +18,6 @@ package org.sgodden.echo.ext20.grid;
 
 import java.util.EventListener;
 
-import nextapp.echo.app.Component;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
 import nextapp.echo.app.event.ChangeEvent;
@@ -28,6 +27,7 @@ import nextapp.echo.app.list.ListSelectionModel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.data.SimpleStore;
 
 /**
@@ -37,12 +37,11 @@ import org.sgodden.echo.ext20.data.SimpleStore;
  *
  */
 public class GridPanel
-        extends Component {
+        extends Panel {
 
     private static final transient Log log = LogFactory.getLog(GridPanel.class);
     public static final String PROPERTY_COLUMN_MODEL = "columnModel";
     public static final String PROPERTY_SIMPLE_STORE = "simpleStore";
-    public static final String PROPERTY_TITLE = "title";
     public static final String PROPERTY_ACTION_COMMAND = "actionCommand";
     public static final String INPUT_ACTION = "action";
     public static final String ACTION_LISTENERS_CHANGED_PROPERTY = "actionListeners";
@@ -68,10 +67,6 @@ public class GridPanel
 
     public SimpleStore getSimpleStore() {
         return (SimpleStore) getProperty(PROPERTY_SIMPLE_STORE);
-    }
-
-    public void setTitle(String title) {
-        setProperty(PROPERTY_TITLE, title);
     }
 
     /**

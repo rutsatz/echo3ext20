@@ -19,10 +19,20 @@ package org.sgodden.echo.ext20.testapp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.sgodden.echo.ext20.Button;
+import org.sgodden.echo.ext20.Menu;
+import org.sgodden.echo.ext20.MenuItem;
 import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.TextField;
+import org.sgodden.echo.ext20.Toolbar;
+import org.sgodden.echo.ext20.ToolbarButton;
+import org.sgodden.echo.ext20.ToolbarFill;
+import org.sgodden.echo.ext20.ToolbarSeparator;
+import org.sgodden.echo.ext20.ToolbarTextItem;
 import org.sgodden.echo.ext20.data.SimpleStore;
 import org.sgodden.echo.ext20.grid.ColumnConfiguration;
 import org.sgodden.echo.ext20.grid.ColumnModel;
@@ -36,30 +46,30 @@ import org.sgodden.echo.ext20.layout.TableLayout;
  * 
  * @author sgodden
  */
-public class UserListPanel 
+public class UserListPanel
         extends Panel {
-    
+
+    private static final transient Log log = LogFactory.getLog(UserListPanel.class);
     private GridPanel userGridPanel;
-    
     private Object[][] data = makeData();
-    
-    public UserListPanel(){
+
+    public UserListPanel() {
         super(new BorderLayout());
         setBorder(false);
         setRenderId("userList");
-                
+
         final Panel filterOptions = new Panel(new TableLayout(2));
         filterOptions.setBorder(false);
         filterOptions.setLayoutData(new BorderLayoutData(BorderLayout.NORTH));
         add(filterOptions);
-        
+
         final TextField tf = new TextField();
         tf.setEmptyText("Enter search text");
         filterOptions.add(tf);
-        
+
         Button button = new Button("Search");
         filterOptions.add(button);
-        
+
         List<ColumnConfiguration> cols = new ArrayList<ColumnConfiguration>();
         cols.add(new ColumnConfiguration("User ID", "userid"));
         cols.add(new ColumnConfiguration("Name", "name"));
@@ -71,12 +81,20 @@ public class UserListPanel
                 new String[]{"id", "userid", "name", "date"});
 
         userGridPanel = new GridPanel(columnModel, store);
+        userGridPanel.setToolbar(makeToolbar());
         add(userGridPanel);
-        
+
         userGridPanel.setLayoutData(new BorderLayoutData(BorderLayout.CENTER));
 
+        addKeyPressListener("enter", new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                log.info("Enter key was pressed");
+            }
+        });
+
+
     }
-    
+
     /**
      * Adds a listener to be notifies when a row is actioned.
      * @param listener the listener to be added.
@@ -84,32 +102,31 @@ public class UserListPanel
     public void addActionListener(ActionListener listener) {
         userGridPanel.addActionListener(listener);
     }
-    
+
     /**
      * Returns the (only) selected row index of the grid.
-     * @return
      */
     public int getSelectedIndex() {
         return userGridPanel.getSelectionModel().getMinSelectedIndex();
     }
-    
+
     /**
      * Returns the selected row of data.
-     * @return
+     * @return the selected row of data.
      */
     public Object[] getSelectedRow() {
         return data[getSelectedIndex()];
     }
-    
+
     /**
      * Makes dummy data for users.
      * @return the dummy data.
      */
     private Object[][] makeData() {
         int rows = 10;
-        
+
         Object[][] ret = new Object[rows][];
-        
+
         for (int i = 0; i < ret.length; i++) {
             Object[] row = new Object[4];
             row[0] = String.valueOf(i);
@@ -118,8 +135,59 @@ public class UserListPanel
             row[3] = new Date();
             ret[i] = row;
         }
-        
+
         return ret;
     }
 
+    private Toolbar makeToolbar() {
+        Toolbar ret = new Toolbar();
+
+        ToolbarButton button = new ToolbarButton("Button");
+        button.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                log.info("Toolbar button was pressed");
+            }
+        });
+
+        button.setMenu(makeMenu());
+
+        ToolbarButton button2 = new ToolbarButton("Button2");
+        button2.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                log.info("Button2 was pressed");
+            }
+        });
+
+        ret.add(button);
+        ret.add(new ToolbarSeparator());
+        ret.add(new ToolbarFill());
+        ret.add(new ToolbarSeparator());
+        ret.add(new ToolbarTextItem("Some text"));
+        ret.add(button2);
+        ret.add(new ToolbarSeparator());
+
+        TextField tf = new TextField();
+        tf.setEmptyText("Enter search criteria");
+        ret.add(tf);
+
+        return ret;
+    }
+
+    private Menu makeMenu() {
+        Menu ret = new Menu();
+
+        MenuItem item1 = new MenuItem("Item 1");
+        ret.add(item1);
+
+        item1.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                log.info("Menu item was clicked");
+            }
+        });
+
+        return ret;
+    }
 }

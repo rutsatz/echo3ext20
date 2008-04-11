@@ -14,7 +14,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.ComboBox = Core.extend(EchoApp.Component, {
+EchoExt20.ComboBox = Core.extend(EchoExt20.ExtComponent, {
 	
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20ComboBox", this);
@@ -71,10 +71,6 @@ EchoExt20.ComboBoxSync = Core.extend(EchoExt20.TextFieldSync, {
      */
     newExtComponentInstance: function(options) {
         return new Ext.form.ComboBox(options);
-    },
-    
-    renderFocus: function() {
-        this.extComponent.focus(true);
     }
 
 });

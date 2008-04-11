@@ -16,7 +16,9 @@
 # ================================================================= */
 package org.sgodden.echo.ext20;
 
+import java.util.EventListener;
 import nextapp.echo.app.Component;
+import nextapp.echo.app.event.ActionEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -31,6 +33,9 @@ public abstract class ExtComponent
     private static final transient Log log = LogFactory.getLog(ExtComponent.class);
     
     public static final String ALIGNTO_PROPERTY = "alignTo";
+    
+    public static final String INPUT_BEFORE_RENDER_PROPERTY = "beforeRender";
+    public static final String BEFORE_RENDER_LISTENERS_CHANGED_PROPERTY = "beforeRenderListeners";
 
     private Component alignToOtherComponent;
     private Alignment sourceAlignment;
@@ -45,15 +50,13 @@ public abstract class ExtComponent
      * For example, to position the bottom right corner of comp1 to the
      * bottom left corner of comp2, with a horizontal
      * shift of 5 pixels to the left, you would do the following:
-     * <pre>
-     *   comp1.alignTo(
+     * <pre class="code">comp1.alignTo(
      *     comp2,
      *     Alignment.BOTTOM_RIGHT,
      *     Alignment.BOTTOM_LEFT,
      *     -5,
      *     0
-     *   );
-     * </pre>
+     *   );</pre>
      * @param other the component relative to which this component should
      * be positioned.
      * @param sourceAlignment the alignment (edge) of the source component.
@@ -85,6 +88,11 @@ public abstract class ExtComponent
         this.yAlignOffset = yOffset;
     }
     
+    /**
+     * For internal use - returns the alignTo property as a string suitable
+     * for transmission to the client.
+     * @return the alignTo property.
+     */
     public String getAlignToPropertyString() {
         
         String ret = null;
@@ -126,6 +134,58 @@ public abstract class ExtComponent
                 return "r";
             default:
                 throw new IllegalArgumentException("Unrecognised alignment constant");
+        }
+    }
+    
+        
+    /**
+     * Returns whether any listeners for the beforeRender event are registered.
+     * 
+     * @return true if any before render listeners are registered
+     */
+    public boolean hasBeforeRenderListeners() {
+        return getEventListenerList().getListenerCount(BeforeRenderListener.class) != 0;
+    }
+    
+        
+    /**
+     * Adds a listener to be notified before a component is rendered.
+     * 
+     * @param l the <code>BeforeRenderListener</code> to add.
+     */
+    public void addBeforeRenderListener(BeforeRenderListener l) {
+        getEventListenerList().addListener(BeforeRenderListener.class, l);
+        // Notification of action listener changes is provided due to 
+        // existence of hasActionListeners() method. 
+        firePropertyChange(BEFORE_RENDER_LISTENERS_CHANGED_PROPERTY, null, l);
+    }
+    
+    /**
+     * @see nextapp.echo.app.Component#processInput(java.lang.String, java.lang.Object)
+     */
+    @Override
+    public void processInput(String inputName, Object inputValue) {
+        super.processInput(inputName, inputValue);
+        if (INPUT_BEFORE_RENDER_PROPERTY.equals(inputName)) {
+            fireBeforeRenderEvent();
+        }
+    }
+    
+        
+    /**
+     * Fires an action event to all listeners.
+     */
+    private void fireBeforeRenderEvent() {
+        if (!hasEventListenerList()) {
+            return;
+        }
+        EventListener[] listeners = getEventListenerList().getListeners(BeforeRenderListener.class);
+        ActionEvent e = null;
+        for (int i = 0; i < listeners.length; ++i) {
+            if (e == null) {
+                e = new ActionEvent(this, null);
+            }
+            ((BeforeRenderListener) listeners[i]).actionPerformed(e);
         }
     }
     

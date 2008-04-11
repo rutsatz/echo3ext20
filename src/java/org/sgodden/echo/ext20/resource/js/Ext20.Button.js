@@ -14,8 +14,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-// TODO - abstract button class and sync peer
-EchoExt20.Button = Core.extend(EchoApp.Component, {
+EchoExt20.Button = Core.extend(EchoExt20.ExtComponent, {
 	
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20Button", this);
@@ -83,10 +82,6 @@ EchoExt20.ButtonSync = Core.extend(EchoExt20.ExtComponentSync, {
     
     _handleClickEvent: function() {
     	this.component.doAction();
-    },
-    
-    renderFocus: function() {
-        this.extComponent.focus(true);
     }
 
 });

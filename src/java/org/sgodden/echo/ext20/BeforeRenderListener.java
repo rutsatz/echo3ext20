@@ -14,27 +14,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.ToolbarTextItem = Core.extend(EchoExt20.ExtComponent, {
-    
-    $load: function() {
-        EchoApp.ComponentFactory.registerType("Ext20ToolbarTextItem", this);
-        EchoApp.ComponentFactory.registerType("E2TTX", this);
-    },
-    
-    componentType: "Ext20ToolbarTextItem"
-    
-});
+package org.sgodden.echo.ext20;
 
-EchoExt20.ToolbarTextItemSync = Core.extend(EchoExt20.ExtComponentSync, {
-    
-    $load: function() {
-        EchoRender.registerPeer("Ext20ToolbarTextItem", this);
-    },
-    
-    createExtComponent: function(update, options) {
-        return new Ext.Toolbar.TextItem({
-            text: this.component.get("text")
-        });
-    }
-    
-});
+import nextapp.echo.app.event.ActionListener;
+
+/**
+ * Listener to be notified before a component is rendered.
+ * @author sgodden
+ */
+public interface BeforeRenderListener 
+    extends ActionListener {
+
+}

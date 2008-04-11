@@ -14,27 +14,33 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.ToolbarTextItem = Core.extend(EchoExt20.ExtComponent, {
-    
-    $load: function() {
-        EchoApp.ComponentFactory.registerType("Ext20ToolbarTextItem", this);
-        EchoApp.ComponentFactory.registerType("E2TTX", this);
-    },
-    
-    componentType: "Ext20ToolbarTextItem"
-    
-});
+package org.sgodden.echo.ext20.peers;
 
-EchoExt20.ToolbarTextItemSync = Core.extend(EchoExt20.ExtComponentSync, {
+import nextapp.echo.app.Component;
+import nextapp.echo.app.util.Context;
+import nextapp.echo.webcontainer.AbstractComponentSynchronizePeer;
+import org.sgodden.echo.ext20.ExtComponent;
+
+
+/**
+ * Abstract sync peer for all ext components.
+ */
+public abstract class ExtComponentPeer extends AbstractComponentSynchronizePeer {
     
-    $load: function() {
-        EchoRender.registerPeer("Ext20ToolbarTextItem", this);
-    },
-    
-    createExtComponent: function(update, options) {
-        return new Ext.Toolbar.TextItem({
-            text: this.component.get("text")
+    /**
+     * Default constructor.
+     */
+    public ExtComponentPeer() {
+        super();
+        
+        addEvent(new AbstractComponentSynchronizePeer.EventPeer(
+                ExtComponent.INPUT_BEFORE_RENDER_PROPERTY, 
+                ExtComponent.BEFORE_RENDER_LISTENERS_CHANGED_PROPERTY) {
+            @Override
+            public boolean hasListeners(Context context, Component component) {
+                return ((ExtComponent) component).hasBeforeRenderListeners();
+            }
         });
     }
-    
-});
+
+}

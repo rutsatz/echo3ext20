@@ -18,6 +18,9 @@ package org.sgodden.echo.ext20.testapp;
 
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sgodden.echo.ext20.BeforeRenderListener;
 import org.sgodden.echo.ext20.Panel;
 import org.sgodden.echo.ext20.layout.FitLayout;
 
@@ -29,10 +32,20 @@ import org.sgodden.echo.ext20.layout.FitLayout;
 public class UserPanel 
         extends Panel {
     
+    private static final transient Log log = LogFactory.getLog(UserPanel.class);
+    
     public UserPanel(){
         super(new FitLayout());
         setTitle("Users");
-        switchToListPanel();
+
+        // render the list panel lazily
+        addBeforeRenderListener(new BeforeRenderListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                log.info("Rendering the list panel");
+                switchToListPanel();
+            }
+        });
+        
     }
     
     /**

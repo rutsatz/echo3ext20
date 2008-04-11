@@ -78,9 +78,9 @@ public class DateField
     /**
      * BROKEN - Sets the locale, and derives the ext locale string from it.
      * <p/>
-     * This is broken for all but the simplest cases - use {@link #setExtLocaleString(String)}
+     * This is broken for all but the simplest cases - use {@link #setDateFormat(String)}
      * instead.
-     * @param locale
+     * @param locale the locale.
      */
     @Override
     public void setLocale(Locale locale) {
@@ -95,12 +95,11 @@ public class DateField
     }
     
     /**
-     * Directly sets the locale string, since the automatic derivation of
+     * Directly sets the date format string, since the automatic derivation of
      * this from the java locale is currently broken.
-     * @param localeString
-     * @return
+     * @param format the date format string, such as 'm/d/y'.
      */
-    public void setFormat(String format) {
+    public void setDateFormat(String format) {
         setProperty(DATE_FORMAT_PROPERTY, format);
     }
 

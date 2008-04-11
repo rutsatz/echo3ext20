@@ -23,9 +23,9 @@ import nextapp.echo.webcontainer.AbstractComponentSynchronizePeer;
 import org.sgodden.echo.ext20.AbstractButton;
 
 /**
- * Synchronization peer for {@link Button}.
+ * Synchronization peer for {@link AbstractButton}.
  */
-public abstract class AbstractButtonPeer extends AbstractComponentSynchronizePeer {
+public abstract class AbstractButtonPeer extends ExtComponentPeer {
     
     /**
      * Default constructor.

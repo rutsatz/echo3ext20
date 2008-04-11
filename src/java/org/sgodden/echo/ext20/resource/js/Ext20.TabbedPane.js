@@ -14,7 +14,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.TabbedPane = Core.extend(EchoApp.Component, {
+EchoExt20.TabbedPane = Core.extend(EchoExt20.ExtComponent, {
     
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20TabbedPane", this);
@@ -38,11 +38,12 @@ EchoExt20.TabbedPaneSync = Core.extend(EchoExt20.ExtComponentSync, {
     
     createExtComponent: function(update, options) {
         options['activeTab'] = 0;
-        options['deferredRender'] = false;
+        //options['deferredRender'] = false;
         options['buttons'] = this._createButtons(update);
         //options['border'] = false;
         
         var ret = new Ext.TabPanel(options);
+        ret.on("tabchange", function(){ret.doLayout()});
         
         this._createChildItems(ret, update);
         
@@ -87,10 +88,6 @@ EchoExt20.TabbedPaneSync = Core.extend(EchoExt20.ExtComponentSync, {
         }    	
     },
     
-    renderUpdate: function(){},
-    
-    renderFocus: function() {
-        this.extComponent.focus();
-    }
+    renderUpdate: function(){}
     
 });

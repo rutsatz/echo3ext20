@@ -16,7 +16,7 @@ public class ListSelectionUtil {
      * Creates a selection string representation of a <code>ListSelectionModel</code>.
      * 
      * @param selectionModel the <code>ListSelectionModel</code>
-     * @param modelSize the size of the <strong>data</strong> model of which items are selected
+     * @param size the size of the <strong>data</strong> model of which items are selected
      * @return a selection string, e.g., "1,2,3,4", "5", or ""
      */
     public static String toString(ListSelectionModel selectionModel, int size) {

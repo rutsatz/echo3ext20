@@ -20,7 +20,6 @@ import java.util.Date;
 import nextapp.echo.app.Component;
 import nextapp.echo.app.update.ClientUpdateManager;
 import nextapp.echo.app.util.Context;
-import nextapp.echo.webcontainer.AbstractComponentSynchronizePeer;
 import nextapp.echo.webcontainer.Service;
 import nextapp.echo.webcontainer.WebContainerServlet;
 import nextapp.echo.webcontainer.service.JavaScriptService;
@@ -28,7 +27,7 @@ import nextapp.echo.webcontainer.service.JavaScriptService;
 import org.sgodden.echo.ext20.DateField;
 
 public class DateFieldPeer
-        extends AbstractComponentSynchronizePeer {
+        extends ExtComponentPeer {
 
     protected static final Service DATE_FIELD_SERVICE = JavaScriptService.forResource("EchoExt20.DateField",
             "/org/sgodden/echo/ext20/resource/js/Ext20.DateField.js");

@@ -57,10 +57,16 @@ public class UserEditPanel
         final TextField codeField = new TextField((String)data[1], "Code");
         codeField.setBlankAllowed(false);
         add(codeField);
+//        codeField.setFocusTraversalIndex(0);
+//        codeField.setFocusTraversalParticipant(true);
+//        
+//        ApplicationInstance.getActive().setFocusedComponent(codeField);
 
         final TextField nameField = new TextField((String)data[2], "Name");
         nameField.setBlankAllowed(false);
         add(nameField);
+//        nameField.setFocusTraversalIndex(1);
+//        nameField.setFocusTraversalParticipant(true);
         
         Calendar cal = Calendar.getInstance(
                 ApplicationInstance.getActive().getLocale());
@@ -103,6 +109,12 @@ public class UserEditPanel
         cancelButton = new Button("Cancel");
         cancelButton.setRenderId("cancelButton");
         addButton(cancelButton);
+        
+        addKeyPressListener("esc", new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                cancelButton.doClick();
+            }
+        });
         
         saveButton = new Button("Save");
         addButton(saveButton);

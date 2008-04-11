@@ -16,8 +16,14 @@
 # ================================================================= */
 package org.sgodden.echo.ext20;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import nextapp.echo.app.Component;
 
+import nextapp.echo.app.event.ActionEvent;
+import nextapp.echo.app.event.ActionListener;
 import org.sgodden.echo.ext20.layout.Layout;
 import org.sgodden.echo.ext20.layout.TableLayout;
 
@@ -42,8 +48,17 @@ public class Panel extends ExtComponent {
     public static final String HEIGHT_PROPERTY = "height";
     public static final String HTML_PROPERTY = "html";
     
+    public static final String INPUT_KEYPRESS_ACTION = "keyPress";
+    public static final String KEYPRESS_LISTENERS_CHANGED_PROPERTY = "keyPressListeners";
+    public static final String INPUT_KEY_PRESSED = "keyPressed";
+    public static final String REGISTERED_KEY_PRESSES_PROPERTY="registeredKeyPresses";
+    
+    private Map<String, Set<ActionListener>> keyPressListeners;
+    
     private Toolbar topToolbar;
     private Toolbar bottomToolbar;
+    
+    private String keyPressed;
 
     public Panel() {
         this(null, null);
@@ -196,4 +211,77 @@ public class Panel extends ExtComponent {
         
         this.bottomToolbar = toolbar;
     }
+    
+    @Override
+    public void processInput(String inputName, Object inputValue) {
+        if (INPUT_KEY_PRESSED.equals(inputName)) {
+            this.keyPressed = (String) inputValue;
+        }
+        else if (INPUT_KEYPRESS_ACTION.equals(inputName)) {
+            fireKeyEvent();
+        }
+        else {
+            super.processInput(inputName, inputValue);
+        }
+    }
+        
+    /**
+     * Adds a listener to be notified when the passed key is pressed and this
+     * component either has the focus, or is the ancestor of the focused
+     * component.
+     * <p/>
+     * @TODO - document the keyPress format.
+     * 
+     * @param keyPress the key press the listener wants to be notified of.
+     * @param listener the listener to notify.
+     */
+    public void addKeyPressListener(String keyPress, ActionListener listener) {
+        if (keyPressListeners == null) {
+            keyPressListeners = new HashMap<String, Set<ActionListener>>();
+        }
+        
+        Set<ActionListener> listeners = keyPressListeners.get(keyPress);
+        if (listeners == null) {
+            listeners = new HashSet<ActionListener>();
+            keyPressListeners.put(keyPress, listeners);
+        }
+        
+        listeners.add(listener);
+        updateRegisteredKeyPresses();
+        firePropertyChange(KEYPRESS_LISTENERS_CHANGED_PROPERTY, null, listener);
+    }
+    
+    private void updateRegisteredKeyPresses(){
+        StringBuffer sb = new StringBuffer();
+        
+        for (String keyPress : keyPressListeners.keySet()) {
+            if (sb.length() > 0) {
+                sb.append(':');
+            }
+            sb.append(keyPress);
+        }
+        
+        setProperty(REGISTERED_KEY_PRESSES_PROPERTY, sb.toString());
+    }
+
+    private void fireKeyEvent() {
+        if (!(keyPressListeners.containsKey(keyPressed))) {
+            throw new IllegalStateException("Key press fired when no listener registered: " + keyPressed);
+        }
+        
+        ActionEvent e = new ActionEvent(this, keyPressed);
+        
+        for (ActionListener listener : keyPressListeners.get(keyPressed)) {
+            listener.actionPerformed(e);
+        }
+    }
+    
+    /**
+     * Returns whether any key press listeners are registered on this component.
+     * @return true if there are any listeners registered, false if not.
+     */
+    public boolean hasKeyPressListeners() {
+        return (keyPressListeners != null && keyPressListeners.size() > 0);
+    }
+    
 }

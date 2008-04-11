@@ -14,7 +14,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.DateField = Core.extend(EchoApp.Component, {
+EchoExt20.DateField = Core.extend(EchoExt20.ExtComponent, {
     
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20DateField", this);
@@ -71,10 +71,6 @@ EchoExt20.DateFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
         this.extComponent.setValue(this.component.get("date"));
     },
     
-    renderUpdate: function(){},
-    
-    renderFocus: function() {
-        this.extComponent.focus(true);
-    }
+    renderUpdate: function(){}
     
 });

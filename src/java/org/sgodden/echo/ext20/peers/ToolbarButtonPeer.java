@@ -24,7 +24,7 @@ import nextapp.echo.webcontainer.service.JavaScriptService;
 import org.sgodden.echo.ext20.ToolbarButton;
 
 /**
- * Synchronization peer for {@link Button}.
+ * Synchronization peer for {@link ToolbarButton}.
  */
 public class ToolbarButtonPeer extends ButtonPeer {
     

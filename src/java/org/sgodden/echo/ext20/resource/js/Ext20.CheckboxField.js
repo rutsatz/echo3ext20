@@ -14,7 +14,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # ================================================================= */
-EchoExt20.CheckboxField = Core.extend(EchoApp.Component, {
+EchoExt20.CheckboxField = Core.extend(EchoExt20.ExtComponent, {
     
     $load: function() {
         EchoApp.ComponentFactory.registerType("Ext20CheckboxField", this);
@@ -59,10 +59,6 @@ EchoExt20.CheckboxFieldSync = Core.extend(EchoExt20.ExtComponentSync, {
         this.component.set("selected", this.extComponent.getValue());
     },
     
-    renderUpdate: function(){},
-    
-    renderFocus: function() {
-        this.extComponent.focus(true);
-    }
+    renderUpdate: function(){}
     
 });

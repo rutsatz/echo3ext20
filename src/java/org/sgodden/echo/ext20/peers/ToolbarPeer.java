@@ -25,7 +25,7 @@ import nextapp.echo.webcontainer.service.JavaScriptService;
 import org.sgodden.echo.ext20.Toolbar;
 
 public class ToolbarPeer
-        extends AbstractComponentSynchronizePeer {
+        extends ExtComponentPeer {
 
     protected static final Service TOOLBAR_SERVICE = JavaScriptService.forResource("EchoExt20.Toolbar",
             "/org/sgodden/echo/ext20/resource/js/Ext20.Toolbar.js");

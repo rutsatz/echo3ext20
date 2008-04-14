@@ -17,9 +17,11 @@
 package org.sgodden.echo.ext20.testapp;
 
 import java.util.Calendar;
+
 import nextapp.echo.app.ApplicationInstance;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sgodden.echo.ext20.Alignment;
@@ -51,7 +53,7 @@ public class UserEditPanel
     public UserEditPanel(Object[] data){
         super(new FormLayout());
         setBorder(false);
-        setPadding(5);
+        setPadding("5px");
         setRenderId("userFormPanel");
 
         final TextField codeField = new TextField((String)data[1], "Code");

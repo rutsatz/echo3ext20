@@ -105,7 +105,7 @@ public class ApplicationContentPane2
         Panel titlePanel = new Panel();
         titlePanel.setHtml("Some navigation here");
         titlePanel.setRenderId("northTitlePanel");
-        titlePanel.setPadding(5);
+        titlePanel.setPadding("5px");
         ret.add(titlePanel);
 
         return ret;

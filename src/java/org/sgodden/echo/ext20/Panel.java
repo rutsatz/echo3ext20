@@ -20,10 +20,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import nextapp.echo.app.Component;
 
+import nextapp.echo.app.Component;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
+
 import org.sgodden.echo.ext20.layout.Layout;
 import org.sgodden.echo.ext20.layout.TableLayout;
 
@@ -83,11 +84,11 @@ public class Panel extends ExtComponent {
     }
 
     /**
-     * FIXME - should be using the existing setInsets method instead.
-     * @param pixels
+     * Sets the padding, in CSS style.
+     * @param padding
      */
-    public void setPadding(int pixels) {
-        setProperty(PROPERTY_PADDING, pixels + "px");
+    public void setPadding(String padding) {
+        setProperty(PROPERTY_PADDING, padding);
     }
 
     public void setBorder(Boolean border) {

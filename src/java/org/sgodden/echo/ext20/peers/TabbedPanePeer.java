@@ -16,7 +16,10 @@
 # ================================================================= */
 package org.sgodden.echo.ext20.peers;
 
+import nextapp.echo.app.Component;
+import nextapp.echo.app.update.ClientUpdateManager;
 import nextapp.echo.app.util.Context;
+import nextapp.echo.webcontainer.AbstractComponentSynchronizePeer;
 import nextapp.echo.webcontainer.Service;
 import nextapp.echo.webcontainer.WebContainerServlet;
 import nextapp.echo.webcontainer.service.JavaScriptService;
@@ -32,6 +35,20 @@ extends ExtComponentPeer {
     static {
         WebContainerServlet.getServiceRegistry().add(TABBED_PANE_SERVICE);
     }
+    
+    public TabbedPanePeer() {
+        super();
+        
+        addEvent(new AbstractComponentSynchronizePeer.EventPeer(
+        		TabbedPane.ACTIVE_TAB_CHANGE_EVENT, 
+        		TabbedPane.TAB_CHANGE_LISTENERS_CHANGED_PROPERTY) {
+            @Override
+            public boolean hasListeners(Context context, Component component) {
+                return ((TabbedPane) component).hasTabChangeListeners();
+            }
+        });
+
+    }
 
 	public Class getComponentClass() {
 		return TabbedPane.class;
@@ -40,7 +57,27 @@ extends ExtComponentPeer {
 	public String getClientComponentType(boolean shortType) {
 		return shortType ? "E2TP" : "Ext2TabbedPane";
 	}
-	
+
+    /**
+     * @see nextapp.echo.webcontainer.AbstractComponentSynchronizePeer#getInputPropertyClass(java.lang.String)
+     */
+    public Class getInputPropertyClass(String propertyName) {
+        if (TabbedPane.ACTIVE_TAB_INDEX_PROPERTY.equals(propertyName)) {
+            return Integer.class;
+        }
+        return null;
+    }
+
+    /**
+     * @see nextapp.echo.webcontainer.ComponentSynchronizePeer#storeInputProperty(Context, Component, String, int, Object)
+     */
+    public void storeInputProperty(Context context, Component component, String propertyName, int propertyIndex, Object newValue) {
+        if (propertyName.equals(TabbedPane.ACTIVE_TAB_INDEX_PROPERTY)) {
+            ClientUpdateManager clientUpdateManager = (ClientUpdateManager) context.get(ClientUpdateManager.class);
+            clientUpdateManager.setComponentProperty(component, TabbedPane.ACTIVE_TAB_INDEX_PROPERTY, newValue);	
+        }
+    }
+
     /**
      * @see nextapp.echo.webcontainer.ComponentSynchronizePeer#init(Context)
      */

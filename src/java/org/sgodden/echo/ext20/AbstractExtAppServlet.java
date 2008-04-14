@@ -43,7 +43,9 @@ public abstract class AbstractExtAppServlet extends WebContainerServlet {
         List resourceList = new ArrayList();
         resourceList.add("/ext/adapter/ext/ext-base.js");
         resourceList.add("/ext/ext-all-debug.js");
-        //resourceList.add("/ext/portal/")
+        resourceList.add("/ext/portal/Portal.js");
+        resourceList.add("/ext/portal/PortalColumn.js");
+        resourceList.add("/ext/portal/Portlet.js");
 
         String[] resources = new String[resourceList.size()];
         resourceList.toArray(resources);
@@ -72,6 +74,9 @@ public abstract class AbstractExtAppServlet extends WebContainerServlet {
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.HtmlEditor.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.Menu.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.MenuItem.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.Portal.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.PortalColumn.js");
+        resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.Portlet.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.RadioButton.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TabbedPane.js");
         resourceList.add("/org/sgodden/echo/ext20/resource/js/Ext20.TimeField.js");
@@ -93,5 +98,7 @@ public abstract class AbstractExtAppServlet extends WebContainerServlet {
         super();
         addStartupScript(extService);
         addStartupScript(echoExtService);
+        addCssFileName("resources/ext/css/ext-all.css");
+        addCssFileName("resources/ext/css/portal.css");
     }
 }

@@ -16,6 +16,15 @@
 # ================================================================= */
 package org.sgodden.echo.ext20;
 
+import java.util.EventListener;
+
+import nextapp.echo.app.Component;
+import nextapp.echo.app.event.ActionEvent;
+import nextapp.echo.app.event.ActionListener;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * A tabbed pane.
  * 
@@ -26,6 +35,100 @@ public class TabbedPane extends ExtComponent {
 
 	private static final long serialVersionUID = 20080102L;
 	
+	private static final transient Log log = LogFactory.getLog(TabbedPane.class);
+	
+	public static final String ACTIVE_TAB_INDEX_PROPERTY = "activeTabIndex";
+
+	public static final String ACTIVE_TAB_CHANGE_EVENT = "activeTabChangeEvent";
+	public static final String TAB_CHANGE_LISTENERS_CHANGED_PROPERTY = "tabChangeListeners";
 	
 	
+	public TabbedPane() {
+		super();
+		setActiveTabIndex(0);
+		
+		addTabChangeListener(new TabChangeListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				// get the component at the new index
+				Component c = getComponent(getActiveTabIndex());
+				// if it's a deferred ui component, tell it to create it now
+				if (c instanceof DeferredUiCreate) {
+					((DeferredUiCreate)c).createUI();
+				}
+			}
+		});
+	}
+	
+	/**
+	 * Sets the index of the active tab.
+	 * @param tab the index of the active tab.
+	 */
+	public void setActiveTabIndex(int tabIndex) {
+		setProperty(ACTIVE_TAB_INDEX_PROPERTY, tabIndex);
+		fireTabChangeEvent();
+	}
+
+	/**
+	 * Returns the index of the active tab.
+	 * @return the index of the active tab.
+	 */
+	public int getActiveTabIndex() {
+		return (Integer) getProperty(ACTIVE_TAB_INDEX_PROPERTY);
+	}
+	
+
+    @Override
+    public void processInput(String inputName, Object inputValue) {
+        if (ACTIVE_TAB_INDEX_PROPERTY.equals(inputName)) {
+        	log.info("Tab index changed to: " + inputValue);
+            setActiveTabIndex((Integer)inputValue);
+        }
+        /* 
+         * we don't handle the change event because listeners are
+         * already notified in setActiveIndex.
+         */
+        
+    }
+    
+    
+    /**
+     * Returns whether any <code>TabChangeListener</code>s are registered.
+     * 
+     * @return true if any action listeners are registered
+     */
+    public boolean hasTabChangeListeners() {
+        return getEventListenerList().getListenerCount(TabChangeListener.class) != 0;
+    }
+
+    
+    /**
+     * Adds a <code>TabChangeListener</code> to the pane.
+     * <code>TabChangeListener</code>s will be invoked after the
+     * active tab index changes.
+     * 
+     * @param l the <code>TabChangeListener</code> to add.
+     */
+    public void addTabChangeListener(TabChangeListener l) {
+        getEventListenerList().addListener(TabChangeListener.class, l);
+        firePropertyChange(TAB_CHANGE_LISTENERS_CHANGED_PROPERTY, null, l);
+    }
+
+    
+    /**
+     * Fires an action event to all listeners.
+     */
+    private void fireTabChangeEvent() {
+        if (!hasEventListenerList()) {
+            return;
+        }
+        EventListener[] listeners = getEventListenerList().getListeners(TabChangeListener.class);
+        ActionEvent e = null;
+        for (int i = 0; i < listeners.length; ++i) {
+            if (e == null) {
+                e = new ActionEvent(this, null);
+            }
+            ((ActionListener) listeners[i]).actionPerformed(e);
+        }
+    }
+
 }

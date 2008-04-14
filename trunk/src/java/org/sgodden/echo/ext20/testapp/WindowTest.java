@@ -95,7 +95,9 @@ public class WindowTest
             super(new FitLayout(), "Test window");
             setWidth(350);
             setHeight(400);
-            add(new UserPanel());
+            UserPanel up = new UserPanel();
+            up.createUI();
+            add(up);
         }
     }
 

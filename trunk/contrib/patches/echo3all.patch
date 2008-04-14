@@ -9,13 +9,13 @@ Name: svn:ignore
 
 Index: src/server-java/webcontainer/nextapp/echo/webcontainer/resource/RemoteClient.js
 ===================================================================
---- src/server-java/webcontainer/nextapp/echo/webcontainer/resource/RemoteClient.js	(revision 1087)
+--- src/server-java/webcontainer/nextapp/echo/webcontainer/resource/RemoteClient.js	(revision 1124)
 +++ src/server-java/webcontainer/nextapp/echo/webcontainer/resource/RemoteClient.js	(working copy)
 @@ -31,6 +31,13 @@
      },
      
      /**
-+     *
++     * Listeners to be notified of remote client events.
 +     * @private
 +     * @type Core.ListenerList
 +     */
@@ -81,27 +81,100 @@ Index: src/server-java/webcontainer/nextapp/echo/webcontainer/resource/RemoteCli
       * Sets the wait indicator that will be displayed when a client-server action takes longer than
       * a specified period of time.
       * 
+Index: src/server-java/webcontainer/nextapp/echo/webcontainer/WebContainerServlet.java
+===================================================================
+--- src/server-java/webcontainer/nextapp/echo/webcontainer/WebContainerServlet.java	(revision 1124)
++++ src/server-java/webcontainer/nextapp/echo/webcontainer/WebContainerServlet.java	(working copy)
+@@ -41,9 +41,11 @@
+ 
+ import java.io.IOException;
+ import java.util.ArrayList;
++import java.util.HashSet;
+ import java.util.Iterator;
+ import java.util.List;
+ 
++import java.util.Set;
+ import javax.servlet.ServletException;
+ import javax.servlet.http.HttpServlet;
+ import javax.servlet.http.HttpServletRequest;
+@@ -388,5 +390,22 @@
+             activeConnection.set(null);
+         }
+     }
++   
++    private Set cssFileNames = new HashSet();
+     
+-}
++    /**
++     * Adds a css file name to be added to the window html.
++     */
++    public void addCssFileName(String cssFileName) {
++        cssFileNames.add(cssFileName);
++    }
++    
++    /**
++     * Returns an iterator over the CSS file names.
++     * @return
++     */
++    public Iterator getCssFileNames() {
++        return cssFileNames.iterator();
++    }
++    
++}
+\ No newline at end of file
 Index: src/server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java
 ===================================================================
---- src/server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java	(revision 1087)
+--- src/server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java	(revision 1124)
 +++ src/server-java/webcontainer/nextapp/echo/webcontainer/service/WindowHtmlService.java	(working copy)
-@@ -105,6 +105,13 @@
+@@ -105,6 +105,35 @@
          styleElement.setAttribute("type", "text/css");
          styleElement.appendChild(document.createTextNode(" "));
          headElement.appendChild(styleElement);
 +        
 +        Element extStyleElement = document.createElement("link");
-+        extStyleElement.setAttribute("href", "resources/css/ext-all.css");
++        extStyleElement.setAttribute("href", "resources/ext/css/ext-all.css");
 +        extStyleElement.setAttribute("type", "text/css");
 +        extStyleElement.setAttribute("rel", "stylesheet");
 +        extStyleElement.appendChild(document.createTextNode(" "));
 +        headElement.appendChild(extStyleElement);
++        
++        Element extPortalStyleElement = document.createElement("link");
++        extStyleElement.setAttribute("href", "resources/ext/css/portal.css");
++        extStyleElement.setAttribute("type", "text/css");
++        extStyleElement.setAttribute("rel", "stylesheet");
++        extStyleElement.appendChild(document.createTextNode(" "));
++        headElement.appendChild(extPortalStyleElement);
++        
++        WebContainerServlet servlet = conn.getServlet();
++        
++        Iterator cssIt = servlet.getCssFileNames();
++        if (cssIt != null) {
++            while(cssIt.hasNext()) {
++                String cssFileName = (String) cssIt.next();
++                Element additionalStyleElement = document.createElement("link");
++                additionalStyleElement.setAttribute("href", cssFileName);
++                additionalStyleElement.setAttribute("type", "text/css");
++                additionalStyleElement.setAttribute("rel", "stylesheet");
++                additionalStyleElement.appendChild(document.createTextNode(" "));
++                headElement.appendChild(additionalStyleElement);
++            }
++        }
  
          Element scriptElement = document.createElement("script");
          Text textNode = document.createTextNode(" ");
+@@ -112,8 +141,8 @@
+         scriptElement.setAttribute("type", "text/javascript");
+         scriptElement.setAttribute("src", userInstance.getServiceUri(BootService.SERVICE));
+         headElement.appendChild(scriptElement);
++
+         
+-        WebContainerServlet servlet = conn.getServlet();
+         Iterator scriptIt = servlet.getStartupScripts();
+         if (scriptIt != null) {
+             while (scriptIt.hasNext()) {
 Index: ant.properties
 ===================================================================
---- ant.properties	(revision 1087)
+--- ant.properties	(revision 1124)
 +++ ant.properties	(working copy)
 @@ -3,7 +3,7 @@
  ant.build.javac.source 1.4

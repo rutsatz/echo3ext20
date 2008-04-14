@@ -172,6 +172,8 @@ public class ApplicationContentPane
         ret.add(new UserPanel());
         
         ret.add(new WindowTest());
+        
+        ret.add(new PortalTest());
 
         return ret;
     }

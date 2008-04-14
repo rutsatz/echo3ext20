@@ -59,8 +59,12 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
         }
         
         if (update.hasAddedChildren()) {
+            //alert("added children");
             // hide ourselves to prevent progressive rendering in slower browsers
             this.extComponent.getEl().dom.style.visibility = 'hidden';
+            //this.extComponent.hide();
+            
+            //alert("Hid it");
             
             // and add a server update complete listener if we haven't already
             if (this._serverUpdateCompleteRef == null) {
@@ -99,6 +103,8 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
      */
     _serverUpdateComplete: function() {
         this.extComponent.getEl().dom.style.visibility = 'visible';
+        //this.extComponent.show();
+        //this.extComponent.doLayout();
     },
     
     createExtComponent: function(update, options) {

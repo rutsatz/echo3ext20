@@ -23,7 +23,14 @@ EchoExt20.TabbedPane = Core.extend(EchoExt20.ExtComponent, {
 
     focusable: true,
     
-    componentType: "Ext20TabbedPane"
+    componentType: "Ext20TabbedPane",
+    
+    doActiveTabChange: function(){
+        this.fireEvent({
+            type: "activeTabChangeEvent",
+            source: this
+        });
+    }
     
 });
 
@@ -35,15 +42,32 @@ EchoExt20.TabbedPaneSync = Core.extend(EchoExt20.ExtComponentSync, {
     $load: function() {
         EchoRender.registerPeer("Ext20TabbedPane", this);
     },
+	
+	_tabCount: 0,
     
     createExtComponent: function(update, options) {
-        options['activeTab'] = 0;
-        //options['deferredRender'] = false;
+        options['activeTab'] = this.component.get("activeTabIndex");
         options['buttons'] = this._createButtons(update);
-        //options['border'] = false;
         
         var ret = new Ext.TabPanel(options);
-        ret.on("tabchange", function(){ret.doLayout()});
+        ret.on(
+			"beforetabchange", 
+			function(tabPanel, newTab, oldTab){
+				this.component.set(
+					"activeTabIndex",
+					newTab.echoComponent.tabIndex
+					);
+				this.component.doActiveTabChange();
+			},
+			this
+		);
+        ret.on(
+			"tabchange", 
+			function(tabPanel, newTab, oldTab){
+				ret.doLayout();
+			},
+			this
+		);
         
         this._createChildItems(ret, update);
         
@@ -73,21 +97,28 @@ EchoExt20.TabbedPaneSync = Core.extend(EchoExt20.ExtComponentSync, {
         for (var i = 0; i < this.component.getComponentCount(); ++i) {
             var child = this.component.getComponent(i);
             if ( !(child instanceof EchoExt20.Button) ) {
-                EchoRender.renderComponentAdd(update, child, null); // null because ext components create the necessary extra divs themselves
+                EchoRender.renderComponentAdd(update, child, null);
                 
                 // add the ext component created by the peer to the child items array
                 var childExtComponent = child.peer.extComponent;
+				
+				// we need to be able to get back to the tab index later
+				
                 if (childExtComponent == null) {
                     throw new Error("No child ext component was created during renderAdd for component type: " + child.componentType);
                 } 
                 else {
                     tabPanel.add(childExtComponent);
+					
+					// we need to be able to get back to the tab index later
+					child.tabIndex = i; 
+					childExtComponent.echoComponent = child;
                 }
-                
             }
         }    	
     },
     
+	// FIXME - adding tabs during an update
     renderUpdate: function(){}
     
 });

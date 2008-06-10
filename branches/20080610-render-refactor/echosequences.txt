@@ -1,0 +1,37 @@
+When an update is received from the server, the following sequence of events occurs:
+
+Response is processed by RemoteClient._processSyncResponse(e).
+It creates a EchoRemoteClient.ServerMessage, and adds itself as a completion listener.
+
+ServerMessage.process is invoked, which does the following:
+
+    * Processes libs directives
+    * Invokes ServerMessage._processPostLibraryLoad()
+          o for each 'dir' directive, calls the appropriate directive processor (see below for how each one works).
+
+EchoRemoteClient.ComponentSyncUpdateProcessor.process(dirElement)
+
+For each child of the dirElement:
+
+    * 'fr' = _processFullRefresh() (means a full page refresh is required)
+    * 'ss' = _processStyleSheet() (proceses changes to stylesheets)
+    * 'up' = _processUpdate() (processes a component update, such as add or remove a component)
+    * 'sp' = _processStoreProperties() (processes a property update, such as changing the text on a label)
+
+_processUpdate()
+
+    * Find the parent element being updated from the up element.
+    * If adding a child:
+          o Load the component by calling EchoSerial.loadComponent
+          o call parentComponent.add(component, cursorIndex)
+      Component.add(component, index)
+          o Remove any existing parent from the new child
+          o Set this as the child's parent
+          o Register the application on the child
+          o call application.notifyComponentUpdate() for the children of this component
+      Application.notifyComponentUpdate
+          o Notify any update listeners
+          o call EchoApp.Update.Manager._processComponentUpdate
+      EchoApp.Update.Manager._processComponentUpdate
+          o call this._processComponentAdd(parent, newValue);
+          o HERE

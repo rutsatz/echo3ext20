@@ -31,7 +31,7 @@ public class AppInstance extends ApplicationInstance {
 
     public Window init() {
         Window ret = new Window();
-
+        
         ret.setTitle("Echo3 and Ext2.0 test application");
         ret.setContent(new ApplicationContentPane());
 

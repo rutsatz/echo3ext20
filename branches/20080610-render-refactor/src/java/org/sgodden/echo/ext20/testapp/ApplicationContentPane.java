@@ -54,6 +54,7 @@ public class ApplicationContentPane
 
     public ApplicationContentPane() {
         super();
+        setRenderId("applicationContentPane");
         addViewport();
     }
 

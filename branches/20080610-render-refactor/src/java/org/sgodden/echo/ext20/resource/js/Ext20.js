@@ -49,10 +49,17 @@ EchoExt20.ExtComponent = Core.extend(Echo.Component, {
  * extjs.
  * @constructor
  */
-EchoExt20.Echo3SyncWrapper = function(update, wrapped) {
+EchoExt20.Echo3SyncWrapper = function(update, wrappedComponent) {
     EchoExt20.Echo3SyncWrapper.superclass.constructor.call(this);
-    this.wrapped = wrapped;
-    this.update = update;
+
+    this.wrappedComponent = wrappedComponent;
+    this.wrappedRootElement = document.createElement("div");
+
+    /*
+     * We need to call render add immediately, but defer
+     * adding it until this wrapper is rendered.
+     */
+    Echo.Render.renderComponentAdd(update, this.wrappedComponent, this.wrappedRootElement);
 }
 
 Ext.extend(EchoExt20.Echo3SyncWrapper, Ext.Component, {
@@ -63,12 +70,17 @@ Ext.extend(EchoExt20.Echo3SyncWrapper, Ext.Component, {
      */
     onRender: function(ct, position) {
         if (position == null) {
-                position = ct.createChild();
+            position.appendChild(this.wrappedRootElement);
         }
-        this.el = position;
-        Echo.Render.renderComponentAdd(this.update, this.wrapped, position);
-        delete this.update;
-        
+        else {
+            ct.appendChild(this.wrappedRootElement);
+        }
+        // necessary for ext internal processing
+        this.el = new Ext.Element(this.wrappedRootElement);
+       
+        /*
+         * Intercept the wrapped component's peer's renderDispose to ensure that this wrapper is disposed.
+         */
         this.wrapped.peer.renderDispose = this.wrapped.peer.renderDispose.createInterceptor(this.onRenderDispose, this);
     },
     
@@ -77,7 +89,7 @@ Ext.extend(EchoExt20.Echo3SyncWrapper, Ext.Component, {
     },
     
     setSize: function() {
-        // do nothing for now, but needs implementing
+        // FIXME - implement setSize
     }
 });
 
@@ -92,6 +104,22 @@ EchoExt20.ExtComponentSync = Core.extend(Echo.Render.ComponentSync, {
          */
         createExtComponent: function(update, options) {}
     },
+
+    $virtual: {
+        /**
+         * Adds the ext component to the parent.  This may need
+         * to be overridden by certain subclasses (such as buttons
+         * which may have to add themselves to the parent's button
+         * bar rather than its main layout.
+         */
+        _addExtComponentToParent: function() {
+            /*
+             * If the parent is an ext container, then tell it
+             * to add this new child.
+             */
+            this.component.parent.peer.extComponent.add(this.extComponent);
+        }
+    }
     
     $static: {
         openWindows: []
@@ -106,6 +134,13 @@ EchoExt20.ExtComponentSync = Core.extend(Echo.Render.ComponentSync, {
      * The ext component created by the peer.
      */
     extComponent: null,
+
+    /**
+     * An array of wrappers for non-ext children,
+     * that must be added to the ext container
+     * when it is created.
+     */
+    _nonExtChildren: null,
     
     /**
      * If this is not an ext component, then this references the
@@ -175,66 +210,161 @@ EchoExt20.ExtComponentSync = Core.extend(Echo.Render.ComponentSync, {
         */
             
         /*
-         * We need to know if we are a root container, so that we can
-         * perform required layout opertaions on server update completion
+         * We need to know if we are a root container (i.e. an ext container
+         * whose parent is not an ext container), so that we can
+         * perform required layout operations on server update completion
          * if we or any of our children have had layout changes.
          */
-        if ( (this instanceof EchoExt20.WindowSync)
-                  || !(this.component.parent.peer.isExtComponent) 
+        if ( (this instanceof EchoExt20.PanelSync)
+                  && !(this.component.parent.peer.isExtComponent) 
                 ) {
                 
             this._isRootContainer = true;
             this.renderDisplayCompleteRef = Core.method(this, this._rootRenderDisplayComplete);
             Echo.Render.addRenderDisplayCompleteListener(this.renderDisplayCompleteRef);
-            //update.renderContext.displayRequired = [];
-            //update.renderContext.displayRequired.push(this.component);
+        }
+
+        /*
+         * We always defer actual creation of the ext component to
+         * the renderDisplay phase.
+         */
+        if (update.renderContext.displayRequired == null) {
+            update.renderContext.displayRequired = [];
+        }
+        update.renderContext.displayRequired.push(this.component);
+
+        /*
+         * If the parent is not an ext component, then retain
+         * a reference to the parent element so that we can ask
+         * the ext component to render to it in the render
+         * display phase.
+         */
+        if (!(this.component.parent.peer.isExtComponent)) {
+            this._parentElement = parentElement; 
+        }
+
+        /*
+         * If the component has children, call renderAdd on them
+         * all now.
+         */
+        for (var i = 0; i < this.component.getComponentCount(); i++) {
+            this._doRenderAddChild(update, this.component.getComponent(i);
         }
        
+    },
+
+    /**
+     * Performs renderAdd processing for one child
+     */
+    _doRenderAddChild(update, child): function() {
         /*
-         * If the parent is an ext component then we are
-         * safe to create here.
+         * If it's not an ext component, we need to wrap it,
+         * and record it in the array of child components
+         * that need adding once the ext component has
+         * been created.
          */
-        if (this.component.parent.peer.isExtComponent) {
+        if (! (child instanceof EchoExt20.ExtComponent) ) {
+            /*
+             * This constructor takes care of performing renderAdd
+             * on the non-ext child.
+             */
+            var wrapper = new EchoExt20.Echo3SyncWrapper(update, child);
+            if (this._nonExtChildren == null) {
+                this._nonExtChildren = [];
+            }
+            this._nonExtChildren.push(wrapper);
+        }
+        else {
+            /*
+             * It's an ext child, just call renderAdd immediately.
+             */
+            Echo.Render.renderComponentAdd(update, child, null);
+        }
+    },
+    
+    /**
+     * Use by root containers to redo their layout if child
+     * layout updates occurred, after the render display
+     * phase is complete.
+     */
+    _rootRenderDisplayComplete: function() {
+        if (this._childLayoutUpdatesOccurred) {
+            this.extComponent.doLayout();
+            this._childLayoutUpdatesOccurred = false;
+        }
+    },
+
+    _createComponent: function() {
+        // if the parent is not an ext component, then we must be being added to a
+        // regular div, which has to happen here, when we can guarantee that the div
+        // is in the DOM tree
+        if (this.extComponent == null) {
+            /*
+             * For IE only, we need to set the overflow of the main content pane
+             * to 'visible', or we get bugs whereby the background disappears when
+             * floating content over the top (for instance when you drop down a combo
+             * box
+             */
+            if (Core.Web.Env.BROWSER_INTERNET_EXPLORER) {
+                var contentPaneEl = document.getElementById("approot").firstChild;
+                contentPaneEl.style.overflow = "visible";
+            }
+
             options = {};
             options['id'] = this.component.renderId;
-            
-            // and now handle the layout data
-            var layout = this.component.parent.get("layout");
-            if (layout != null) {
-                // border layout
-                if (layout instanceof EchoExt20.BorderLayout) {
-                    var layoutData = this.component.get("layoutData");
-                    // layout data mandatory for a border layout
-                    if (layoutData == null) {
-                        throw new Error("No layout data provided for component in a border layout");
+           
+            /*
+             * If the parent is an ext component, then process
+             * any layout data.
+             */
+            if (this.parent.peer.isExtComponent) {
+                var layout = this.component.parent.get("layout");
+                if (layout != null) {
+                    // border layout
+                    if (layout instanceof EchoExt20.BorderLayout) {
+                        var layoutData = this.component.get("layoutData");
+                        // layout data mandatory for a border layout
+                        if (layoutData == null) {
+                            throw new Error("No layout data provided for component in a border layout");
+                        }
+                        var region = this._convertToExtRegion(layoutData.region);
+                        options['region'] = region;
+                        // if we are in the north, and have no height set, then we need autoHeight true.
+                        // fixme - how about handling width in west and east, and height in south?
+                        if (region == 'north') {
+                            var height = this.component.get("height");
+                            if (height == null) {
+                                options['autoHeight'] = true;
+                            }
+                        }
+                        
                     }
-                    var region = this._convertToExtRegion(layoutData.region);
-                    options['region'] = region;
-                    // if we are in the north, and have no height set, then we need autoHeight true.
-                    // fixme - how about handling width in west and east, and height in south?
-                    if (region == 'north') {
-                        var height = this.component.get("height");
-                        if (height == null) {
-                            options['autoHeight'] = true;
+                    else if (layout instanceof EchoExt20.ColumnLayout) {
+                        var layoutData = this.component.get("layoutData");
+                        // layout data is NOT mandatory for column layout
+                        if (layoutData != null) {
+                            options['columnWidth'] = parseFloat(layoutData.columnWidth);
                         }
                     }
-                    
-                }
-                else if (layout instanceof EchoExt20.ColumnLayout) {
-                    var layoutData = this.component.get("layoutData");
-                    // layout data is NOT mandatory for column layout
-                    if (layoutData != null) {
-                        options['columnWidth'] = parseFloat(layoutData.columnWidth);
+                    else if (layout instanceof EchoExt20.FormLayout) {
+                        var layoutData = this.component.get("layoutData");
+                        // layout data is NOT mandatory for column layout
+                        if (layoutData != null) {
+                            options['anchor'] = layoutData.anchor;
+                        }
                     }
+                    // other layouts (form layout, fit layout, table layout) do not require layout data on their children
                 }
-				else if (layout instanceof EchoExt20.FormLayout) {
-                    var layoutData = this.component.get("layoutData");
-                    // layout data is NOT mandatory for column layout
-                    if (layoutData != null) {
-                        options['anchor'] = layoutData.anchor;
-                    }
+            }
+            else {
+                /*
+                 * Parent is not an ext element so just inform the ext component
+                 * that it needs to render to the parent element.
+                 */
+                if (this._parentElement == null) {
+                    throw new Error("Parent is not an ext component, but parentElement is null: " + this.component.renderId);
                 }
-                // other layouts (form layout, fit layout, table layout) do not require layout data on their children
+                options["renderTo"] = this._parentElement;
             }
             
             this.extComponent = this.createExtComponent(
@@ -251,60 +381,25 @@ EchoExt20.ExtComponentSync = Core.extend(Echo.Render.ComponentSync, {
             this._addBeforeRenderListener();
             
             this._parentElement = null;
-        }
-        else {
+
             /*
-             * Our parent was not an ext container, so we need to just note
-             * the parent element here, and defer component creation until
-             * renderDisplay, when we are definitely in the DOM.
+             * If there are non-ext children to add, add them now.
              */
-            this._parentElement = parentElement; 
-        }
-    },
-    
-    /**
-     * Use by root containers to redo their layout if child
-     * layout updates occurred, after the render display
-     * phase is complete.
-     */
-    _rootRenderDisplayComplete: function() {
-
-        this._maybeCreateComponent();
-
-        if (this._childLayoutUpdatesOccurred) {
-            this.extComponent.doLayout();
-            this._childLayoutUpdatesOccurred = false;
-        }
-    },
-
-    _maybeCreateComponent: function() {
-        // if the parent is not an ext component, then we must be being added to a
-        // regular div, which has to happen here, when we can guarantee that the div
-        // is in the DOM tree
-        if (this.extComponent == null) {
-            /*
-             * For IE only, we need to set the overflow of the main content pane
-             * to 'visible', or we get bugs whereby the background disappears when
-             * floating content over the top (for instance when you drop down a combo
-             * box
-             */
-            if (Core.Web.Env.BROWSER_INTERNET_EXPLORER) {
-                var contentPaneEl = document.getElementById("approot").firstChild;
-                contentPaneEl.style.overflow = "visible";
+            if (this._nonExtChildren != null) {
+                for (var nonExtChild in this._nonExtChildren) {
+                    this.extComponent.add(nonExtChild);
+                }
             }
 
-            var options = {
-                id: this.component.renderId,
-                renderTo: this._parentElement
-            };
-            this.extComponent = this.createExtComponent(
-                this._update,
-                options
-            );
-            this._addBeforeRenderListener();
+            if (this.component.parent.peer.isExtComponent) {
+                if (this.component.parent.peer.extComponent == null) {
+                    throw new Error("The parent's ext component has not been created yet - cannot add child: " + this.component.renderId);
+                }
+                this._addExtComponentToParent();
+            }
         }
     },
-        
+
     /**
      * Convenience method to turn a single character region into an
      * ext region equivalent.
@@ -347,7 +442,7 @@ EchoExt20.ExtComponentSync = Core.extend(Echo.Render.ComponentSync, {
     },
     
     renderDisplay: function(update) {
-        this._maybeCreateComponent();
+        this._createComponent();
     },
     
     _addBeforeRenderListener: function() {

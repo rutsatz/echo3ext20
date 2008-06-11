@@ -425,8 +425,8 @@ EchoExt20.PanelSync = Core.extend(EchoExt20.ExtComponentSync, {
                     throw new Error("No child ext component was created during renderAdd for component type: " + child.componentType);
                 } 
                 else {
-					// make sure we can get back to the echo component from the ext component
-					childExtComponent.echoComponent = child;
+                    // make sure we can get back to the echo component from the ext component
+                    childExtComponent.echoComponent = child;
                     this.extComponent.add(childExtComponent);
                 }
             }

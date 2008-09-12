@@ -12,29 +12,29 @@ The following table provides a list of all the components I currently plan to im
 ||Ext.ux.Andrie.Select||No|| ||
 ||Ext.ux.!MultiSelect||In Progress|| ||
 ||Ext.ux.!ItemSelector||In Progress|| ||
-||Ext.ux.RadioGroup||No|| ||
-||FieldSet||Yes|| ||
-||GridPanel||Yes|| ||
-||HtmlEditor||In Progress||Seems to have rendering problems - look at implementing TinyMCE instead||
-||NumberField||No|| ||
+||Ext.ux.!RadioGroup||No|| ||
+||!FieldSet||Yes|| ||
+||!GridPanel||Yes|| ||
+||!HtmlEditor||In Progress||Seems to have rendering problems - look at implementing TinyMCE instead||
+||!NumberField||No|| ||
 ||Panel||Yes|| ||
 ||Portal||Yes|| ||
-||PrinterFriendly||No|| ||
+||!PrinterFriendly||No|| ||
 ||Radio||Yes|| ||
-||TabPanel||Yes|| ||
-||TextArea||Yes|| ||
-||TextField||Yes|| ||
-||TimeField||Yes|| ||
+||!TabPanel||Yes|| ||
+||!TextArea||Yes|| ||
+||!TextField||Yes|| ||
+||!TimeField||Yes|| ||
 ||TinyMCE||No|| ||
-||TreeGridPanel||No|| ||
-||TreePanel||No|| ||
+||!TreeGridPanel||No|| ||
+||!TreePanel||No|| ||
 ||Window||Yes|| ||
 
 Layouts:
 
 ||*Layout*||*Implemented?*||
-||BorderLayout||Yes||
-||ColumnLayout||Yes||
-||FitLayout||Yes||
-||FormLayout||Yes||
-||TableLayout||Yes||
+||!BorderLayout||Yes||
+||!ColumnLayout||Yes||
+||!FitLayout||Yes||
+||!FormLayout||Yes||
+||!TableLayout||Yes||

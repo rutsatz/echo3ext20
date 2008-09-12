@@ -6,12 +6,12 @@ The following table provides a list of all the components I currently plan to im
 ||*Component*||*Implemented?*||*Notes*||
 ||Button||Yes|| ||
 ||Checkbox||Yes|| ||
-||ComboBox||Yes|| ||
-||DateField||Yes|| ||
-||EditorGridPanel||No|| ||
+||!ComboBox||Yes|| ||
+||!DateField||Yes|| ||
+||!EditorGridPanel||No|| ||
 ||Ext.ux.Andrie.Select||No|| ||
-||Ext.ux.MultiSelect||In Progress|| ||
-||Ext.ux.ItemSelector||In Progress|| ||
+||Ext.ux.!MultiSelect||In Progress|| ||
+||Ext.ux.!ItemSelector||In Progress|| ||
 ||Ext.ux.RadioGroup||No|| ||
 ||FieldSet||Yes|| ||
 ||GridPanel||Yes|| ||

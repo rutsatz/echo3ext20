@@ -6,18 +6,19 @@ The following table provides a list of all the components I currently plan to im
 ||*Component*||*Implemented?*||*Notes*||
 ||Button||Yes|| ||
 ||Checkbox||Yes|| ||
-||ComboBox||Yes||The model API is poorly implemented||
+||ComboBox||Yes|| ||
 ||DateField||Yes|| ||
 ||EditorGridPanel||No|| ||
 ||Ext.ux.Andrie.Select||No|| ||
-||Ext.ux.MultiSelect||No|| ||
+||Ext.ux.MultiSelect||In Progress|| ||
+||Ext.ux.ItemSelector||In Progress|| ||
 ||Ext.ux.RadioGroup||No|| ||
-||FieldSet||Yes||Seems to have rendering problems in some situations||
-||GridPanel||Yes||Model API is poorly implemented||
-||HtmlEditor||Yes||Seems to have rendering problems - look at implementing TinyMCE instead||
+||FieldSet||Yes|| ||
+||GridPanel||Yes|| ||
+||HtmlEditor||In Progress||Seems to have rendering problems - look at implementing TinyMCE instead||
 ||NumberField||No|| ||
 ||Panel||Yes|| ||
-||Portal||No||The portal example provided with the distribution||
+||Portal||Yes|| ||
 ||PrinterFriendly||No|| ||
 ||Radio||Yes|| ||
 ||TabPanel||Yes|| ||

@@ -10,8 +10,8 @@ The following table provides a list of all the components I currently plan to im
 ||!DateField||Yes|| ||
 ||!EditorGridPanel||No|| ||
 ||Ext.ux.Andrie.Select||No|| ||
-||Ext.ux.!MultiSelect||In Progress|| ||
-||Ext.ux.!ItemSelector||In Progress|| ||
+||Ext.ux.!MultiSelect||Yes|| ||
+||Ext.ux.!ItemSelector||Yes|| ||
 ||Ext.ux.!RadioGroup||No|| ||
 ||!FieldSet||Yes|| ||
 ||!GridPanel||Yes|| ||
@@ -21,6 +21,7 @@ The following table provides a list of all the components I currently plan to im
 ||Portal||Yes|| ||
 ||!PrinterFriendly||No|| ||
 ||Radio||Yes|| ||
+||!SplitButton||Yes|| ||
 ||!TabPanel||Yes|| ||
 ||!TextArea||Yes|| ||
 ||!TextField||Yes|| ||

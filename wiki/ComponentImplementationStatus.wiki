@@ -1,7 +1,7 @@
 #summary Implementation status of the various Ext components.
 #labels Featured
 
-The following table provides a list of all the components I currently plan to implement, and their implementation status.  Please note that even components listed as implemented are usually only partially implemented.  Update support is far from complete, as is the set of events that can be listened to.
+The following table provides a list of all the components and their implementation status.  
 
 ||*Component*||*Implemented?*||*Notes*||
 ||Button||Yes|| ||
@@ -33,9 +33,9 @@ The following table provides a list of all the components I currently plan to im
 
 Layouts:
 
-||*Layout*||*Implemented?*||
-||!BorderLayout||Yes||
-||!ColumnLayout||Yes||
-||!FitLayout||Yes||
-||!FormLayout||Yes||
-||!TableLayout||Yes||
+||*Layout*||*Implemented?*||*Notes*||
+||!BorderLayout||Yes|| ||
+||!ColumnLayout||Yes|| ||
+||!FitLayout||Yes|| ||
+||!FormLayout||Yes|| ||
+||!TableLayout||Yes||Enhanced to allow arbitrary insertion and removal of elements ||

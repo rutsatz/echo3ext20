@@ -15,7 +15,7 @@ The following table provides a list of all the components I currently plan to im
 ||Ext.ux.!RadioGroup||No|| ||
 ||!FieldSet||Yes|| ||
 ||!GridPanel||Yes|| ||
-||!HtmlEditor||No||The ExtJS editor has various problems - use the [http://echo.nextapp.com/site/node/5524 Echo3 TinyMCE editor] instead||
+||!HtmlEditor||Yes|| ||
 ||!NumberField||No|| ||
 ||Panel||Yes|| ||
 ||Portal||Yes|| ||
